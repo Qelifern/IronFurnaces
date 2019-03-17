@@ -1,0 +1,19 @@
+{
+    "": "/Items",
+
+    "": "/TAB",
+    "itemGroup.ironfurnaces": "Iron Furnaces",
+
+    "": "/Blocks",
+    "block.ironfurnaces.iron_furnace": "Iron Furnace",
+    "block.ironfurnaces.gold_furnace": "Golden Furnace",
+    "block.ironfurnaces.diamond_furnace": "Diamond Furnace",
+    "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
+
+
+    "": "/LOCALE",
+    "container.iron_furnace": "Iron Furnace",
+    "container.gold_furnace": "Golden Furnace",
+    "container.diamond_furnace": "Diamond Furnace",
+    "container.obsidian_furnace": "Obsidian Furnace"
+}

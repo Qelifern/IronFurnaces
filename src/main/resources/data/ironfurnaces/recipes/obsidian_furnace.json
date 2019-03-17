@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:obsidian"
+    },
+    "X": {
+       "item": "ironfurnaces:diamond_furnace"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:obsidian_furnace"
+  }
+}
