@@ -1,7 +1,6 @@
 package ironfurnaces;
 
 import ironfurnaces.config.Config;
-import ironfurnaces.config.ObsidianFurnaceConfig;
 import ironfurnaces.init.ModBlocks;
 import ironfurnaces.init.ModItems;
 import ironfurnaces.proxy.ClientProxy;
@@ -76,7 +75,6 @@ public class Main
     private void setup(final FMLCommonSetupEvent event)
     {
         LOGGER.log(Level.INFO, "HELLO WORLD");
-        LOGGER.log(Level.INFO, ObsidianFurnaceConfig.SPEED.get().toString());
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
         proxy.setup(event);}
 
