@@ -51,3 +51,9 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
     versionRange="[1.13.2]"
     ordering="NONE"
     side="BOTH"
+[[dependencies.ironfurnaces]]
+   modId="jei"
+   mandatory=false
+   versionRange="[5,)"
+   ordering="NONE"
+   side="BOTH"
