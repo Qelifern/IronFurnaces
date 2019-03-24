@@ -29,7 +29,7 @@ credits="Java, Minecraft, MinecraftForge" #optional
 authors="Qelifern" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This is a long form description of the mod. You can write whatever you want here
+IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt away to your desires.
 
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
