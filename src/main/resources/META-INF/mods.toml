@@ -26,7 +26,7 @@ logoFile="ironfurnaces.png" #optional
 # A text field displayed in the mod UI
 credits="Java, Minecraft, MinecraftForge" #optional
 # A text field displayed in the mod UI
-authors="Qelifern" #optional
+authors="pizzaatime" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt away to your desires.
