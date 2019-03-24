@@ -1,5 +1,7 @@
 package ironfurnaces;
 
+import ironfurnaces.config.Config;
+import ironfurnaces.config.ObsidianFurnaceConfig;
 import ironfurnaces.init.ModBlocks;
 import ironfurnaces.init.ModItems;
 import ironfurnaces.proxy.ClientProxy;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +53,9 @@ public class Main
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
     }
 
     @SubscribeEvent
@@ -70,6 +76,7 @@ public class Main
     private void setup(final FMLCommonSetupEvent event)
     {
         LOGGER.log(Level.INFO, "HELLO WORLD");
+        LOGGER.log(Level.INFO, ObsidianFurnaceConfig.SPEED.get().toString());
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
         proxy.setup(event);}
 
