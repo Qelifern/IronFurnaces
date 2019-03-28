@@ -27,10 +27,6 @@ public class ClientProxy implements IProxy {
 		return Minecraft.getInstance().world;
 	}
 
-		/*ClientRegistry.bindTileEntitySpecialRenderer(TileEnergyCable.class, new TileRendererEnergyCable());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCapacitorBase.class, new TileRendererCapacitor());
-*/
-
 
 
 }

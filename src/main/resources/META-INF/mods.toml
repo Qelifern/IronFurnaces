@@ -17,8 +17,6 @@ modId="ironfurnaces" #mandatory
 version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Iron Furnaces" #mandatory
-# A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://github.com/Qelifern/IronFurnaces/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display

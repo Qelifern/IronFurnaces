@@ -1,4 +1,4 @@
 1.2 Release
 +Added Update Checker
 +Added Experience Withdrawal from Furnaces
-
+Currently does not work on servers.
