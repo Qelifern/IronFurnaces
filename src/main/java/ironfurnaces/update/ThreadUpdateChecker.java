@@ -51,7 +51,7 @@ public class ThreadUpdateChecker extends Thread {
         if (!UpdateChecker.checkFailed) {
             if (UpdateChecker.needsUpdateNotify) {
                 Main.LOGGER.info("There is an Update for Iron Furnaces available!");
-                Main.LOGGER.info("Current Version: " + Main.VERSION + ", newest Version: " + UpdateChecker.updateVersionString + "!");
+                Main.LOGGER.info("Current Version: " + Main.MC_VERSION + "-" + Main.VERSION_STRING + ", newest Version: " + UpdateChecker.updateVersionString + "!");
                 Main.LOGGER.info("View the Changelog at " + UpdateChecker.CHANGELOG_LINK);
                 Main.LOGGER.info("Download at " + UpdateChecker.DOWNLOAD_LINK);
             } else {

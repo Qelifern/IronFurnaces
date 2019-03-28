@@ -41,7 +41,7 @@ public class UpdateChecker {
             }
             else if(UpdateChecker.needsUpdateNotify){
                 player.sendMessage(ITextComponent.Serializer.fromJson(I18n.format(Main.MOD_ID+".update.speech")));
-                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.format(Main.MOD_ID+".update.version", Main.VERSION, UpdateChecker.updateVersionString)));
+                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.format(Main.MOD_ID+".update.version", Main.MC_VERSION + "-" + Main.VERSION_STRING, UpdateChecker.updateVersionString)));
                 player.sendMessage(ITextComponent.Serializer.fromJson(I18n.format(Main.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)));
             }
             if(threadFinished) MinecraftForge.EVENT_BUS.unregister(this);
