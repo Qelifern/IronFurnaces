@@ -8,6 +8,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileEntityIronFurnace extends TileEntityIronFurnaceBase {
     public TileEntityIronFurnace() {
@@ -29,6 +31,7 @@ public class TileEntityIronFurnace extends TileEntityIronFurnaceBase {
         return "container.iron_furnace";
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public GuiContainer IcreateGui(InventoryPlayer playerInventory, TileEntity te) {
         return new GuiIronFurnaceBase(playerInventory,  (TileEntityIronFurnace) te);

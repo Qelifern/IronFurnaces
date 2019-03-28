@@ -1,3 +1,5 @@
-1.2 Release
+1.2.1
++Now works on servers
+1.2 Beta
 +Added Update Checker
 +Added Experience Withdrawal from Furnaces
