@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 public class Main
 {
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "10";
+    public static final String VERSION = "12";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
