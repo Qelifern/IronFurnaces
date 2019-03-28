@@ -1,0 +1,4 @@
+1.1 Release
++Added Update Checker
++Added Experience Withdrawal from Furnaces
+
