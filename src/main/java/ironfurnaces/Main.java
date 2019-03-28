@@ -7,6 +7,7 @@ import ironfurnaces.proxy.ClientProxy;
 import ironfurnaces.proxy.GuiHandler;
 import ironfurnaces.proxy.IProxy;
 import ironfurnaces.proxy.ServerProxy;
+import ironfurnaces.update.UpdateChecker;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -32,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 public class Main
 {
     public static final String MOD_ID = "ironfurnaces";
+    public static final String VERSION = "10";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
@@ -55,6 +57,8 @@ public class Main
 
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
+
+        new UpdateChecker();
     }
 
     @SubscribeEvent

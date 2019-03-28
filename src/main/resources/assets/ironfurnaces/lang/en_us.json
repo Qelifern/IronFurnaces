@@ -1,19 +1,28 @@
 {
-    "": "/Items",
+    "": "Items",
 
-    "": "/TAB",
+    "": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
 
-    "": "/Blocks",
+    "": "Blocks",
     "block.ironfurnaces.iron_furnace": "Iron Furnace",
     "block.ironfurnaces.gold_furnace": "Golden Furnace",
     "block.ironfurnaces.diamond_furnace": "Diamond Furnace",
     "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
 
 
-    "": "/LOCALE",
+    "": "GUI",
     "container.iron_furnace": "Iron Furnace",
     "container.gold_furnace": "Golden Furnace",
     "container.diamond_furnace": "Diamond Furnace",
-    "container.obsidian_furnace": "Obsidian Furnace"
+    "container.obsidian_furnace": "Obsidian Furnace",
+
+
+    "_comment": "Updates",
+    "ironfurnaces.update.speech": "[{\"text\":\"There is an Update for \"},{\"text\":\"Iron Furnaces \",\"color\":\"dark_green\"},{\"text\":\"available!\",\"color\":\"none\"}]",
+    "ironfurnaces.update.version": "[{\"text\":\"Current Version: \"},{\"text\":\"%s\",\"color\":\"dark_red\"},{\"text\":\", newest Version: \",\"color\":\"none\"},{\"text\":\"%s\",\"color\":\"dark_green\"}]",
+    "ironfurnaces.update.buttons": "[{\"text\":\"[\"},{\"text\":\"Click for Changelog\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"%s\"}},{\"text\":\"] [\",\"color\":\"none\"},{\"text\":\"Click for Download\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"%s\"}},{\"text\":\"]\",\"color\":\"none\"}]",
+    "ironfurnaces.update.buttonOptions": "Click: Changelog, Shift-Click: Download! (In Browser)",
+    "ironfurnaces.update.failed": "[{\"text\":\"The Update Check for \"},{\"text\":\"Iron Furnaces \",\"color\":\"dark_green\"},{\"text\":\"failed! Check Logs for more Info!\",\"color\":\"none\"}]"
+
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import ironfurnaces.blocks.BlockIronFurnaceBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -162,7 +163,6 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
         if (flag1) {
             this.markDirty();
         }
-
     }
 
     private boolean canSmelt(@Nullable IRecipe recipe) {
@@ -196,6 +196,10 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
                 this.inventory.set(2, itemstack1.copy());
             } else if (itemstack2.getItem() == itemstack1.getItem()) {
                 itemstack2.grow(itemstack1.getCount());
+            }
+
+            if (!this.world.isRemote) {
+                this.canUseRecipe(this.world, (EntityPlayerMP)null, recipe);
             }
 
             if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.inventory.get(1).isEmpty() && this.inventory.get(1).getItem() == Items.BUCKET) {
