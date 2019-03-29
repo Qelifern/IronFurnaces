@@ -1,17 +1,21 @@
 {
-    "": "Items",
+    "_comment": "Items",
+    "item.ironfurnaces.upgrade_iron": "Stone to Iron Furnace Upgrade",
+    "item.ironfurnaces.upgrade_gold": "Iron to Gold Furnace Upgrade",
+    "item.ironfurnaces.upgrade_diamond": "Gold to Diamond Furnace Upgrade",
+    "item.ironfurnaces.upgrade_obsidian": "Diamond to Obsidian Furnace Upgrade",
 
-    "": "TAB",
+    "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
 
-    "": "Blocks",
+    "_comment": "Blocks",
     "block.ironfurnaces.iron_furnace": "Iron Furnace",
     "block.ironfurnaces.gold_furnace": "Golden Furnace",
     "block.ironfurnaces.diamond_furnace": "Diamond Furnace",
     "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
 
 
-    "": "GUI",
+    "_comment": "GUI",
     "container.iron_furnace": "Iron Furnace",
     "container.gold_furnace": "Golden Furnace",
     "container.diamond_furnace": "Diamond Furnace",

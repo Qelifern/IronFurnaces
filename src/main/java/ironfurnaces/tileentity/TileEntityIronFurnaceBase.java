@@ -59,10 +59,10 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
         compound.setInt("BurnTime", this.furnaceBurnTime);
         compound.setInt("CookTime", this.cookTime);
         compound.setInt("CookTimeTotal", this.totalCookTime);
-        compound.setShort("RecipesUsedSize", (short)this.recipeUseCounts.size());
+        compound.setShort("RecipesUsedSize", (short) this.recipeUseCounts.size());
         int i = 0;
 
-        for(Map.Entry<ResourceLocation, Integer> entry : this.recipeUseCounts.entrySet()) {
+        for (Map.Entry<ResourceLocation, Integer> entry : this.recipeUseCounts.entrySet()) {
             compound.setString("RecipeLocation" + i, entry.getKey().toString());
             compound.setInt("RecipeAmount" + i, entry.getValue());
             ++i;
@@ -77,8 +77,9 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
         this.cookTime = compound.getInt("CookTime");
         this.totalCookTime = compound.getInt("CookTimeTotal");
         this.currentItemBurnTime = getItemBurnTime(this.inventory.get(1));
+        this.timer = 0;
         int i = compound.getShort("RecipesUsedSize");
-        for(int j = 0; j < i; ++j) {
+        for (int j = 0; j < i; ++j) {
             ResourceLocation resourcelocation = new ResourceLocation(compound.getString("RecipeLocation" + j));
             int k = compound.getInt("RecipeAmount" + j);
             this.recipeUseCounts.put(resourcelocation, k);
@@ -137,7 +138,7 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
 
                 if (this.isBurning() && this.canSmelt(irecipe)) {
                     ++this.cookTime;
-                    if (this.cookTime == this.totalCookTime) {
+                    if (this.cookTime >= this.totalCookTime) {
                         this.cookTime = 0;
                         this.totalCookTime = this.getCookTime();
                         this.smeltItem(irecipe);
@@ -150,7 +151,7 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
         }
-        if (timer % 60 == 0) {
+        if (timer % 20 == 0) {
             if (this.isBurning() != world.getBlockState(pos).get(BlockIronFurnaceBase.LIT)) {
                 IBlockState oldState = world.getBlockState(pos);
                 world.setBlockState(pos, world.getBlockState(pos).with(BlockIronFurnaceBase.LIT, this.isBurning()), 3);
@@ -199,7 +200,7 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
             }
 
             if (!this.world.isRemote) {
-                this.canUseRecipe(this.world, (EntityPlayerMP)null, recipe);
+                this.canUseRecipe(this.world, (EntityPlayerMP) null, recipe);
             }
 
             if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.inventory.get(1).isEmpty() && this.inventory.get(1).getItem() == Items.BUCKET) {
@@ -298,7 +299,7 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
         if (!this.world.getGameRules().getBoolean("doLimitedCrafting")) {
             List<IRecipe> list = Lists.newArrayList();
 
-            for(ResourceLocation resourcelocation : this.recipeUseCounts.keySet()) {
+            for (ResourceLocation resourcelocation : this.recipeUseCounts.keySet()) {
                 IRecipe irecipe = player.world.getRecipeManager().getRecipe(resourcelocation);
                 if (irecipe != null) {
                     list.add(irecipe);
@@ -313,7 +314,7 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
 
     @Override
     public void fillStackedContents(RecipeItemHelper helper) {
-        for(ItemStack itemstack : this.inventory) {
+        for (ItemStack itemstack : this.inventory) {
             helper.accountStack(itemstack);
         }
 
@@ -327,6 +328,15 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
             this.recipeUseCounts.put(recipe.getId(), 1);
         }
 
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+        IBlockState oldState = world.getBlockState(pos);
+        world.setBlockState(pos, world.getBlockState(pos).with(BlockIronFurnaceBase.LIT, this.isBurning()), 3);
+        world.notifyBlockUpdate(pos, oldState, world.getBlockState(pos), 3);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+        this.markDirty();
     }
 
     @Nullable

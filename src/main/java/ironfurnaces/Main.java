@@ -1,6 +1,7 @@
 package ironfurnaces;
 
 import ironfurnaces.config.Config;
+import ironfurnaces.config.UpdateCheckerConfig;
 import ironfurnaces.init.ModBlocks;
 import ironfurnaces.init.ModItems;
 import ironfurnaces.proxy.ClientProxy;
@@ -33,7 +34,7 @@ import org.apache.logging.log4j.Logger;
 public class Main
 {
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "121";
+    public static final String VERSION = "130";
     public static final String MC_VERSION = "1.13.2";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
@@ -61,7 +62,11 @@ public class Main
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
 
-        new UpdateChecker();
+        if (UpdateCheckerConfig.UPDATE.get()) {
+            new UpdateChecker();
+        } else {
+            Main.LOGGER.warn("You have disabled Iron Furnaces Update Checker, to re-enable change the value in .minecraft->config->ironfurnaces-client.toml to 'true'.");
+        }
 
     }
 

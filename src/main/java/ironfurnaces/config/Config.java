@@ -22,6 +22,7 @@ public class Config {
     public static final ForgeConfigSpec CLIENT_CONFIG;
 
     static {
+        UpdateCheckerConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         IronFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         GoldFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         DiamondFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);

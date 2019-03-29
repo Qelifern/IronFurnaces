@@ -62,15 +62,16 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
         if (world.isRemote) {
             return true;
         } else {
-            TileEntityIronFurnaceBase te = (TileEntityIronFurnaceBase) world.getTileEntity(pos);
-            NetworkHooks.openGui((EntityPlayerMP) player, (IInteractionObject) te, buf -> {
-                buf.writeInt(te.getPos().getX());
-                buf.writeInt(te.getPos().getY());
-                buf.writeInt(te.getPos().getZ());
+            TileEntityIronFurnaceBase tile = (TileEntityIronFurnaceBase) world.getTileEntity(pos);
+            NetworkHooks.openGui((EntityPlayerMP) player, (IInteractionObject) tile, buf -> {
+                buf.writeInt(tile.getPos().getX());
+                buf.writeInt(tile.getPos().getY());
+                buf.writeInt(tile.getPos().getZ());
             });
             player.addStat(StatList.INTERACT_WITH_FURNACE);
 
             return true;
+
         }
     }
 
@@ -102,7 +103,7 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
         if (stack.hasDisplayName()) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
             if (tileentity instanceof TileEntityIronFurnaceBase) {
-                ((TileEntityIronFurnaceBase)tileentity).setCustomName(stack.getDisplayName());
+                ((TileEntityIronFurnaceBase) tileentity).setCustomName(stack.getDisplayName());
             }
         }
 
@@ -112,7 +113,7 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
         if (state.getBlock() != newState.getBlock()) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
             if (tileentity instanceof TileEntityIronFurnaceBase) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityIronFurnaceBase)tileentity);
+                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityIronFurnaceBase) tileentity);
                 worldIn.updateComparatorOutputLevel(pos, this);
             }
 
@@ -129,7 +130,7 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
     }
 
     /**
-     * @deprecated call via {@link IBlockState#getComparatorInputOverride(World,BlockPos)} whenever possible.
+     * @deprecated call via {@link IBlockState#getComparatorInputOverride(World, BlockPos)} whenever possible.
      * Implementing/overriding is fine.
      */
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
@@ -139,9 +140,9 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
     @OnlyIn(Dist.CLIENT)
     public void animateTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         if (stateIn.get(BlockIronFurnaceBase.LIT)) {
-            double d0 = (double)pos.getX() + 0.5D;
-            double d1 = (double)pos.getY();
-            double d2 = (double)pos.getZ() + 0.5D;
+            double d0 = (double) pos.getX() + 0.5D;
+            double d1 = (double) pos.getY();
+            double d2 = (double) pos.getZ() + 0.5D;
             if (rand.nextDouble() < 0.1D) {
                 worldIn.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
             }
@@ -150,9 +151,9 @@ public abstract class BlockIronFurnaceBase extends Block implements IBlockIronFu
             EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
             double d3 = 0.52D;
             double d4 = rand.nextDouble() * 0.6D - 0.3D;
-            double d5 = enumfacing$axis == EnumFacing.Axis.X ? (double)enumfacing.getXOffset() * 0.52D : d4;
+            double d5 = enumfacing$axis == EnumFacing.Axis.X ? (double) enumfacing.getXOffset() * 0.52D : d4;
             double d6 = rand.nextDouble() * 6.0D / 16.0D;
-            double d7 = enumfacing$axis == EnumFacing.Axis.Z ? (double)enumfacing.getZOffset() * 0.52D : d4;
+            double d7 = enumfacing$axis == EnumFacing.Axis.Z ? (double) enumfacing.getZOffset() * 0.52D : d4;
             worldIn.spawnParticle(Particles.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
             worldIn.spawnParticle(Particles.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
         }
