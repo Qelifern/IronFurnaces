@@ -10,13 +10,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiIronFurnaceBase extends GuiContainer {
+public class GuiIronFurnace extends GuiContainer {
 
     private static final ResourceLocation background = new ResourceLocation("textures/gui/container/furnace.png");
     private TileEntityIronFurnaceBase te;
     private InventoryPlayer playerInv;
 
-    public GuiIronFurnaceBase(InventoryPlayer invPlayer, TileEntityIronFurnaceBase te) {
+    public GuiIronFurnace(InventoryPlayer invPlayer, TileEntityIronFurnaceBase te) {
         super(new ContainerIronFurnace(invPlayer, te));
 
         xSize = 176;

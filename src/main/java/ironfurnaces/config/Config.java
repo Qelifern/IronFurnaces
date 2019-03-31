@@ -26,7 +26,10 @@ public class Config {
         IronFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         GoldFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         DiamondFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
+        EmeraldFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
         ObsidianFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
+        CopperFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
+        SilverFurnaceConfig.init(SERVER_BUILDER, CLIENT_BUILDER);
 
         SERVER_CONFIG = SERVER_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();

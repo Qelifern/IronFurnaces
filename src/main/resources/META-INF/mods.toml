@@ -22,7 +22,7 @@ displayURL="https://github.com/Qelifern/IronFurnaces/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="ironfurnaces.png" #optional
 # A text field displayed in the mod UI
-credits="Java, Minecraft, MinecraftForge" #optional
+credits="Java, JetBrains, Minecraft, MinecraftForge, LexManos, mezz, Ellpeck, KingLemming" #optional
 # A text field displayed in the mod UI
 authors="pizzaatime" #optional
 # The description text for the mod (multi line!) (#mandatory)

@@ -10,7 +10,7 @@ public class GoldFurnaceConfig {
         SERVER_BUILDER.comment("Golden Furnace");
 
         SPEED = SERVER_BUILDER
-                .comment("Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.")
+                .comment("Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 120")
                 .defineInRange("gold_furnace.speed", 120, 2, 72000);
 
     }

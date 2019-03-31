@@ -151,13 +151,15 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
                 this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
             }
         }
-        if (timer % 20 == 0) {
-            if (this.isBurning() != world.getBlockState(pos).get(BlockIronFurnaceBase.LIT)) {
-                IBlockState oldState = world.getBlockState(pos);
-                world.setBlockState(pos, world.getBlockState(pos).with(BlockIronFurnaceBase.LIT, this.isBurning()), 3);
-                world.notifyBlockUpdate(pos, oldState, world.getBlockState(pos), 3);
-                world.markBlockRangeForRenderUpdate(pos, pos);
-                flag1 = true;
+        if (timer % 30 == 0) {
+            if (world.getBlockState(pos).getBlock() instanceof BlockIronFurnaceBase) {
+                if (this.isBurning() != world.getBlockState(pos).get(BlockIronFurnaceBase.LIT)) {
+                    IBlockState oldState = world.getBlockState(pos);
+                    world.setBlockState(pos, world.getBlockState(pos).with(BlockIronFurnaceBase.LIT, this.isBurning()), 3);
+                    world.notifyBlockUpdate(pos, oldState, world.getBlockState(pos), 3);
+                    world.markBlockRangeForRenderUpdate(pos, pos);
+                    flag1 = true;
+                }
             }
         }
 

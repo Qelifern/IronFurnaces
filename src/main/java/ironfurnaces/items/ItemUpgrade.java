@@ -102,6 +102,9 @@ public class ItemUpgrade extends Item {
             return ModBlocks.diamond_furnace;
         } else
         if (block == ModBlocks.diamond_furnace && available[3] == 1) {
+            return ModBlocks.emerald_furnace;
+        } else
+        if (block == ModBlocks.emerald_furnace && available[4] == 1) {
             return ModBlocks.obsidian_furnace;
         }
         return null;

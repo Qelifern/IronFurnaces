@@ -1,6 +1,6 @@
 package ironfurnaces.tileentity;
 
-import ironfurnaces.config.DiamondFurnaceConfig;
+import ironfurnaces.config.SilverFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
 import ironfurnaces.gui.GuiIronFurnace;
 import ironfurnaces.init.ModBlocks;
@@ -11,30 +11,30 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileEntityDiamondFurnace extends TileEntityIronFurnaceBase {
-    public TileEntityDiamondFurnace() {
-        super(ModBlocks.DIAMOND_FURNACE);
+public class TileEntitySilverFurnace extends TileEntityIronFurnaceBase {
+    public TileEntitySilverFurnace() {
+        super(ModBlocks.IRON_FURNACE);
     }
 
     @Override
     protected int getCookTime() {
-        return DiamondFurnaceConfig.SPEED.get();
+        return SilverFurnaceConfig.SPEED.get();
     }
 
     @Override
     public String IgetGuiID() {
-        return "ironfurnaces:diamond_furnace";
+        return "ironfurnaces:silver_furnace";
     }
 
     @Override
     public String IgetName() {
-        return "container.diamond_furnace";
+        return "container.silver_furnace";
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public GuiContainer IcreateGui(InventoryPlayer playerInventory, TileEntity te) {
-        return new GuiIronFurnace(playerInventory,  (TileEntityDiamondFurnace) te);
+        return new GuiIronFurnace(playerInventory,  (TileEntitySilverFurnace) te);
     }
 
     @Override

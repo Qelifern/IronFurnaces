@@ -34,7 +34,7 @@ import org.apache.logging.log4j.Logger;
 public class Main
 {
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "130";
+    public static final String VERSION = "140";
     public static final String MC_VERSION = "1.13.2";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
@@ -45,6 +45,7 @@ public class Main
             return new ItemStack(ModBlocks.iron_furnace);
         }
     };
+
 
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();

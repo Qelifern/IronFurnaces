@@ -10,8 +10,8 @@ public class ObsidianFurnaceConfig {
         SERVER_BUILDER.comment("Obsidian Furnace");
 
         SPEED = SERVER_BUILDER
-                .comment("Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.")
-                .defineInRange("obsidian_furnace.speed", 40, 2, 72000);
+                .comment("Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
+                .defineInRange("obsidian_furnace.speed", 20, 2, 72000);
 
     }
 

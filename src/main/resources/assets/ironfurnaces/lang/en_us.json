@@ -3,7 +3,8 @@
     "item.ironfurnaces.upgrade_iron": "Stone to Iron Furnace Upgrade",
     "item.ironfurnaces.upgrade_gold": "Iron to Gold Furnace Upgrade",
     "item.ironfurnaces.upgrade_diamond": "Gold to Diamond Furnace Upgrade",
-    "item.ironfurnaces.upgrade_obsidian": "Diamond to Obsidian Furnace Upgrade",
+    "item.ironfurnaces.upgrade_emerald": "Diamond to Emerald Furnace Upgrade",
+    "item.ironfurnaces.upgrade_obsidian": "Emerald to Obsidian Furnace Upgrade",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
@@ -12,15 +13,21 @@
     "block.ironfurnaces.iron_furnace": "Iron Furnace",
     "block.ironfurnaces.gold_furnace": "Golden Furnace",
     "block.ironfurnaces.diamond_furnace": "Diamond Furnace",
+    "block.ironfurnaces.emerald_furnace": "Emerald Furnace",
     "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
+    "block.ironfurnaces.copper_furnace": "Copper Furnace",
+    "block.ironfurnaces.silver_furnace": "Silver Furnace",
+
 
 
     "_comment": "GUI",
     "container.iron_furnace": "Iron Furnace",
     "container.gold_furnace": "Golden Furnace",
     "container.diamond_furnace": "Diamond Furnace",
+    "container.emerald_furnace": "Emerald Furnace",
     "container.obsidian_furnace": "Obsidian Furnace",
-
+    "container.copper_furnace": "Copper Furnace",
+    "container.silver_furnace": "Silver Furnace",
 
     "_comment": "Updates",
     "ironfurnaces.update.speech": "[{\"text\":\"There is an Update for \"},{\"text\":\"Iron Furnaces \",\"color\":\"dark_green\"},{\"text\":\"available!\",\"color\":\"none\"}]",

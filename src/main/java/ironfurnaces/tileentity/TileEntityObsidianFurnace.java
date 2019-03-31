@@ -2,7 +2,7 @@ package ironfurnaces.tileentity;
 
 import ironfurnaces.config.ObsidianFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
-import ironfurnaces.gui.GuiIronFurnaceBase;
+import ironfurnaces.gui.GuiIronFurnace;
 import ironfurnaces.init.ModBlocks;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -34,7 +34,7 @@ public class TileEntityObsidianFurnace extends TileEntityIronFurnaceBase {
     @OnlyIn(Dist.CLIENT)
     @Override
     public GuiContainer IcreateGui(InventoryPlayer playerInventory, TileEntity te) {
-        return new GuiIronFurnaceBase(playerInventory,  (TileEntityObsidianFurnace) te);
+        return new GuiIronFurnace(playerInventory,  (TileEntityObsidianFurnace) te);
     }
 
     @Override
