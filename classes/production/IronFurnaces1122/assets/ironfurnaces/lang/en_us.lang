@@ -1,0 +1,13 @@
+tile.iron_furnace.name= Iron Furnace
+tile.gold_furnace.name= Golden Furnace
+tile.diamond_furnace.name= Diamond Furnace
+tile.emerald_furnace.name= Emerald Furnace
+tile.obsidian_furnace.name= Obsidian Furnace
+tile.copper_furnace.name= Copper Furnace
+tile.silver_furnace.name= Silver Furnace
+item.upgrade_iron.name= Stone To Iron Furnace Upgrade
+item.upgrade_gold.name= Iron To Gold Furnace Upgrade
+item.upgrade_diamond.name= Gold To Diamond Furnace Upgrade
+item.upgrade_emerald.name= Diamond To Emerald Furnace Upgrade
+item.upgrade_obsidian.name= Emerald To Obsidian Furnace Upgrade
+itemGroup.tab_iron_furnaces= Iron Furnaces
