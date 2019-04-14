@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
+    "parent": "item/generated",
     "textures": {
-        "layer0": "ironfurnaces:items/upgrade_emerald"
+        "layer0": "ironfurnaces:item/upgrade_emerald"
     }
 }

@@ -1,30 +1,12 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "minecraft:cube",
-    "textures": {
-      "particle": "ironfurnaces:blocks/silver_furnace_side",
-      "down": "#particle",
-      "up": "#particle",
-      "south": "#particle",
-      "north": "ironfurnaces:blocks/silver_furnace_front",
-      "east": "#particle",
-      "west": "#particle"
-    },
-    "transform": "forge:default-block"
-  },
-  "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "facing": {
-      "north": { "y" : 0 },
-      "south": { "y" : 180 },
-      "west": { "y" : 270 },
-      "east": { "y" : 90 }
-    },
-    "lit": {
-      "true": { "textures": {"north": "ironfurnaces:blocks/silver_furnace_front_on"} },
-      "false": {}
+    "variants": {
+        "facing=north,lit=false": { "model": "ironfurnaces:block/silver_furnace" },
+        "facing=south,lit=false": { "model": "ironfurnaces:block/silver_furnace", "y": 180 },
+        "facing=west,lit=false":  { "model": "ironfurnaces:block/silver_furnace", "y": 270 },
+        "facing=east,lit=false":  { "model": "ironfurnaces:block/silver_furnace", "y": 90 },
+        "facing=north,lit=true": { "model": "ironfurnaces:block/silver_furnace_on" },
+        "facing=south,lit=true": { "model": "ironfurnaces:block/silver_furnace_on", "y": 180 },
+        "facing=west,lit=true":  { "model": "ironfurnaces:block/silver_furnace_on", "y": 270 },
+        "facing=east,lit=true":  { "model": "ironfurnaces:block/silver_furnace_on", "y": 90 }
     }
-  }
 }

@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "#X#",
+    "#Y#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "X": {
+       "item": "ironfurnaces:gold_furnace"
+    },
+    "Y": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:diamond_furnace"
+  }
+}

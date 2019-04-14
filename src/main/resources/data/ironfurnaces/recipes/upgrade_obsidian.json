@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "#Y#",
+    "YXY",
+    "#Y#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:obsidian"
+    },
+    "X": {
+       "item": "minecraft:emerald"
+    },
+    "Y": {
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:upgrade_obsidian"
+  }
+}

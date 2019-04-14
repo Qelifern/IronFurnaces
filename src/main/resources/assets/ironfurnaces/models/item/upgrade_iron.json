@@ -1,6 +1,6 @@
 {
-    "parent": "item/handheld",
+    "parent": "item/generated",
     "textures": {
-        "layer0": "ironfurnaces:items/upgrade_iron"
+        "layer0": "ironfurnaces:item/upgrade_iron"
     }
 }

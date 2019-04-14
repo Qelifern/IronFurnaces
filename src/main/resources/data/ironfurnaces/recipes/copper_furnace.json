@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "X": {
+       "item": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:copper_furnace"
+  }
+}
