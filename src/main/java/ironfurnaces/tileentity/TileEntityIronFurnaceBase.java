@@ -2,7 +2,6 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import ironfurnaces.Main;
 import ironfurnaces.blocks.BlockIronFurnaceBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -109,7 +108,6 @@ public abstract class TileEntityIronFurnaceBase extends TileEntityInventory impl
 
     @Override
     public void tick() {
-        Main.LOGGER.fatal("CookTime: " + this.totalCookTime + " : " + this.getCookTime());
         timer++;
         boolean flag1 = false;
         if (this.isBurning()) {

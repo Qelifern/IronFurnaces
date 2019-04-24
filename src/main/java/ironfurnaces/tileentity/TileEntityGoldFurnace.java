@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import ironfurnaces.config.Config;
 import ironfurnaces.config.GoldFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
 import ironfurnaces.gui.GuiIronFurnace;
@@ -18,7 +19,7 @@ public class TileEntityGoldFurnace extends TileEntityIronFurnaceBase {
 
     @Override
     protected int getCookTime() {
-        return GoldFurnaceConfig.SPEED.get();
+        return Config.SERVER.goldFurnaceSpeed.get();
     }
 
     @Override

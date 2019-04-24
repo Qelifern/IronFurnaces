@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import ironfurnaces.config.Config;
 import ironfurnaces.config.ObsidianFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
 import ironfurnaces.gui.GuiIronFurnace;
@@ -18,7 +19,7 @@ public class TileEntityObsidianFurnace extends TileEntityIronFurnaceBase {
 
     @Override
     protected int getCookTime() {
-        return ObsidianFurnaceConfig.SPEED.get();
+        return Config.SERVER.obsidianFurnaceSpeed.get();
     }
 
     @Override

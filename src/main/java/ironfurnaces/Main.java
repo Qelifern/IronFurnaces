@@ -1,7 +1,6 @@
 package ironfurnaces;
 
 import ironfurnaces.config.Config;
-import ironfurnaces.config.UpdateCheckerConfig;
 import ironfurnaces.init.ModBlocks;
 import ironfurnaces.init.ModItems;
 import ironfurnaces.proxy.ClientProxy;
@@ -52,21 +51,20 @@ public class Main
 
     public Main() {
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
-
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.clientSpec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
+        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
 
-        if (UpdateCheckerConfig.UPDATE.get()) {
+        if (Config.CLIENT.checkUpdates.get()) {
             new UpdateChecker();
         } else {
-            Main.LOGGER.warn("You have disabled Iron Furnaces's Update Checker, to re-enable change the value in .minecraft->config->ironfurnaces-client.toml to 'true'.");
+            Main.LOGGER.warn("You have disabled Iron Furnaces's Update Checker, to re-enable change the value of Update Checker in .minecraft->config->ironfurnaces-client.toml to 'true'.");
         }
 
     }
@@ -74,6 +72,24 @@ public class Main
     @SubscribeEvent
     public static void registerTiles(RegistryEvent.Register<TileEntityType<?>> event) {
         ModBlocks.registerTiles(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public static void config(ConfigChangedEvent.OnConfigChangedEvent event) {
+        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+    }
+
+    @SubscribeEvent
+    public static void config(ModConfig.ConfigReloading event) {
+        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+    }
+
+    @SubscribeEvent
+    public static void config(ModConfig.ModConfigEvent event) {
+        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
     }
 
     @SubscribeEvent
@@ -86,18 +102,9 @@ public class Main
         ModItems.register(event.getRegistry());
     }
 
-    @SubscribeEvent
-    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
-    {
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
-    }
-
     private void setup(final FMLCommonSetupEvent event)
     {
         LOGGER.log(Level.INFO, "HELLO WORLD");
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.SERVER_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-server.toml"));
         proxy.setup(event);
     }
 

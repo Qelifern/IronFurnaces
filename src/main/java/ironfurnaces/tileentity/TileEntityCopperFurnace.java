@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import ironfurnaces.config.Config;
 import ironfurnaces.config.CopperFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
 import ironfurnaces.gui.GuiIronFurnace;
@@ -18,7 +19,7 @@ public class TileEntityCopperFurnace extends TileEntityIronFurnaceBase {
 
     @Override
     protected int getCookTime() {
-        return CopperFurnaceConfig.SPEED.get() != 180 ? CopperFurnaceConfig.SPEED.get() : 180;
+        return Config.SERVER.copperFurnaceSpeed.get();
     }
 
     @Override
