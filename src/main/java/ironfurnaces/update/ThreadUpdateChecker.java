@@ -6,6 +6,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
 
+/**
+ * Credits: Ellpeck, creator of the Actually Additions update checker, which I modified.
+ * Link to the Actually Additions repo: https://github.com/Ellpeck/ActuallyAdditions/
+ * Link to the Actually Additions curse page: https://minecraft.curseforge.com/projects/actually-additions
+ */
 public class ThreadUpdateChecker extends Thread {
 
     public ThreadUpdateChecker() {

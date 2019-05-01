@@ -12,6 +12,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+/**
+ * Credits: Ellpeck, creator of the Actually Additions update checker, which I modified.
+ * Link to the Actually Additions repo: https://github.com/Ellpeck/ActuallyAdditions/
+ * Link to the Actually Additions curse page: https://minecraft.curseforge.com/projects/actually-additions
+ */
 @Mod.EventBusSubscriber
 public class UpdateChecker {
 
