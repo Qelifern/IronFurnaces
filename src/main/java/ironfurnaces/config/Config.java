@@ -54,6 +54,9 @@ public class Config {
         public final ForgeConfigSpec.IntValue obsidianFurnaceSpeed;
         public final ForgeConfigSpec.IntValue copperFurnaceSpeed;
         public final ForgeConfigSpec.IntValue silverFurnaceSpeed;
+        public final ForgeConfigSpec.BooleanValue enableJeiPlugin;
+        public final ForgeConfigSpec.BooleanValue enableJeiCatalysts;
+        public final ForgeConfigSpec.BooleanValue enableJeiClickArea;
 
         Server(ForgeConfigSpec.Builder builder) {
             builder.comment("Server configuration settings")
@@ -86,6 +89,15 @@ public class Config {
             silverFurnaceSpeed = builder
                     .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 140")
                     .defineInRange("silver_furnace.speed", 140, 2, 72000);
+
+            enableJeiPlugin = builder
+                    .comment(" Enable or disable the JeiPlugin of Iron Furnaces.").define("jei.enable_jei", true);
+
+            enableJeiCatalysts = builder
+                    .comment(" Enable or disable the Catalysts in Jei for Iron Furnaces.").define("jei.enable_jei_catalysts", true);
+
+            enableJeiClickArea = builder
+                    .comment(" Enable or disable the Click Area inside the GUI in all of Iron Furnaces' furnaces.").define("jei.enable_jei_click_area", true);
 
             builder.pop();
         }
