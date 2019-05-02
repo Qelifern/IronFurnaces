@@ -66,20 +66,32 @@ minecraft {
     }
 }
 
-dependencies {
-    minecraft([
-            group  : "${project.forgegroup}",
-            name   : "forge",
-            version: "${project.mcversion}-${project.forgeversion}"
-    ])
-	
+repositories {
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
+}
 
-    /*
-	// compile against the JEI API but do not include it at runtime
-	compileOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}:api")
-	// at runtime, use the full JEI jar
-	runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
-     */
+dependencies {
+    minecraft "net.minecraftforge:forge:${project.mcversion}-${project.forgeversion}"
+}
+
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        url = "http://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -97,3 +109,7 @@ jar {
     }
 }
 
+dependencies {
+    compileOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
+}

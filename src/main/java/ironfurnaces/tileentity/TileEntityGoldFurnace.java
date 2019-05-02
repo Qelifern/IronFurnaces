@@ -1,7 +1,6 @@
 package ironfurnaces.tileentity;
 
 import ironfurnaces.config.Config;
-import ironfurnaces.config.GoldFurnaceConfig;
 import ironfurnaces.container.ContainerIronFurnace;
 import ironfurnaces.gui.GuiIronFurnace;
 import ironfurnaces.init.ModBlocks;
