@@ -1,47 +1,59 @@
 package ironfurnaces.tileentity;
 
-import ironfurnaces.proxy.IGuiTile;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
+import net.minecraft.util.INameable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IInteractionObject;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nullable;
 
-public abstract class TileEntityInventory extends TileEntity implements ISidedInventory, IInteractionObject, IGuiTile, IInventoryTile {
+public abstract class TileEntityInventory extends TileEntity implements ITileInventory, ISidedInventory, INamedContainerProvider, INameable {
 
-    protected NonNullList<ItemStack> inventory;
+    public NonNullList<ItemStack> inventory;
     protected ITextComponent name;
 
     public TileEntityInventory(TileEntityType<?> tileEntityTypeIn, int sizeInventory) {
         super(tileEntityTypeIn);
         inventory = NonNullList.withSize(sizeInventory, ItemStack.EMPTY);
     }
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return this.IisItemValidForSlot(index, stack);
+    }
+
+    public void setCustomName(ITextComponent name) {
+        this.name = name;
+    }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    public ITextComponent getName() {
+        return (this.name != null ? this.name : new TranslationTextComponent(IgetName()));
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
         return this.IgetSlotsForFace(side);
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable EnumFacing direction) {
-        return this.isItemValidForSlot(index, itemStackIn);
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+        return IcanExtractItem(index, stack, direction);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return IcanExtractItem(index, stack, direction);
+    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+        return this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
@@ -90,7 +102,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public void read(NBTTagCompound compound) {
+    public void read(CompoundNBT compound) {
         super.read(compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
@@ -100,17 +112,17 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public NBTTagCompound write(NBTTagCompound compound) {
+    public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         ItemStackHelper.saveAllItems(compound, this.inventory);
         if (this.name != null) {
-            compound.setString("CustomName", ITextComponent.Serializer.toJson(this.name));
+            compound.putString("CustomName", ITextComponent.Serializer.toJson(this.name));
         }
         return compound;
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(PlayerEntity player) {
         if (this.world.getTileEntity(this.pos) != this) {
             return false;
         } else {
@@ -119,39 +131,14 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public void openInventory(EntityPlayer player) { }
+    public void openInventory(PlayerEntity player) { }
 
     @Override
-    public void closeInventory(EntityPlayer player) { }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return this.IisItemValidForSlot(index, stack);
-    }
-
-    @Override
-    public int getField(int id) {
-        return this.IgetField(id);
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        this.IsetField(id, value);
-    }
-
-    @Override
-    public int getFieldCount() {
-        return this.IgetFieldCount();
-    }
+    public void closeInventory(PlayerEntity player) { }
 
     @Override
     public void clear() {
         this.inventory.clear();
-    }
-
-    @Override
-    public ITextComponent getName() {
-        return (this.name != null ? this.name : new TextComponentTranslation(IgetName()));
     }
 
     @Override
@@ -166,18 +153,13 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public GuiContainer createGui(EntityPlayer player) {
-        return this.IcreateGui(player.inventory, this);
+    public ITextComponent getDisplayName() {
+        return this.getName();
     }
 
+    @Nullable
     @Override
-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        return this.IcreateContainer(playerInventory, this);
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return IcreateMenu(i, playerInventory, playerEntity);
     }
-
-    @Override
-    public String getGuiID() {
-        return this.IgetGuiID();
-    }
-
 }

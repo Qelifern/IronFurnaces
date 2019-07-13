@@ -1,26 +1,20 @@
 package ironfurnaces.container;
 
-import ironfurnaces.tileentity.TileEntityIronFurnaceBase;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IRecipeHolder;
-import net.minecraft.inventory.Slot;
+import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-
-import java.util.Map;
 
 public class SlotIronFurnace extends Slot {
 
-    private final EntityPlayer player;
+    private final PlayerEntity player;
     private int removeCount;
+    private BlockIronFurnaceTileBase te;
 
-    public SlotIronFurnace(EntityPlayer player, IInventory inventoryIn, int slotIndex, int xPosition, int yPosition) {
-        super(inventoryIn, slotIndex, xPosition, yPosition);
+    public SlotIronFurnace(PlayerEntity player, BlockIronFurnaceTileBase te, int slotIndex, int xPosition, int yPosition) {
+        super(te, slotIndex, xPosition, yPosition);
         this.player = player;
+        this.te = te;
     }
 
     /**
@@ -41,7 +35,7 @@ public class SlotIronFurnace extends Slot {
         return super.decrStackSize(amount);
     }
 
-    public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+    public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
         this.onCrafting(stack);
         super.onTake(thePlayer, stack);
         return stack;
@@ -61,36 +55,8 @@ public class SlotIronFurnace extends Slot {
      */
     protected void onCrafting(ItemStack stack) {
         stack.onCrafting(this.player.world, this.player, this.removeCount);
-        if (!this.player.world.isRemote) {
-            for(Map.Entry<ResourceLocation, Integer> entry : ((TileEntityIronFurnaceBase)this.inventory).getRecipeUseCounts().entrySet()) {
-                FurnaceRecipe furnacerecipe = (FurnaceRecipe)this.player.world.getRecipeManager().getRecipe(entry.getKey());
-                float f;
-                if (furnacerecipe != null) {
-                    f = furnacerecipe.getExperience();
-                } else {
-                    f = 0.0F;
-                }
-
-                int i = entry.getValue();
-                if (f == 0.0F) {
-                    i = 0;
-                } else if (f < 1.0F) {
-                    int j = MathHelper.floor((float)i * f);
-                    if (j < MathHelper.ceil((float)i * f) && Math.random() < (double)((float)i * f - (float)j)) {
-                        ++j;
-                    }
-
-                    i = j;
-                }
-
-                while(i > 0) {
-                    int k = EntityXPOrb.getXPSplit(i);
-                    i -= k;
-                    this.player.world.spawnEntity(new EntityXPOrb(this.player.world, this.player.posX, this.player.posY + 0.5D, this.player.posZ + 0.5D, k));
-                }
-            }
-
-            ((IRecipeHolder)this.inventory).onCrafting(this.player);
+        if (!this.player.world.isRemote && this.inventory instanceof BlockIronFurnaceTileBase) {
+            ((BlockIronFurnaceTileBase)this.inventory).func_213995_d(this.player);
         }
 
         this.removeCount = 0;

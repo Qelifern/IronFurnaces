@@ -4,11 +4,11 @@ import ironfurnaces.config.Config;
 import ironfurnaces.init.ModBlocks;
 import ironfurnaces.init.ModItems;
 import ironfurnaces.proxy.ClientProxy;
-import ironfurnaces.proxy.GuiHandler;
 import ironfurnaces.proxy.IProxy;
 import ironfurnaces.proxy.ServerProxy;
 import ironfurnaces.update.UpdateChecker;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,9 +32,10 @@ import org.apache.logging.log4j.Logger;
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
 public class Main
 {
+
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "142";
-    public static final String MC_VERSION = "1.13.2";
+    public static final String VERSION = "150";
+    public static final String MC_VERSION = "1.14.3";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
@@ -56,7 +56,6 @@ public class Main
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 
         Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
@@ -64,7 +63,7 @@ public class Main
         if (Config.CLIENT.checkUpdates.get()) {
             new UpdateChecker();
         } else {
-            Main.LOGGER.warn("You have disabled Iron Furnaces's Update Checker, to re-enable change the value of Update Checker in .minecraft->config->ironfurnaces-client.toml to 'true'.");
+            Main.LOGGER.warn("You have disabled Iron Furnaces's Update Checker, to re-enable: change the value of Update Checker in .minecraft->config->ironfurnaces-client.toml to 'true'.");
         }
 
     }
@@ -93,13 +92,18 @@ public class Main
     }
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         ModBlocks.register(event.getRegistry());
     }
 
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
+    public static void registerItems(final RegistryEvent.Register<Item> event) {
         ModItems.register(event.getRegistry());
+    }
+
+    @SubscribeEvent
+    public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
+        ModBlocks.registerContainers(event.getRegistry());
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -107,5 +111,4 @@ public class Main
         LOGGER.log(Level.INFO, "HELLO WORLD");
         proxy.setup(event);
     }
-
 }

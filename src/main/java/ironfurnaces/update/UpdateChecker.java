@@ -3,7 +3,7 @@ package ironfurnaces.update;
 import ironfurnaces.Main;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -40,7 +40,7 @@ public class UpdateChecker {
     @SubscribeEvent(receiveCanceled = true)
     public void onTick(TickEvent.ClientTickEvent event){
         if(Minecraft.getInstance().player != null){
-            EntityPlayer player = Minecraft.getInstance().player;
+            PlayerEntity player = Minecraft.getInstance().player;
             if(UpdateChecker.checkFailed){
                 player.sendMessage(ITextComponent.Serializer.fromJson(I18n.format(Main.MOD_ID+".update.failed")));
             }

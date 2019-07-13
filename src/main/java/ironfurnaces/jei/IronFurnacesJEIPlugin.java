@@ -3,7 +3,7 @@ package ironfurnaces.jei;
 
 import ironfurnaces.Main;
 import ironfurnaces.config.Config;
-import ironfurnaces.gui.GuiIronFurnace;
+import ironfurnaces.gui.*;
 import ironfurnaces.init.ModBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 @JeiPlugin
 public class IronFurnacesJEIPlugin implements IModPlugin {
+
 	@Override
 	public ResourceLocation getPluginUid() {
 		return new ResourceLocation(Main.MOD_ID, "plugin_ironfurnaces");
@@ -44,7 +45,14 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
 		if (Config.SERVER.enableJeiPlugin.get() && Config.SERVER.enableJeiClickArea.get()) {
-			registry.addRecipeClickArea(GuiIronFurnace.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockIronFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockGoldFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockDiamondFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockEmeraldFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockObsidianFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockCopperFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeClickArea(BlockSilverFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE);
 		}
 	}
+
 }
