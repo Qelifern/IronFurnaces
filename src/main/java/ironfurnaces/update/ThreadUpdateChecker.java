@@ -23,7 +23,7 @@ public class ThreadUpdateChecker extends Thread {
     public void run() {
         Main.LOGGER.info("Starting Update Check...");
         try {
-            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/master/update/updateVersions.properties");
+            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.14.3/update/updateVersions.properties");
             Properties updateProperties = new Properties();
             updateProperties.load(new InputStreamReader(newestURL.openStream()));
 
