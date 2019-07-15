@@ -92,6 +92,12 @@ public class Main
     }
 
     @SubscribeEvent
+    public static void config(ModConfig.Loading event) {
+        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+    }
+
+    @SubscribeEvent
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         ModBlocks.register(event.getRegistry());
     }

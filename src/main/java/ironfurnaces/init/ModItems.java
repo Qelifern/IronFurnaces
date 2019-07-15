@@ -41,7 +41,7 @@ public class ModItems {
         registry.register(new ItemUpgrade(new Item.Properties().group(Main.itemGroup), new int[]{0, 0, 0, 1, 0}).setRegistryName("upgrade_emerald"));
         registry.register(new ItemUpgrade(new Item.Properties().group(Main.itemGroup), new int[]{0, 0, 0, 0, 1}).setRegistryName("upgrade_obsidian"));
 
-        Main.LOGGER.info("IronFurnaces items Registry Done.");
+        Main.LOGGER.info("IronFurnaces Items Registry Done.");
     }
 
 }
