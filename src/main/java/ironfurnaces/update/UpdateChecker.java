@@ -23,7 +23,7 @@ public class UpdateChecker {
 
 
     public static final String DOWNLOAD_LINK = "https://minecraft.curseforge.com/projects/iron-furnaces-pizzaatime";
-    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.14.3/ifchangelog.txt";
+    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.14.4/ifchangelog.txt";
     public static boolean checkFailed;
     public static boolean needsUpdateNotify;
     public static int updateVersionInt;
