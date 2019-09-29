@@ -8,9 +8,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 
 /**
  * Credits: Ellpeck, creator of the Actually Additions update checker, which I modified.
@@ -38,7 +39,7 @@ public class UpdateChecker {
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(receiveCanceled = true)
-    public void onTick(TickEvent.ClientTickEvent event){
+    public void onTick(TickEvent.ClientTickEvent event) {
         if(Minecraft.getInstance().player != null){
             PlayerEntity player = Minecraft.getInstance().player;
             if(UpdateChecker.checkFailed){

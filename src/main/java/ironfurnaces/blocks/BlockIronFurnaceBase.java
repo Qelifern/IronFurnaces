@@ -1,6 +1,5 @@
 package ironfurnaces.blocks;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

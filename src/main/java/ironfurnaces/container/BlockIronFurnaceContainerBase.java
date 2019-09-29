@@ -40,7 +40,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.world = playerInventory.player.world;
         this.fields = fields;
         assertIntArraySize(this.fields, 4);
-        this.func_216961_a(this.fields);
+        this.trackIntArray(this.fields);
 
         this.addSlot(new Slot(te, 0, 56, 17));
         this.addSlot(new SlotIronFurnaceFuel(this.te, 1, 56, 53));
