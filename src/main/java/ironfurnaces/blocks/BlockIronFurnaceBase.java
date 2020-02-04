@@ -8,19 +8,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,8 +47,13 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     @Override
-    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(BlockStateProperties.LIT) ? 14 : 0;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+        return (BlockState)this.getDefaultState().with(BlockStateProperties.FACING, ctx.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override
@@ -60,16 +63,15 @@ public abstract class BlockIronFurnaceBase extends Block {
             if (stack.hasDisplayName()) {
                 te.setCustomName(stack.getDisplayName());
             }
-            world.setBlockState(pos, state.with(BlockStateProperties.FACING, getFacingFromEntity(pos, entity)), 2);
         }
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         if (!world.isRemote) {
             this.interactWith(world, pos, player);
         }
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
     private void interactWith(World world, BlockPos pos, PlayerEntity player) {
@@ -78,10 +80,6 @@ public abstract class BlockIronFurnaceBase extends Block {
             NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
             player.addStat(Stats.INTERACT_WITH_FURNACE);
         }
-    }
-
-    public static Direction getFacingFromEntity(BlockPos clickedBlock, LivingEntity entity) {
-        return Direction.getFacingFromVector((float) (entity.posX - clickedBlock.getX()), (float) (entity.posY - clickedBlock.getY()), (float) (entity.posZ - clickedBlock.getZ()));
     }
 
     @OnlyIn(Dist.CLIENT)

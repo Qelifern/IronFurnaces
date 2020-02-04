@@ -1,9 +1,9 @@
 package ironfurnaces.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import ironfurnaces.Main;
-import ironfurnaces.container.BlockIronFurnaceContainerBase;
+import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
+import ironfurnaces.util.StringHelper;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -12,13 +12,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceContainerBase> extends ContainerScreen<T> {
+public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWirelessEnergyHeaterContainer> extends ContainerScreen<T> {
 
-    public ResourceLocation GUI = new ResourceLocation(Main.MOD_ID + ":" +"textures/gui/furnace.png");
+    public ResourceLocation GUI = new ResourceLocation(Main.MOD_ID + ":" + "textures/gui/heater.png");
     PlayerInventory playerInv;
     ITextComponent name;
 
-    public BlockIronFurnaceScreenBase(T t, PlayerInventory inv, ITextComponent name) {
+    public BlockWirelessEnergyHeaterScreenBase(T t, PlayerInventory inv, ITextComponent name) {
         super(t, inv, name);
         playerInv = inv;
         this.name = name;
@@ -33,9 +33,17 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        //drawString(Minecraft.getInstance().fontRenderer, "Energy: " + container.getEnergy(), 10, 10, 0xffffff);
         this.minecraft.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedComponentText(), 7, this.ySize - 93, 4210752);
         this.minecraft.fontRenderer.drawString(name.getUnformattedComponentText(), 7 + this.xSize / 2 - this.minecraft.fontRenderer.getStringWidth(name.getUnformattedComponentText()) / 2, 6, 4210752);
+
+        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
+        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
+        if(actualMouseX >= 65 && actualMouseX <= 111 && actualMouseY >= 64 && actualMouseY <= 76) {
+            int energy = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergy();
+            int capacity = ((BlockWirelessEnergyHeaterContainer)this.container).getCapacity();
+            this.renderTooltip(StringHelper.displayEnergy(energy, capacity), actualMouseX, actualMouseY);
+        }
+
     }
 
     @Override
@@ -45,16 +53,10 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         int relX = (this.width - this.xSize) / 2;
         int relY = (this.height - this.ySize) / 2;
         this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
+
         int i;
-        if (((BlockIronFurnaceContainerBase)this.container).isBurning()) {
-            i = ((BlockIronFurnaceContainerBase)this.container).getBurnScaled(13);
-            this.blit(guiLeft + 56, guiTop + 36 + 12 - i, 176, 12 - i, 14, i + 1);
-        }
-
-        i = ((BlockIronFurnaceContainerBase)this.container).getCookScaled(24);
-        this.blit(guiLeft + 79, guiTop + 34, 176, 14, i + 1, 16);
+        i = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergyScaled(46);
+        this.blit(guiLeft + 65, guiTop + 64, 176, 0, i + 1, 12);
     }
-
-
 
 }

@@ -17,7 +17,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -34,8 +33,8 @@ public class Main
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "170";
-    public static final String MC_VERSION = "1.14.4";
+    public static final String VERSION = "190";
+    public static final String MC_VERSION = "1.15.2";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
@@ -74,18 +73,6 @@ public class Main
     }
 
     @SubscribeEvent
-    public static void config(ConfigChangedEvent.OnConfigChangedEvent event) {
-        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
-    }
-
-    @SubscribeEvent
-    public static void config(ModConfig.ConfigReloading event) {
-        Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
-    }
-
-    @SubscribeEvent
     public static void config(ModConfig.ModConfigEvent event) {
         Config.loadConfig(Config.clientSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.serverSpec, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
@@ -114,6 +101,7 @@ public class Main
 
     private void setup(final FMLCommonSetupEvent event)
     {
+
         LOGGER.log(Level.INFO, "HELLO WORLD");
         proxy.setup(event);
     }

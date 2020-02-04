@@ -5,6 +5,9 @@
     "item.ironfurnaces.upgrade_diamond": "Gold to Diamond Furnace Upgrade",
     "item.ironfurnaces.upgrade_emerald": "Diamond to Emerald Furnace Upgrade",
     "item.ironfurnaces.upgrade_obsidian": "Emerald to Obsidian Furnace Upgrade",
+    "item.ironfurnaces.item_heater": "Wireless Heater",
+    "item.ironfurnaces.augment_blasting": "Augment: Blasting",
+    "item.ironfurnaces.augment_smoking": "Augment: Smoking",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
@@ -17,6 +20,7 @@
     "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
     "block.ironfurnaces.copper_furnace": "Copper Furnace",
     "block.ironfurnaces.silver_furnace": "Silver Furnace",
+    "block.ironfurnaces.heater": "Wireless Heater",
 
 
 
@@ -28,6 +32,7 @@
     "container.obsidian_furnace": "Obsidian Furnace",
     "container.copper_furnace": "Copper Furnace",
     "container.silver_furnace": "Silver Furnace",
+    "container.wireless_energy_heater": "Wireless Heater",
 
     "_comment": "Updates",
     "ironfurnaces.update.speech": "[{\"text\":\"There is an Update for \"},{\"text\":\"Iron Furnaces \",\"color\":\"dark_green\"},{\"text\":\"available!\",\"color\":\"none\"}]",

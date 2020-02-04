@@ -13,7 +13,7 @@ public class BlockObsidianFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected int getCookTime() {
+    protected int getCookTimeConfig() {
         return Config.SERVER.obsidianFurnaceSpeed.get();
     }
 

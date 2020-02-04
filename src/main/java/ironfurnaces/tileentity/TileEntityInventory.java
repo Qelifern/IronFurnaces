@@ -8,6 +8,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -27,6 +29,27 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
         super(tileEntityTypeIn);
         inventory = NonNullList.withSize(sizeInventory, ItemStack.EMPTY);
     }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        this.read(pkt.getNbtCompound());
+        world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT compound = new CompoundNBT();
+
+        this.write(compound);
+        return compound;
+    }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 1, this.getUpdateTag());
+    }
+
+
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
         return this.IisItemValidForSlot(index, stack);

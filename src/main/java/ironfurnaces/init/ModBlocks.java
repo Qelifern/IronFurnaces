@@ -78,6 +78,15 @@ public class ModBlocks {
     @ObjectHolder("ironfurnaces:silver_furnace")
     public static ContainerType<BlockSilverFurnaceContainer> SILVER_FURNACE_CONTAINER;
 
+    @ObjectHolder("ironfurnaces:heater")
+    public static BlockWirelessEnergyHeater heater;
+
+    @ObjectHolder("ironfurnaces:heater")
+    public static TileEntityType<BlockWirelessEnergyHeaterTile> HEATER_TYPE;
+
+    @ObjectHolder("ironfurnaces:heater")
+    public static ContainerType<BlockWirelessEnergyHeaterContainer> HEATER_CONTAINER;
+
     public static void registerTiles(IForgeRegistry<TileEntityType<?>> registry) {
         registry.register(TileEntityType.Builder.create(BlockIronFurnaceTile::new, ModBlocks.iron_furnace).build(null).setRegistryName("iron_furnace"));
         registry.register(TileEntityType.Builder.create(BlockGoldFurnaceTile::new, ModBlocks.gold_furnace).build(null).setRegistryName("gold_furnace"));
@@ -86,6 +95,7 @@ public class ModBlocks {
         registry.register(TileEntityType.Builder.create(BlockObsidianFurnaceTile::new, ModBlocks.obsidian_furnace).build(null).setRegistryName("obsidian_furnace"));
         registry.register(TileEntityType.Builder.create(BlockCopperFurnaceTile::new, ModBlocks.copper_furnace).build(null).setRegistryName("copper_furnace"));
         registry.register(TileEntityType.Builder.create(BlockSilverFurnaceTile::new, ModBlocks.silver_furnace).build(null).setRegistryName("silver_furnace"));
+        registry.register(TileEntityType.Builder.create(BlockWirelessEnergyHeaterTile::new, ModBlocks.heater).build(null).setRegistryName("heater"));
         Main.LOGGER.info("IronFurnaces TileEntities Registry Done.");
 
     }
@@ -98,6 +108,7 @@ public class ModBlocks {
         registry.register(new BlockObsidianFurnace(Block.Properties.from(Blocks.OBSIDIAN)));
         registry.register(new BlockCopperFurnace(Block.Properties.from(Blocks.GOLD_BLOCK)));
         registry.register(new BlockSilverFurnace(Block.Properties.from(Blocks.IRON_BLOCK)));
+        registry.register(new BlockWirelessEnergyHeater(Block.Properties.from(Blocks.IRON_BLOCK)));
         Main.LOGGER.info("IronFurnaces Blocks Registry Done.");
     }
 
@@ -130,6 +141,10 @@ public class ModBlocks {
             BlockPos pos = data.readBlockPos();
             return new BlockSilverFurnaceContainer(windowId, Main.proxy.getClientWorld(), pos, inv, Main.proxy.getClientPlayer());
         }).setRegistryName("silver_furnace"));
+        registry.register(IForgeContainerType.create((windowId, inv, data) -> {
+            BlockPos pos = data.readBlockPos();
+            return new BlockWirelessEnergyHeaterContainer(windowId, Main.proxy.getClientWorld(), pos, inv, Main.proxy.getClientPlayer());
+        }).setRegistryName("heater"));
         Main.LOGGER.info("IronFurnaces Containers Registry Done.");
     }
 

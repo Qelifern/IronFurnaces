@@ -13,7 +13,7 @@ public class BlockGoldFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected int getCookTime() {
+    protected int getCookTimeConfig() {
         return Config.SERVER.goldFurnaceSpeed.get();
     }
 

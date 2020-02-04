@@ -12,4 +12,6 @@ public interface IProxy {
 
 	World getClientWorld();
 
+	World getServerWorld(int dim);
+
 }

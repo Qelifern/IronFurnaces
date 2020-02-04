@@ -1,5 +1,6 @@
 package ironfurnaces.container;
 
+import ironfurnaces.items.ItemAugment;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -45,6 +46,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.addSlot(new Slot(te, 0, 56, 17));
         this.addSlot(new SlotIronFurnaceFuel(this.te, 1, 56, 53));
         this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
+        this.addSlot(new SlotIronFurnaceAugment(te, 3, 26, 35));
         layoutPlayerInventorySlots(8, 84);
 
 
@@ -113,7 +115,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
-            } else if (index != 1 && index != 0) {
+            } else if (index != 1 && index != 0 && index != 3) {
                 if (this.func_217057_a(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
@@ -122,14 +124,18 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 3 && index < 30) {
+                } else if (itemstack1.getItem() instanceof ItemAugment) {
+                    if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 4 && index < 30) {
                     if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 3, 30, false)) {
+                } else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 4, 30, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 4, 39, false)) {
                 return ItemStack.EMPTY;
             }
 

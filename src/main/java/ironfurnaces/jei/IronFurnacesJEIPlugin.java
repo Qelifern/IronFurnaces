@@ -5,6 +5,7 @@ import ironfurnaces.Main;
 import ironfurnaces.config.Config;
 import ironfurnaces.gui.*;
 import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.ModItems;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
@@ -31,6 +32,9 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(ModBlocks.obsidian_furnace), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(ModBlocks.copper_furnace), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(ModBlocks.silver_furnace), VanillaRecipeCategoryUid.FURNACE);
+
+			registry.addRecipeCatalyst(new ItemStack(ModItems.augment_blasting), VanillaRecipeCategoryUid.BLASTING);
+			registry.addRecipeCatalyst(new ItemStack(ModItems.augment_smoking), VanillaRecipeCategoryUid.SMOKING);
 
 			registry.addRecipeCatalyst(new ItemStack(ModBlocks.iron_furnace), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(ModBlocks.gold_furnace), VanillaRecipeCategoryUid.FUEL);
