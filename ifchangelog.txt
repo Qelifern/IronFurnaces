@@ -1,6 +1,7 @@
 1.9.0
 Bump to 1.9 for 1.15.2 update
 +Wireless Heating using Redstone Flux (Forge Energy)
++Augments for blasting and smoking recipes
 1.5.0
 Bump to 1.5 for 1.14.3 update
 1.4.1
