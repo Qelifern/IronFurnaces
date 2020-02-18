@@ -1,10 +1,10 @@
 package ironfurnaces.blocks;
 
-import ironfurnaces.Main;
-import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -28,12 +27,11 @@ import javax.annotation.Nullable;
 
 public class BlockWirelessEnergyHeater extends Block {
 
-    public static final ResourceLocation HEATER = new ResourceLocation(Main.MOD_ID, "heater");
+    public static final String HEATER = "heater";
 
-    public BlockWirelessEnergyHeater(Properties properties) {
-        super(properties);
+    public BlockWirelessEnergyHeater() {
+        super(Properties.from(Blocks.IRON_BLOCK));
         this.setDefaultState(this.getDefaultState());
-        this.setRegistryName(HEATER);
     }
 
     @Nullable
@@ -100,14 +98,14 @@ public class BlockWirelessEnergyHeater extends Block {
         if (!player.isCreative()) {
             BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
             if (te.hasCustomName() || te.getEnergy() > 0) {
-                ItemStack itemstack = new ItemStack(ModBlocks.heater);
+                ItemStack itemstack = new ItemStack(Registration.HEATER.get());
                 if (te.hasCustomName()) {
                     itemstack.setDisplayName(te.getName());
                 }
                 itemstack.getOrCreateTag().putInt("Energy", te.getEnergy());
                 world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
             } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModBlocks.heater)));
+                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.HEATER.get())));
             }
         }
         super.onBlockHarvested(world, pos, state, player);

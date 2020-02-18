@@ -7,13 +7,13 @@
   ],
   "key": {
     "Y": {
-      "item": "minecraft:gold_block"
+      "tag": "forge:storage_blocks/gold"
     },
     "X": {
        "item": "ironfurnaces:silver_furnace"
     },
     "#": {
-      "item": "minecraft:glass"
+      "tag": "forge:glass"
     }
   },
   "result": {

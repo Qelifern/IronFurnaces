@@ -1,6 +1,6 @@
 package ironfurnaces.container;
 
-import ironfurnaces.items.ItemAugment;
+import ironfurnaces.items.ItemAugmentBlasting;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -124,7 +124,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (itemstack1.getItem() instanceof ItemAugment) {
+                } else if (itemstack1.getItem() instanceof ItemAugmentBlasting) {
                     if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }

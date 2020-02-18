@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:stone"
+      "tag": "forge:stone"
     },
     "C": {
       "item": "minecraft:furnace"
@@ -16,7 +16,7 @@
       "item": "minecraft:comparator"
     },
     "X": {
-       "item": "minecraft:redstone_block"
+      "tag": "forge:storage_blocks/redstone"
     }
   },
   "result": {

@@ -1,7 +1,7 @@
 package ironfurnaces.container;
 
 import ironfurnaces.energy.HeaterEnergyStorage;
-import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,7 +28,7 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
     protected final World world;
 
     public BlockWirelessEnergyHeaterContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(ModBlocks.HEATER_CONTAINER, windowId);
+        super(Registration.HEATER_CONTAINER.get(), windowId);
         this.te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
@@ -78,7 +78,7 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, ModBlocks.heater);
+        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.HEATER.get());
     }
 
     @Override

@@ -2,7 +2,7 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import ironfurnaces.items.ItemAugment;
+import ironfurnaces.items.ItemAugmentBlasting;
 import ironfurnaces.items.ItemHeater;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -126,16 +126,13 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.totalCookTime = this.getCookTime();
             }
             if (!this.getStackInSlot(3).isEmpty()) {
-                if (this.getStackInSlot(3).getItem() instanceof ItemAugment) {
-                    int type = ((ItemAugment) this.getStackInSlot(3).getItem()).type;
-                    if (type == 0) {
-                        if (this.recipeType != IRecipeType.BLASTING) {
-                            this.recipeType = IRecipeType.BLASTING;
-                        }
-                    } else {
-                        if (this.recipeType != IRecipeType.SMOKING) {
-                            this.recipeType = IRecipeType.SMOKING;
-                        }
+                if (this.getStackInSlot(3).getItem() instanceof ItemAugmentBlasting) {
+                    if (this.recipeType != IRecipeType.BLASTING) {
+                        this.recipeType = IRecipeType.BLASTING;
+                    }
+                } else {
+                    if (this.recipeType != IRecipeType.SMOKING) {
+                        this.recipeType = IRecipeType.SMOKING;
                     }
                 }
             } else {
@@ -154,7 +151,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                             int z = itemstack.getTag().getInt("Z");
                             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
                             if (te instanceof BlockWirelessEnergyHeaterTile) {
-                                int energy = ((BlockWirelessEnergyHeaterTile)te).getEnergy();
+                                int energy = ((BlockWirelessEnergyHeaterTile) te).getEnergy();
                                 if (energy >= 16000) {
                                     ((BlockWirelessEnergyHeaterTile) te).removeEnergy(16000);
                                     this.furnaceBurnTime = 1600 * this.getCookTime() / 200;
@@ -426,15 +423,15 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         if (p_214003_2_ == 0.0F) {
             p_214003_1_ = 0;
         } else if (p_214003_2_ < 1.0F) {
-            int i = MathHelper.floor((float)p_214003_1_ * p_214003_2_);
-            if (i < MathHelper.ceil((float)p_214003_1_ * p_214003_2_) && Math.random() < (double)((float)p_214003_1_ * p_214003_2_ - (float)i)) {
+            int i = MathHelper.floor((float) p_214003_1_ * p_214003_2_);
+            if (i < MathHelper.ceil((float) p_214003_1_ * p_214003_2_) && Math.random() < (double) ((float) p_214003_1_ * p_214003_2_ - (float) i)) {
                 ++i;
             }
 
             p_214003_1_ = i;
         }
 
-        while(p_214003_1_ > 0) {
+        while (p_214003_1_ > 0) {
             int j = ExperienceOrbEntity.getXPSplit(p_214003_1_);
             p_214003_1_ -= j;
             p_214003_0_.world.addEntity(new ExperienceOrbEntity(p_214003_0_.world, p_214003_0_.prevPosX, p_214003_0_.prevPosY + 0.5D, p_214003_0_.prevPosZ + 0.5D, j));

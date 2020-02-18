@@ -1,7 +1,7 @@
 package ironfurnaces.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import ironfurnaces.Main;
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWirelessEnergyHeaterContainer> extends ContainerScreen<T> {
 
-    public ResourceLocation GUI = new ResourceLocation(Main.MOD_ID + ":" + "textures/gui/heater.png");
+    public ResourceLocation GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" + "textures/gui/heater.png");
     PlayerInventory playerInv;
     ITextComponent name;
 

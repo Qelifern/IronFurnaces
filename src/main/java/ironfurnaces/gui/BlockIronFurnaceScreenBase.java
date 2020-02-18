@@ -1,8 +1,7 @@
 package ironfurnaces.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import ironfurnaces.Main;
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockIronFurnaceContainerBase;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceContainerBase> extends ContainerScreen<T> {
 
-    public ResourceLocation GUI = new ResourceLocation(Main.MOD_ID + ":" +"textures/gui/furnace.png");
+    public ResourceLocation GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" +"textures/gui/furnace.png");
     PlayerInventory playerInv;
     ITextComponent name;
 

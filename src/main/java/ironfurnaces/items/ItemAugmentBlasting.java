@@ -1,5 +1,7 @@
 package ironfurnaces.items;
 
+import ironfurnaces.IronFurnaces;
+import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,23 +15,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class ItemAugment extends Item {
+public class ItemAugmentBlasting extends Item {
 
-    public int type;
-    public ItemAugment(Properties properties, int type) {
-        super(properties);
-        this.type = type;
+
+    public ItemAugmentBlasting() {
+        super(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (type == 0) {
             tooltip.add(new StringTextComponent("+Halves the cooktime for blasting recipes.").setStyle(new Style().setColor(TextFormatting.GREEN)));
             tooltip.add(new StringTextComponent("-Only allows for blasting recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
-        } else {
-            tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").setStyle(new Style().setColor(TextFormatting.GREEN)));
-            tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
-        }
     }
 }

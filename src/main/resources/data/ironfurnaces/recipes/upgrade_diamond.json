@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:diamond"
+      "tag": "forge:gems/diamond"
     },
     "X": {
-       "item": "minecraft:gold_ingot"
+      "tag": "forge:ingots/gold"
     },
     "Y": {
-      "item": "minecraft:diamond_block"
+      "tag": "forge:storage_blocks/diamond"
     }
   },
   "result": {

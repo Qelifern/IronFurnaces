@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:emerald"
+      "tag": "forge:gems/emerald"
     },
     "X": {
        "item": "ironfurnaces:diamond_furnace"

@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:stone"
+      "tag": "forge:stone"
     },
     "P": {
       "item": "minecraft:paper"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "tag": "forge:dusts/redstone"
     },
     "X": {
        "item": "minecraft:blast_furnace"

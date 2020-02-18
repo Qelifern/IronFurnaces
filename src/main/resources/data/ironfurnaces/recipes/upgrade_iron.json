@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "X": {
-       "item": "minecraft:cobblestone"
+      "tag": "forge:cobblestone"
     }
   },
   "result": {

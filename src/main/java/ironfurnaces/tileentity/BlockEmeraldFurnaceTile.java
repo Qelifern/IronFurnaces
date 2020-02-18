@@ -1,20 +1,20 @@
 package ironfurnaces.tileentity;
 
-import ironfurnaces.config.Config;
+import ironfurnaces.Config;
 import ironfurnaces.container.BlockEmeraldFurnaceContainer;
-import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 
 public class BlockEmeraldFurnaceTile extends BlockIronFurnaceTileBase {
     public BlockEmeraldFurnaceTile() {
-        super(ModBlocks.EMERALD_FURNACE_TYPE);
+        super(Registration.EMERALD_FURNACE_TILE.get());
     }
 
     @Override
     protected int getCookTimeConfig() {
-        return Config.SERVER.emeraldFurnaceSpeed.get();
+        return Config.emeraldFurnaceSpeed.get();
     }
 
     @Override

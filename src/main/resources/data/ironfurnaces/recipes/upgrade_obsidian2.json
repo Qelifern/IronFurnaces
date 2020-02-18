@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "#Y#",
+    "YXY",
+    "#Y#"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:obsidian"
+    },
+    "X": {
+      "tag": "forge:glass"
+    },
+    "Y": {
+      "tag": "forge:rods/blaze"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:upgrade_obsidian2"
+  }
+}

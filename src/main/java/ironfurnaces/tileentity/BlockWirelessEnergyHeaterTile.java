@@ -2,7 +2,7 @@ package ironfurnaces.tileentity;
 
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.energy.HeaterEnergyStorage;
-import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemHeater;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,7 +21,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
 
 
     public BlockWirelessEnergyHeaterTile() {
-        super(ModBlocks.HEATER_TYPE, 1);
+        super(Registration.HEATER_TILE.get(), 1);
     }
 
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);

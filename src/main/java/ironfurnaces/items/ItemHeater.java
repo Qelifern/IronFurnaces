@@ -1,5 +1,7 @@
 package ironfurnaces.items;
 
+import ironfurnaces.IronFurnaces;
+import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,8 +16,8 @@ import java.util.List;
 public class ItemHeater extends Item {
 
 
-    public ItemHeater(Properties properties) {
-        super(properties);
+    public ItemHeater() {
+        super(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1));
     }
 
     @OnlyIn(Dist.CLIENT)

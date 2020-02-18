@@ -1,6 +1,7 @@
 package ironfurnaces.items;
 
-import ironfurnaces.init.ModBlocks;
+import ironfurnaces.init.ModSetup;
+import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,8 +29,8 @@ public class ItemUpgrade extends Item {
 
     private int[] available;
 
-    public ItemUpgrade(Properties properties, int[] available) {
-        super(properties);
+    public ItemUpgrade(int[] available) {
+        super(new Properties().group(ModSetup.ITEM_GROUP));
         this.available = available;
     }
 
@@ -56,8 +57,8 @@ public class ItemUpgrade extends Item {
                     currentItemBurnTime = ((BlockIronFurnaceTileBase)te).fields.get(1);
                     cooktime = ((BlockIronFurnaceTileBase)te).fields.get(2);
                 }
-                BlockState next = this.getNextTierBlock(te, available).getStateForPlacement(ctx2) != null ? this.getNextTierBlock(te, available).getStateForPlacement(ctx2) : null;
-                if (next == null) {
+                BlockState next = this.getNextTierBlock(te, available).getStateForPlacement(ctx2) != Blocks.AIR.getStateForPlacement(ctx2) ? this.getNextTierBlock(te, available).getStateForPlacement(ctx2) : world.getBlockState(pos);
+                if (next == world.getBlockState(pos)) {
                     return ActionResultType.PASS;
                 }
                 ItemStack input = ((IInventory) te).getStackInSlot(0).copy();
@@ -85,20 +86,26 @@ public class ItemUpgrade extends Item {
     public static Block getNextTierBlock(TileEntity te, int[] available) {
         Block block = te.getBlockState().getBlock();
         if (block == Blocks.FURNACE && available[0] == 1) {
-            return ModBlocks.iron_furnace;
+            return Registration.IRON_FURNACE.get();
         } else
-        if (block == ModBlocks.iron_furnace && available[1] == 1) {
-            return ModBlocks.gold_furnace;
+        if (block == Registration.IRON_FURNACE.get() && available[1] == 1) {
+            return Registration.GOLD_FURNACE.get();
         } else
-        if (block == ModBlocks.gold_furnace && available[2] == 1) {
-            return ModBlocks.diamond_furnace;
+        if (block == Registration.GOLD_FURNACE.get() && available[2] == 1) {
+            return Registration.DIAMOND_FURNACE.get();
         } else
-        if (block == ModBlocks.diamond_furnace && available[3] == 1) {
-            return ModBlocks.emerald_furnace;
+        if (block == Registration.DIAMOND_FURNACE.get() && available[3] == 1) {
+            return Registration.EMERALD_FURNACE.get();
         } else
-        if (block == ModBlocks.emerald_furnace && available[4] == 1) {
-            return ModBlocks.obsidian_furnace;
+        if (block == Registration.EMERALD_FURNACE.get() && available[4] == 1) {
+            return Registration.OBSIDIAN_FURNACE.get();
         }
-        return null;
+        if (block == Registration.DIAMOND_FURNACE.get() && available[5] == 1) {
+            return Registration.CRYSTAL_FURNACE.get();
+        }
+        if (block == Registration.CRYSTAL_FURNACE.get() && available[6] == 1) {
+            return Registration.OBSIDIAN_FURNACE.get();
+        }
+        return Blocks.AIR;
     }
 }
