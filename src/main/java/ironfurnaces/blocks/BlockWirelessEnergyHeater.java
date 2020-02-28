@@ -67,7 +67,7 @@ public class BlockWirelessEnergyHeater extends Block {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
         if (!world.isRemote) {
             this.interactWith(world, pos, player);
         }

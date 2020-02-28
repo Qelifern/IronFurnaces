@@ -26,7 +26,7 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase {
     public static final String CRYSTAL_FURNACE = "crystal_furnace";
 
     public BlockCrystalFurnace() {
-        super(Properties.from(Blocks.PRISMARINE).func_226896_b_());
+        super(Properties.from(Blocks.PRISMARINE).notSolid());
     }
 
     @Override
