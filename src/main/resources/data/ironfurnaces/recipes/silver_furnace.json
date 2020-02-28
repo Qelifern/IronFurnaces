@@ -1,16 +1,19 @@
 {
   "type": "crafting_shaped",
   "pattern": [
-    "###",
-    "#X#",
-    "###"
+    "#G#",
+    "GXG",
+    "#G#"
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_nugget"
+      "tag": "forge:ingots/silver"
     },
     "X": {
        "item": "ironfurnaces:iron_furnace"
+    },
+    "G": {
+      "tag": "forge:glass"
     }
   },
   "result": {

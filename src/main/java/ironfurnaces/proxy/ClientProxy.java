@@ -1,11 +1,11 @@
 package ironfurnaces.proxy;
 
-import ironfurnaces.Main;
+import ironfurnaces.gui.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -13,18 +13,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class ClientProxy implements IProxy {
 
 	@Override
-	public void setup(FMLCommonSetupEvent event) {
-		OBJLoader.INSTANCE.addDomain(Main.MOD_ID);
-	}
-
-	@Override
-	public EntityPlayer getClientPlayer() {
+	public PlayerEntity getClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
 
 	@Override
 	public World getClientWorld() {
 		return Minecraft.getInstance().world;
+	}
+
+	@Override
+	public World getServerWorld(int dim) {
+		return null;
 	}
 
 

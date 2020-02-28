@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:diamond"
+      "tag": "forge:gems/diamond"
     },
     "X": {
        "item": "ironfurnaces:gold_furnace"
     },
     "Y": {
-      "item": "minecraft:diamond_block"
+      "tag": "forge:storage_blocks/diamond"
     }
   },
   "result": {

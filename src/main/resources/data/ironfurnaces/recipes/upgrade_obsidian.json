@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:obsidian"
+      "tag": "forge:obsidian"
     },
     "X": {
-       "item": "minecraft:emerald"
+      "tag": "forge:gems/emerald"
     },
     "Y": {
-      "item": "minecraft:blaze_rod"
+      "tag": "forge:rods/blaze"
     }
   },
   "result": {

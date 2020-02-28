@@ -1,13 +1,13 @@
 package ironfurnaces.update;
 
-import ironfurnaces.Main;
+import ironfurnaces.IronFurnaces;
 
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
 
 /**
- * Credits: Ellpeck, creator of the Actually Additions update checker, which I modified.
+ * Credits: Ellpeck, creator of the Actually Additions update checker, which I (pizzaatime) modified.
  * Link to the Actually Additions repo: https://github.com/Ellpeck/ActuallyAdditions/
  * Link to the Actually Additions curse page: https://minecraft.curseforge.com/projects/actually-additions
  */
@@ -21,9 +21,9 @@ public class ThreadUpdateChecker extends Thread {
 
     @Override
     public void run() {
-        Main.LOGGER.info("Starting Update Check...");
+        IronFurnaces.LOGGER.info("Starting Update Check...");
         try {
-            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/master/update/updateVersions.properties");
+            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.15.2/update/updateVersions.properties");
             Properties updateProperties = new Properties();
             updateProperties.load(new InputStreamReader(newestURL.openStream()));
 
@@ -42,25 +42,25 @@ public class ThreadUpdateChecker extends Thread {
             UpdateChecker.updateVersionInt = highest;
             UpdateChecker.updateVersionString = highestString;
 
-            int clientVersion = Integer.parseInt(Main.VERSION);
+            int clientVersion = Integer.parseInt(IronFurnaces.VERSION);
             if (UpdateChecker.updateVersionInt > clientVersion) {
                 UpdateChecker.needsUpdateNotify = true;
             }
 
-            Main.LOGGER.info("Update Check done!");
+            IronFurnaces.LOGGER.info("Update Check done!");
         } catch (Exception e) {
-            Main.LOGGER.error("Update Check failed!", e);
+            IronFurnaces.LOGGER.error("Update Check failed!", e);
             UpdateChecker.checkFailed = true;
         }
 
         if (!UpdateChecker.checkFailed) {
             if (UpdateChecker.needsUpdateNotify) {
-                Main.LOGGER.info("There is an Update for Iron Furnaces available!");
-                Main.LOGGER.info("Current Version: " + Main.MC_VERSION + "-" + Main.VERSION + ", newest Version: " + UpdateChecker.updateVersionString + "!");
-                Main.LOGGER.info("View the Changelog at " + UpdateChecker.CHANGELOG_LINK);
-                Main.LOGGER.info("Download at " + UpdateChecker.DOWNLOAD_LINK);
+                IronFurnaces.LOGGER.info("There is an Update for Iron Furnaces available!");
+                IronFurnaces.LOGGER.info("Current Version: " + IronFurnaces.MC_VERSION + "-" + IronFurnaces.VERSION + ", newest Version: " + UpdateChecker.updateVersionString + "!");
+                IronFurnaces.LOGGER.info("View the Changelog at " + UpdateChecker.CHANGELOG_LINK);
+                IronFurnaces.LOGGER.info("Download at " + UpdateChecker.DOWNLOAD_LINK);
             } else {
-                Main.LOGGER.info("Iron Furnaces is up to date!");
+                IronFurnaces.LOGGER.info("Iron Furnaces is up to date!");
             }
         }
 

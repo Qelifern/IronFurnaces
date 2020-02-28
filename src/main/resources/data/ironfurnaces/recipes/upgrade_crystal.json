@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "#X#",
+    "#E#"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:glass"
+    },
+    "X": {
+      "tag": "forge:gems/diamond"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:upgrade_crystal"
+  }
+}
