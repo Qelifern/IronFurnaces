@@ -65,7 +65,11 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     @Override
+<<<<<<< Updated upstream
     public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+=======
+    public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+>>>>>>> Stashed changes
         if (!world.isRemote) {
             this.interactWith(world, pos, player);
         }

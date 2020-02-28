@@ -27,20 +27,12 @@ public class ThreadUpdateChecker extends Thread {
             Properties updateProperties = new Properties();
             updateProperties.load(new InputStreamReader(newestURL.openStream()));
 
-            int highest = 0;
-            String highestString = "";
+            String currentMcVersion = IronFurnaces.MC_VERSION;
+            String newestVersionProp = updateProperties.getProperty(currentMcVersion);
 
-            for(String updateMC : updateProperties.stringPropertyNames()){
-                String updateVersion = updateProperties.getProperty(updateMC);
-                int update = Integer.parseInt(updateVersion);
-                if(highest < update){
-                    highest = update;
-                    highestString = updateMC+"-release"+updateVersion;
-                }
-            }
+            UpdateChecker.updateVersionInt = Integer.parseInt(newestVersionProp);
+            UpdateChecker.updateVersionString = currentMcVersion + "-release" + newestVersionProp;
 
-            UpdateChecker.updateVersionInt = highest;
-            UpdateChecker.updateVersionString = highestString;
 
             int clientVersion = Integer.parseInt(Main.VERSION);
             if (UpdateChecker.updateVersionInt > clientVersion) {

@@ -1,5 +1,10 @@
 package ironfurnaces.container;
 
+<<<<<<< Updated upstream
+=======
+import ironfurnaces.items.ItemAugmentBlasting;
+import ironfurnaces.items.ItemAugmentSmoking;
+>>>>>>> Stashed changes
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -122,7 +127,15 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
+<<<<<<< Updated upstream
                 } else if (index >= 3 && index < 30) {
+=======
+                } else if (itemstack1.getItem() instanceof ItemAugmentBlasting || itemstack1.getItem() instanceof ItemAugmentSmoking) {
+                    if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 4 && index < 30) {
+>>>>>>> Stashed changes
                     if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
                         return ItemStack.EMPTY;
                     }
