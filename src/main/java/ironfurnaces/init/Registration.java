@@ -130,6 +130,8 @@ public class Registration {
 
     public static final RegistryObject<ItemAugmentBlasting> BLASTING_AUGMENT = ITEMS.register("augment_blasting", ItemAugmentBlasting::new);
     public static final RegistryObject<ItemAugmentSmoking> SMOKING_AUGMENT = ITEMS.register("augment_smoking", ItemAugmentSmoking::new);
+    public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", ItemAugmentSpeed::new);
+    public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", ItemAugmentFuel::new);
 
     public static final RegistryObject<ItemHeater> ITEM_HEATER = ITEMS.register("item_heater", ItemHeater::new);
 

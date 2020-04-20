@@ -7,9 +7,11 @@
     "item.ironfurnaces.upgrade_obsidian": "Emerald to Obsidian Furnace Upgrade",
     "item.ironfurnaces.upgrade_crystal": "Diamond to Crystal Furnace Upgrade",
     "item.ironfurnaces.upgrade_obsidian2": "Crystal to Obsidian Furnace Upgrade",
-    "item.ironfurnaces.item_heater": "Wireless Heater",
+    "item.ironfurnaces.item_heater": "Wireless Heat Receiver",
     "item.ironfurnaces.augment_blasting": "Augment: Blasting",
     "item.ironfurnaces.augment_smoking": "Augment: Smoking",
+    "item.ironfurnaces.augment_speed": "Augment: Speed",
+    "item.ironfurnaces.augment_fuel": "Augment: Fuel Efficiency",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
@@ -23,7 +25,7 @@
     "block.ironfurnaces.crystal_furnace": "Crystal Furnace",
     "block.ironfurnaces.copper_furnace": "Copper Furnace",
     "block.ironfurnaces.silver_furnace": "Silver Furnace",
-    "block.ironfurnaces.heater": "Wireless Heater",
+    "block.ironfurnaces.heater": "Wireless Heat Transmitter",
 
 
 

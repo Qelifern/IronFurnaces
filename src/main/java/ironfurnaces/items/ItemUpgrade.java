@@ -64,12 +64,14 @@ public class ItemUpgrade extends Item {
                 ItemStack input = ((IInventory) te).getStackInSlot(0).copy();
                 ItemStack fuel  = ((IInventory) te).getStackInSlot(1).copy();
                 ItemStack output  = ((IInventory) te).getStackInSlot(2).copy();
+                ItemStack augment  = ((IInventory) te).getStackInSlot(3).copy();
                 world.removeTileEntity(te.getPos());
                 world.setBlockState(pos, next, 3);
                 TileEntity newTe = world.getTileEntity(pos);
                 ((IInventory)newTe).setInventorySlotContents(0, input);
                 ((IInventory)newTe).setInventorySlotContents(1, fuel);
                 ((IInventory)newTe).setInventorySlotContents(2, output);
+                ((IInventory)newTe).setInventorySlotContents(3, augment);
                 if (newTe instanceof BlockIronFurnaceTileBase) {
                     ((BlockIronFurnaceTileBase)newTe).fields.set(0, furnaceBurnTime);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(1, currentItemBurnTime);

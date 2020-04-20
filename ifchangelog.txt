@@ -1,3 +1,6 @@
+2.0.2
++Speed Augment
++Fuel Eff. Augment
 2.0.0
 Bump to 2.0 for massive refactoring from 1.13.2 and 1.14.4
 +Crystal Furnace

@@ -1,9 +1,6 @@
 package ironfurnaces.items;
 
-import ironfurnaces.IronFurnaces;
-import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -15,14 +12,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class ItemAugmentBlasting extends ItemAugment {
+public class ItemAugmentFuel extends ItemAugment {
 
-
+    
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for blasting recipes.").setStyle(new Style().setColor(TextFormatting.GREEN)));
-        tooltip.add(new StringTextComponent("-Only allows for blasting recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        tooltip.add(new StringTextComponent("+Fuel heats up the furnace twice as much.").setStyle(new Style().setColor(TextFormatting.GREEN)));
+        tooltip.add(new StringTextComponent("-Slows down the cooktime by 1/4 for all recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
     }
 }

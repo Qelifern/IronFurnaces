@@ -1,11 +1,13 @@
 package ironfurnaces.blocks;
 
+import ironfurnaces.items.ItemAugment;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
@@ -46,6 +48,7 @@ public abstract class BlockIronFurnaceBase extends Block {
         return true;
     }
 
+
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(BlockStateProperties.LIT) ? 14 : 0;
@@ -53,23 +56,53 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-        return (BlockState)this.getDefaultState().with(BlockStateProperties.FACING, ctx.getPlacementHorizontalFacing().getOpposite());
+        return (BlockState) this.getDefaultState().with(BlockStateProperties.FACING, ctx.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase)world.getTileEntity(pos);
+            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
             if (stack.hasDisplayName()) {
                 te.setCustomName(stack.getDisplayName());
             }
         }
     }
 
+
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
-        if (!world.isRemote) {
-            this.interactWith(world, pos, player);
+        ItemStack stack = player.getHeldItem(handIn).copy();
+        if (world.isRemote) {
+            return ActionResultType.SUCCESS;
+        } else {
+            if (player.getHeldItem(handIn).getItem() instanceof ItemAugment && !(player.isCrouching())) {
+                this.interactAugment(world, pos, player, handIn, stack);
+            } else {
+                this.interactWith(world, pos, player);
+            }
+            return ActionResultType.SUCCESS;
+        }
+
+    }
+
+    private ActionResultType interactAugment(World world, BlockPos pos, PlayerEntity player, Hand handIn, ItemStack stack) {
+        if (!(player.getHeldItem(handIn).getItem() instanceof ItemAugment)) {
+            return ActionResultType.SUCCESS;
+        }
+        TileEntity te = world.getTileEntity(pos);
+        if (!(te instanceof BlockIronFurnaceTileBase)) {
+            return ActionResultType.SUCCESS;
+        }
+        if (!(((IInventory) te).getStackInSlot(3).isEmpty())) {
+            if (!player.isCreative()) {
+                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), ((IInventory) te).getStackInSlot(3));
+            }
+        }
+        ((IInventory) te).setInventorySlotContents(3, new ItemStack(stack.getItem(), 1));
+        world.playSound(null, te.getPos(), SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        if (!player.isCreative()) {
+            player.getHeldItem(handIn).shrink(1);
         }
         return ActionResultType.SUCCESS;
     }
@@ -108,7 +141,7 @@ public abstract class BlockIronFurnaceBase extends Block {
         if (state.getBlock() != oldState.getBlock()) {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof BlockIronFurnaceTileBase) {
-                InventoryHelper.dropInventoryItems(world, pos, (BlockIronFurnaceTileBase)te);
+                InventoryHelper.dropInventoryItems(world, pos, (BlockIronFurnaceTileBase) te);
                 world.updateComparatorOutputLevel(pos, this);
             }
 

@@ -2,8 +2,7 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import ironfurnaces.items.ItemAugmentBlasting;
-import ironfurnaces.items.ItemHeater;
+import ironfurnaces.items.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -40,6 +39,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     private static final int[] SLOTS_HORIZONTAL = new int[]{1};
 
     private int timer;
+    private int currentAugment = 0; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
     /**
      * The number of ticks that the furnace will keep burning
      */
@@ -66,7 +66,13 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     protected int getCookTime() {
         ItemStack stack = this.getStackInSlot(3);
         if (!stack.isEmpty()) {
-            return getCookTimeConfig() / 2;
+            if (stack.getItem() instanceof ItemAugmentSpeed) {
+                return getCookTimeConfig() / 2;
+            }
+            if (stack.getItem() instanceof ItemAugmentFuel)
+            {
+                return (int) (getCookTimeConfig() * 1.25);
+            }
         }
         return getCookTimeConfig();
     }
@@ -113,9 +119,26 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     };
 
+    private int getAugment(ItemStack stack) {
+        if (stack.getItem() instanceof ItemAugmentBlasting) {
+            return 1;
+        } else if (stack.getItem() instanceof ItemAugmentSmoking) {
+            return 2;
+        } else if (stack.getItem() instanceof ItemAugmentSpeed) {
+            return 3;
+        } else if (stack.getItem() instanceof ItemAugmentFuel) {
+            return 4;
+        }
+        return 0;
+    }
+
     @Override
     public void tick() {
         boolean flag1 = false;
+        if (currentAugment != getAugment(this.getStackInSlot(3))) {
+            this.currentAugment = getAugment(this.getStackInSlot(3));
+            this.furnaceBurnTime = 0;
+        }
         if (this.isBurning()) {
             --this.furnaceBurnTime;
         }
@@ -130,7 +153,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     if (this.recipeType != IRecipeType.BLASTING) {
                         this.recipeType = IRecipeType.BLASTING;
                     }
-                } else {
+                } else if (this.getStackInSlot(3).getItem() instanceof ItemAugmentSmoking) {
                     if (this.recipeType != IRecipeType.SMOKING) {
                         this.recipeType = IRecipeType.SMOKING;
                     }
@@ -154,13 +177,25 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 int energy = ((BlockWirelessEnergyHeaterTile) te).getEnergy();
                                 if (energy >= 16000) {
                                     ((BlockWirelessEnergyHeaterTile) te).removeEnergy(16000);
-                                    this.furnaceBurnTime = 1600 * this.getCookTime() / 200;
+                                    if (!this.getStackInSlot(3).isEmpty() && this.getStackInSlot(3).getItem() instanceof ItemAugmentFuel) {
+                                        this.furnaceBurnTime = 3200 * this.getCookTime() / 200;
+                                    } else if (!this.getStackInSlot(3).isEmpty() && this.getStackInSlot(3).getItem() instanceof ItemAugmentSpeed) {
+                                        this.furnaceBurnTime = 800 * this.getCookTime() / 200;
+                                    } else {
+                                        this.furnaceBurnTime = 1600 * this.getCookTime() / 200;
+                                    }
                                     this.currentItemBurnTime = this.furnaceBurnTime;
                                 }
                             }
                         }
                     } else {
-                        this.furnaceBurnTime = getBurnTime(itemstack) * this.getCookTime() / 200;
+                        if (!this.getStackInSlot(3).isEmpty() && this.getStackInSlot(3).getItem() instanceof ItemAugmentFuel) {
+                            this.furnaceBurnTime = 2 * (getBurnTime(itemstack)) * this.getCookTime() / 200;
+                        } else if (!this.getStackInSlot(3).isEmpty() && this.getStackInSlot(3).getItem() instanceof ItemAugmentSpeed) {
+                            this.furnaceBurnTime = (getBurnTime(itemstack) / 2) * this.getCookTime() / 200;
+                        } else {
+                            this.furnaceBurnTime = getBurnTime(itemstack) * this.getCookTime() / 200;
+                        }
                         this.currentItemBurnTime = this.furnaceBurnTime;
                     }
                     if (this.isBurning()) {
@@ -264,6 +299,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         this.cookTime = tag.getInt("CookTime");
         this.totalCookTime = tag.getInt("CookTimeTotal");
         this.timer = 0;
+        this.currentAugment = tag.getInt("Augment");
         this.currentItemBurnTime = getBurnTime(this.inventory.get(1));
         int i = tag.getShort("RecipesUsedSize");
         for (int j = 0; j < i; ++j) {
@@ -285,6 +321,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         tag.putInt("BurnTime", this.furnaceBurnTime);
         tag.putInt("CookTime", this.cookTime);
         tag.putInt("CookTimeTotal", this.totalCookTime);
+        tag.putInt("Augment", this.currentAugment);
         tag.putShort("RecipesUsedSize", (short) this.recipeUseCounts.size());
         int i = 0;
 
@@ -313,11 +350,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     }
 
-    /**
-     * private IEnergyStorage createEnergy() {
-     * return new CustomEnergyStorage(Config.FIRSTBLOCK_MAXPOWER.get(), 0);
-     * }
-     **/
 
     public static boolean isItemFuel(ItemStack stack) {
         return getBurnTime(stack) > 0 || stack.getItem() instanceof ItemHeater;
