@@ -1,3 +1,5 @@
+2.0.3
+Fixed a bug that made Stone to Iron Upgrade not work
 2.0.2
 +Speed Augment
 +Fuel Eff. Augment
