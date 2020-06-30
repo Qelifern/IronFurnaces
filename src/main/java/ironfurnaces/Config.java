@@ -30,6 +30,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue emeraldFurnaceSpeed;
     public static ForgeConfigSpec.IntValue obsidianFurnaceSpeed;
     public static ForgeConfigSpec.IntValue crystalFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue netheriteFurnaceSpeed;
     public static ForgeConfigSpec.IntValue copperFurnaceSpeed;
     public static ForgeConfigSpec.IntValue silverFurnaceSpeed;
     public static ForgeConfigSpec.BooleanValue enableJeiPlugin;
@@ -94,6 +95,10 @@ public class Config {
         crystalFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 40")
                 .defineInRange("crystal_furnace.speed", 40, 2, 72000);
+
+        netheriteFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
+                .defineInRange("netherite_furnace.speed", 5, 2, 72000);
 
         copperFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 180")

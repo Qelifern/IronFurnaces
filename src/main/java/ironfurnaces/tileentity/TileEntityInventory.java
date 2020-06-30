@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -32,7 +33,7 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(pkt.getNbtCompound());
+        this.func_230337_a_(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
         world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
     }
 
@@ -125,12 +126,12 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
         if (compound.contains("CustomName", 8)) {
-            this.name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
+            this.name = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
         }
     }
 

@@ -111,6 +111,9 @@ public class ItemUpgrade extends Item {
         if (block == Registration.CRYSTAL_FURNACE.get() && available[6] == 1) {
             return Registration.OBSIDIAN_FURNACE.get();
         }
+        if (block == Registration.OBSIDIAN_FURNACE.get() && available[7] == 1) {
+            return Registration.NETHERITE_FURNACE.get();
+        }
         return Blocks.AIR;
     }
 }

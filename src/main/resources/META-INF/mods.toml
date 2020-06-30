@@ -6,7 +6,7 @@
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml" #mandatory
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[31,)" #mandatory (24 is current forge version)
+loaderVersion="[32,)" #mandatory (32 is current forge version)
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -16,15 +16,14 @@ version="${file.jarVersion}" #mandatory
  # A display name for the mod
 displayName="Iron Furnaces" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
-displayURL="https://github.com/Qelifern/IronFurnaces/" #optional
+displayURL="https://www.curseforge.com/minecraft/mc-mods/iron-furnaces/" #optional
 # A text field displayed in the mod UI
 credits="Java, JetBrains, Minecraft, MinecraftForge, LexManos, mezz, Ellpeck, KingLemming" #optional
 # A text field displayed in the mod UI
-authors="Qelifern (pizzaatime)" #optional
+authors="Qelifern (pizzaatime), XenoMustache" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt away to your desires.
-
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.ironfurnaces]] #optional
@@ -33,7 +32,7 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[31,)" #mandatory
+    versionRange="[32,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -42,12 +41,12 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
 [[dependencies.ironfurnaces]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.15.2]"
+    versionRange="[1.16.1]"
     ordering="NONE"
     side="BOTH"
 [[dependencies.ironfurnaces]]
    modId="jei"
    mandatory=false
-   versionRange="[6,)"
+   versionRange="[7,)"
    ordering="NONE"
    side="BOTH"

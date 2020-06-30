@@ -4,6 +4,6 @@ public class ItemUpgradeCrystal extends ItemUpgrade {
 
 
     public ItemUpgradeCrystal() {
-        super(new int[]{0, 0, 0, 0, 0, 1, 0});
+        super(new int[]{0, 0, 0, 0, 0, 1, 0, 0});
     }
 }

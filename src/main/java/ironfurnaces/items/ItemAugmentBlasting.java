@@ -1,9 +1,6 @@
 package ironfurnaces.items;
 
-import ironfurnaces.IronFurnaces;
-import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -22,7 +19,7 @@ public class ItemAugmentBlasting extends ItemAugment {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for blasting recipes.").setStyle(new Style().setColor(TextFormatting.GREEN)));
-        tooltip.add(new StringTextComponent("-Only allows for blasting recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        tooltip.add(new StringTextComponent("+Halves the cooktime for blasting recipes.").func_230530_a_(Style.field_240709_b_.func_240712_a_((TextFormatting.GREEN))));
+        tooltip.add(new StringTextComponent("-Only allows for blasting recipes.").func_230530_a_(Style.field_240709_b_.func_240712_a_(TextFormatting.DARK_RED)));
     }
 }

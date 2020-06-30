@@ -22,11 +22,5 @@ public class ClientProxy implements IProxy {
 		return Minecraft.getInstance().world;
 	}
 
-	@Override
-	public World getServerWorld(int dim) {
-		return null;
-	}
-
-
 
 }

@@ -30,6 +30,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.EMERALD_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(Registration.OBSIDIAN_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(Registration.CRYSTAL_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
+			registry.addRecipeCatalyst(new ItemStack(Registration.NETHERITE_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(Registration.COPPER_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 
@@ -42,6 +43,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.EMERALD_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.OBSIDIAN_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.CRYSTAL_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
+			registry.addRecipeCatalyst(new ItemStack(Registration.NETHERITE_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.COPPER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 		}
@@ -56,6 +58,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeClickArea(BlockEmeraldFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockCrystalFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockObsidianFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
+			registry.addRecipeClickArea(BlockNetheriteFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockCopperFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockSilverFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 		}

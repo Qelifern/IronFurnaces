@@ -4,6 +4,7 @@ import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.energy.HeaterEnergyStorage;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemHeater;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -70,8 +71,8 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void func_230337_a_(BlockState state, CompoundNBT compound) {
+        super.func_230337_a_(state, compound);
         energy.ifPresent(h ->{
             ((HeaterEnergyStorage)h).readFromNBT(compound);
         });

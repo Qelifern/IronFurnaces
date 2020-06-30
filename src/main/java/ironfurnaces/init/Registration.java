@@ -21,10 +21,10 @@ import static ironfurnaces.IronFurnaces.MOD_ID;
 
 public class Registration {
 
-    private static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, MOD_ID);
-    private static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, MOD_ID);
-    private static final DeferredRegister<TileEntityType<?>> TILES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, MOD_ID);
-    private static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, MOD_ID);
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    private static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MOD_ID);
+    private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
 
@@ -93,6 +93,15 @@ public class Registration {
         return new BlockCrystalFurnaceContainer(windowId, IronFurnaces.proxy.getClientWorld(), pos, inv, IronFurnaces.proxy.getClientPlayer());
     }));
 
+    public static final RegistryObject<BlockNetheriteFurnace> NETHERITE_FURNACE = BLOCKS.register(BlockNetheriteFurnace.NETHERITE_FURNACE, BlockNetheriteFurnace::new);
+    public static final RegistryObject<Item> NETHERITE_FURNACE_ITEM = ITEMS.register(BlockNetheriteFurnace.NETHERITE_FURNACE, () -> new BlockItem(NETHERITE_FURNACE.get(), new Item.Properties().group(ModSetup.ITEM_GROUP)));
+    public static final RegistryObject<TileEntityType<BlockNetheriteFurnaceTile>> NETHERITE_FURNACE_TILE = TILES.register(BlockNetheriteFurnace.NETHERITE_FURNACE, () -> TileEntityType.Builder.create(BlockNetheriteFurnaceTile::new, NETHERITE_FURNACE.get()).build(null));
+
+    public static final RegistryObject<ContainerType<BlockNetheriteFurnaceContainer>> NETHERITE_FURNACE_CONTAINER = CONTAINERS.register(BlockNetheriteFurnace.NETHERITE_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        return new BlockNetheriteFurnaceContainer(windowId, IronFurnaces.proxy.getClientWorld(), pos, inv, IronFurnaces.proxy.getClientPlayer());
+    }));
+
     public static final RegistryObject<BlockCopperFurnace> COPPER_FURNACE = BLOCKS.register(BlockCopperFurnace.COPPER_FURNACE, BlockCopperFurnace::new);
     public static final RegistryObject<Item> COPPER_FURNACE_ITEM = ITEMS.register(BlockCopperFurnace.COPPER_FURNACE, () -> new BlockItem(COPPER_FURNACE.get(), new Item.Properties().group(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<TileEntityType<BlockCopperFurnaceTile>> COPPER_FURNACE_TILE = TILES.register(BlockCopperFurnace.COPPER_FURNACE, () -> TileEntityType.Builder.create(BlockCopperFurnaceTile::new, COPPER_FURNACE.get()).build(null));
@@ -127,6 +136,7 @@ public class Registration {
     public static final RegistryObject<ItemUpgradeObsidian> OBSIDIAN_UPGRADE = ITEMS.register("upgrade_obsidian", ItemUpgradeObsidian::new);
     public static final RegistryObject<ItemUpgradeCrystal> CRYSTAL_UPGRADE = ITEMS.register("upgrade_crystal", ItemUpgradeCrystal::new);
     public static final RegistryObject<ItemUpgradeObsidian2> OBSIDIAN2_UPGRADE = ITEMS.register("upgrade_obsidian2", ItemUpgradeObsidian2::new);
+    public static final RegistryObject<ItemUpgradeNetherite> NETHERITE_UPGRADE = ITEMS.register("upgrade_netherite", ItemUpgradeNetherite::new);
 
     public static final RegistryObject<ItemAugmentBlasting> BLASTING_AUGMENT = ITEMS.register("augment_blasting", ItemAugmentBlasting::new);
     public static final RegistryObject<ItemAugmentSmoking> SMOKING_AUGMENT = ITEMS.register("augment_smoking", ItemAugmentSmoking::new);
@@ -134,5 +144,6 @@ public class Registration {
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", ItemAugmentFuel::new);
 
     public static final RegistryObject<ItemHeater> ITEM_HEATER = ITEMS.register("item_heater", ItemHeater::new);
+
 
 }

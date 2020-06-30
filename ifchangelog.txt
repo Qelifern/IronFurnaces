@@ -1,3 +1,6 @@
+2.1.0
+Bump to 2.1.0 for 1.16.1 update
++Netherite Furnace
 2.0.3
 Fixed a bug that made Stone to Iron Upgrade not work
 2.0.2

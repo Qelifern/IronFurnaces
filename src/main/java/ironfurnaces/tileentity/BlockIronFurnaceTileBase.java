@@ -293,7 +293,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     @Override
-    public void read(CompoundNBT tag) {
+    public void func_230337_a_(BlockState state, CompoundNBT tag) {
         ItemStackHelper.loadAllItems(tag, this.inventory);
         this.furnaceBurnTime = tag.getInt("BurnTime");
         this.cookTime = tag.getInt("CookTime");
@@ -312,7 +312,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
          energy.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(energyTag));
          **/
 
-        super.read(tag);
+        super.func_230337_a_(state, tag);
     }
 
     @Override
