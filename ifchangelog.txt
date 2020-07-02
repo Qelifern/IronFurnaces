@@ -1,3 +1,5 @@
+2.1.1
++Hotfix for Blasting and Smoking Augments, they now work as intended
 2.1.0
 Bump to 2.1.0 for 1.16.1 update
 +Netherite Furnace

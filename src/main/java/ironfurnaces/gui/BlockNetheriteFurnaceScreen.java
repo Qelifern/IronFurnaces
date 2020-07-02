@@ -1,7 +1,9 @@
 package ironfurnaces.gui;
 
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockNetheriteFurnaceContainer;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -12,5 +14,6 @@ public class BlockNetheriteFurnaceScreen extends BlockIronFurnaceScreenBase<Bloc
 
     public BlockNetheriteFurnaceScreen(BlockNetheriteFurnaceContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
+        this.GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" +"textures/gui/furnace_netherite.png");
     }
 }
