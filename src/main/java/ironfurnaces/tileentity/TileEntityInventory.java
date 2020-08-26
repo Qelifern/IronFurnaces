@@ -45,6 +45,7 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
         return compound;
     }
 
+
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         return new SUpdateTileEntityPacket(pos, 1, this.getUpdateTag());

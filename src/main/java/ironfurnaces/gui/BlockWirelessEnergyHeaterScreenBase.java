@@ -35,8 +35,8 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
 
     @Override
     protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-        this.field_230706_i_.fontRenderer.func_238422_b_(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
-        this.field_230706_i_.fontRenderer.func_238422_b_(matrix, name, 7 + this.xSize / 2 - this.field_230706_i_.fontRenderer.func_238414_a_(name) / 2, 6, 4210752);
+        this.field_230706_i_.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
+        this.field_230706_i_.fontRenderer.func_243248_b(matrix, name, 7 + this.xSize / 2 - this.field_230706_i_.fontRenderer.func_238414_a_(name) / 2, 6, 4210752);
 
         int actualMouseX = mouseX - ((this.field_230708_k_ - this.xSize) / 2);
         int actualMouseY = mouseY - ((this.field_230709_l_ - this.ySize) / 2);

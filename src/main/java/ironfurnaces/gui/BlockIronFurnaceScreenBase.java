@@ -34,8 +34,8 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     @Override
     protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
         //drawString(Minecraft.getInstance().fontRenderer, "Energy: " + container.getEnergy(), 10, 10, 0xffffff);
-        this.field_230706_i_.fontRenderer.func_238422_b_(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
-        this.field_230706_i_.fontRenderer.func_238422_b_(matrix, name, 7 + this.xSize / 2 - this.field_230706_i_.fontRenderer.func_238414_a_(name) / 2, 6, 4210752);
+        this.field_230706_i_.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
+        this.field_230706_i_.fontRenderer.func_243248_b(matrix, name, 7 + this.xSize / 2 - this.field_230706_i_.fontRenderer.func_238414_a_(name) / 2, 6, 4210752);
     }
 
     @Override
