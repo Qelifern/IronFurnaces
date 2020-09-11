@@ -11,8 +11,6 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
-import static net.minecraftforge.fml.Logging.CORE;
-
 @Mod.EventBusSubscriber
 public class Config {
 
@@ -148,12 +146,12 @@ public class Config {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading configEvent) {
-        IronFurnaces.LOGGER.debug("Loaded {} config file {}", IronFurnaces.MOD_ID, configEvent.getConfig().getFileName());
+
     }
 
     @SubscribeEvent
     public static void onReload(final ModConfig.Reloading configEvent) {
-        IronFurnaces.LOGGER.fatal(CORE, "{} config just got changed on the file system!", IronFurnaces.MOD_ID);
+
     }
 
     @SubscribeEvent

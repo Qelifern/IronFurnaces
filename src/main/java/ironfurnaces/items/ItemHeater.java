@@ -29,7 +29,8 @@ public class ItemHeater extends Item {
             tooltip.add(new StringTextComponent("Y: " + stack.getTag().getInt("Y")));
             tooltip.add(new StringTextComponent("Z: " + stack.getTag().getInt("Z")));
         } else {
-            tooltip.add(new StringTextComponent("This Wireless Heater has yet to be bound to an energy source!\nOnly works from Iron tier and above."));
+            tooltip.add(new StringTextComponent("This Wireless Heater has yet to be bound to an energy source!"));
+            tooltip.add(new StringTextComponent("Only works from Iron tier and above."));
         }
     }
 }

@@ -60,6 +60,19 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase {
         world.addParticle(ParticleTypes.PORTAL, d0 + d5, d1 + d6 - 0.5D, d2 + d7, 0.0D, 0.0D, 0.0D);
         world.addParticle(ParticleTypes.PORTAL, d0 + d5, d1 + d6 - 0.5D, d2 + d7, 0.0D, 0.0D, 0.0D);
 
+        if (!(world.getTileEntity(pos) instanceof BlockIronFurnaceTileBase))
+        {
+            return;
+        }
+        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
+        if (tile.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get()) {
+            double lvt_5_1_ = (double) pos.getX() + 0.5D;
+            double lvt_7_1_ = (double) pos.getY();
+            double lvt_9_1_ = (double) pos.getZ() + 0.5D;
+
+            world.addParticle(ParticleTypes.PORTAL, lvt_5_1_, lvt_7_1_ + 1.1D, lvt_9_1_, 0.0D, 0.0D, 0.0D);
+        }
+
         super.animateTick(state, world, pos, rand);
     }
 

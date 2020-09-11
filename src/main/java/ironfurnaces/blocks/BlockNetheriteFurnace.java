@@ -35,22 +35,35 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
     @Override
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
         if (state.get(BlockStateProperties.LIT)) {
-            double d0 = (double) pos.getX() + 0.5D;
-            double d1 = (double) pos.getY();
-            double d2 = (double) pos.getZ() + 0.5D;
-            if (rand.nextDouble() < 0.1D) {
-                world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            if (!(world.getTileEntity(pos) instanceof BlockIronFurnaceTileBase))
+            {
+                return;
             }
+            BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
+            if (tile.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get()) {
+                super.animateTick(state, world, pos, rand);
+            } else if (tile.getStackInSlot(3).getItem() == Registration.BLASTING_AUGMENT.get()) {
+                super.animateTick(state, world, pos, rand);
+            }
+            else
+            {
+                double d0 = (double) pos.getX() + 0.5D;
+                double d1 = (double) pos.getY();
+                double d2 = (double) pos.getZ() + 0.5D;
+                if (rand.nextDouble() < 0.1D) {
+                    world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                }
 
-            Direction direction = state.get(BlockStateProperties.FACING);
-            Direction.Axis direction$axis = direction.getAxis();
-            double d3 = 0.52D;
-            double d4 = rand.nextDouble() * 0.6D - 0.3D;
-            double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
-            double d6 = rand.nextDouble() * 6.0D / 16.0D;
-            double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
-            world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
-            world.addParticle(ParticleTypes.field_239811_B_, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+                Direction direction = state.get(BlockStateProperties.FACING);
+                Direction.Axis direction$axis = direction.getAxis();
+                double d3 = 0.52D;
+                double d4 = rand.nextDouble() * 0.6D - 0.3D;
+                double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
+                double d6 = rand.nextDouble() * 6.0D / 16.0D;
+                double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
+                world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+                world.addParticle(ParticleTypes.field_239811_B_, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+            }
         }
     }
 

@@ -2,6 +2,8 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import ironfurnaces.blocks.BlockIronFurnaceBase;
+import ironfurnaces.init.Registration;
 import ironfurnaces.items.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -234,11 +236,31 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 if (state.get(BlockStateProperties.LIT) != this.furnaceBurnTime > 0) {
                     world.setBlockState(pos, state.with(BlockStateProperties.LIT, this.furnaceBurnTime > 0), 3);
                 }
+                if (state.get(BlockIronFurnaceBase.TYPE) != this.getStateType())
+                {
+                    world.setBlockState(pos, state.with(BlockIronFurnaceBase.TYPE, this.getStateType()), 3);
+                }
             }
         }
 
         if (flag1) {
             this.markDirty();
+        }
+    }
+
+    private int getStateType()
+    {
+        if (this.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get())
+        {
+            return 1;
+        }
+        else if (this.getStackInSlot(3).getItem() == Registration.BLASTING_AUGMENT.get())
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
         }
     }
 

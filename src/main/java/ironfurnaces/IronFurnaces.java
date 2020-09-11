@@ -24,8 +24,8 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "211";
-    public static final String MC_VERSION = "1.16.1";
+    public static final String VERSION = "230";
+    public static final String MC_VERSION = "1.16.2";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 

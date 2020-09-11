@@ -69,6 +69,7 @@ public class ItemUpgrade extends Item {
                     augment = ((IInventory) te).getStackInSlot(3).copy();
                 }
                 world.removeTileEntity(te.getPos());
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
                 world.setBlockState(pos, next, 3);
                 TileEntity newTe = world.getTileEntity(pos);
                 ((IInventory)newTe).setInventorySlotContents(0, input);

@@ -1,3 +1,11 @@
+2.4.0
+Bump to 2.4.0 for 1.16.3
+2.3.0
++Improved visuals
++Fixed item heater tooltip
++Fixed Stone To Iron Upgrade creating ghostblocks and causing crashes
+2.2.0
+Bump to 2.2.0 for 1.16.2 update
 2.1.1
 +Hotfix for Blasting and Smoking Augments, they now work as intended
 2.1.0
