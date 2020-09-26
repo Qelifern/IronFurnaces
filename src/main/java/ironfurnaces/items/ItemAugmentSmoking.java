@@ -22,7 +22,7 @@ public class ItemAugmentSmoking extends ItemAugment {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").func_230530_a_(Style.field_240709_b_.func_240712_a_((TextFormatting.GREEN))));
-        tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").func_230530_a_(Style.field_240709_b_.func_240712_a_(TextFormatting.DARK_RED)));
+        tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
+        tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
     }
 }

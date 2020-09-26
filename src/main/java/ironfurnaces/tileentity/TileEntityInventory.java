@@ -33,7 +33,7 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.func_230337_a_(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
         world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
     }
 
@@ -127,12 +127,12 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public void func_230337_a_(BlockState state, CompoundNBT compound) {
-        super.func_230337_a_(state, compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
         if (compound.contains("CustomName", 8)) {
-            this.name = ITextComponent.Serializer.func_240643_a_(compound.getString("CustomName"));
+            this.name = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
         }
     }
 

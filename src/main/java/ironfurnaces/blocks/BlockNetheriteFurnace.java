@@ -62,7 +62,7 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
                 double d6 = rand.nextDouble() * 6.0D / 16.0D;
                 double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
                 world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
-                world.addParticle(ParticleTypes.field_239811_B_, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
+                world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
             }
         }
     }

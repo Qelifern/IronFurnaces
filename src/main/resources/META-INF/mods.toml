@@ -53,3 +53,9 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
    versionRange="[7,)"
    ordering="NONE"
    side="BOTH"
+[[dependencies.ironfurnaces]]
+   modId="ftbguilibrary"
+   mandatory=false
+   versionRange="[1,)"
+   ordering="NONE"
+   side="BOTH"

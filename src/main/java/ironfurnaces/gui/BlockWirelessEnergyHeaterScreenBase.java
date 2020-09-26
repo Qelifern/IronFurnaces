@@ -27,38 +27,38 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
     }
 
     @Override
-    public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-        this.func_230446_a_(matrix);
-        super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
-        this.func_230459_a_(matrix, mouseX, mouseY);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrix);
+        super.render(matrix, mouseX, mouseY, partialTicks);
+        this.renderHoveredTooltip(matrix, mouseX, mouseY);
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-        this.field_230706_i_.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
-        this.field_230706_i_.fontRenderer.func_243248_b(matrix, name, 7 + this.xSize / 2 - this.field_230706_i_.fontRenderer.func_238414_a_(name) / 2, 6, 4210752);
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
+        this.minecraft.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
+        this.minecraft.fontRenderer.func_243248_b(matrix, name, 7 + this.xSize / 2 - this.minecraft.fontRenderer.getStringWidth(name.toString()) / 2, 6, 4210752);
 
-        int actualMouseX = mouseX - ((this.field_230708_k_ - this.xSize) / 2);
-        int actualMouseY = mouseY - ((this.field_230709_l_ - this.ySize) / 2);
+        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
+        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
         if(actualMouseX >= 65 && actualMouseX <= 111 && actualMouseY >= 64 && actualMouseY <= 76) {
             int energy = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergy();
             int capacity = ((BlockWirelessEnergyHeaterContainer)this.container).getCapacity();
-            this.func_238652_a_(matrix, new StringTextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
+            this.renderTooltip(matrix, new StringTextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
         }
 
     }
 
     @Override
-    protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.field_230706_i_.getTextureManager().bindTexture(GUI);
-        int relX = (this.field_230708_k_ - this.xSize) / 2;
-        int relY = (this.field_230709_l_ - this.ySize) / 2;
-        this.func_238474_b_(matrix, relX, relY, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bindTexture(GUI);
+        int relX = (this.width - this.xSize) / 2;
+        int relY = (this.height - this.ySize) / 2;
+        this.blit(matrix, relX, relY, 0, 0, this.xSize, this.ySize);
 
         int i;
         i = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergyScaled(46);
-        this.func_238474_b_(matrix, guiLeft + 65, guiTop + 64, 176, 0, i + 1, 12);
+        this.blit(matrix, guiLeft + 65, guiTop + 64, 176, 0, i + 1, 12);
     }
 
 }

@@ -1,5 +1,8 @@
 2.4.0
 Bump to 2.4.0 for 1.16.3
++Added Dependency FTB GUI Library (needed for JEI)
+not sure if this will be in other versions
++Fixed Diamond Furnace Front Texture
 2.3.0
 +Improved visuals
 +Fixed item heater tooltip
