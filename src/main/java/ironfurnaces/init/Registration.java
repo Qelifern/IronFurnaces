@@ -145,5 +145,8 @@ public class Registration {
 
     public static final RegistryObject<ItemHeater> ITEM_HEATER = ITEMS.register("item_heater", ItemHeater::new);
 
+    public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", ItemSpooky::new);
+    public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", ItemXmas::new);
+
 
 }

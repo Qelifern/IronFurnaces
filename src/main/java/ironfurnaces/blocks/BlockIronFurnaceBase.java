@@ -2,6 +2,8 @@ package ironfurnaces.blocks;
 
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemAugment;
+import ironfurnaces.items.ItemSpooky;
+import ironfurnaces.items.ItemXmas;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -35,10 +37,11 @@ import java.util.Random;
 public abstract class BlockIronFurnaceBase extends Block {
 
     public static final IntegerProperty TYPE = IntegerProperty.create("type", 0, 2);
+    public static final IntegerProperty JOVIAL = IntegerProperty.create("jovial", 0, 2);
 
     public BlockIronFurnaceBase(Properties properties) {
         super(properties);
-        this.setDefaultState(this.getDefaultState().with(BlockStateProperties.LIT, false).with(TYPE, 0));
+        this.setDefaultState(this.getDefaultState().with(BlockStateProperties.LIT, false).with(TYPE, 0).with(JOVIAL, 0));
     }
 
     @Nullable
@@ -52,7 +55,6 @@ public abstract class BlockIronFurnaceBase extends Block {
         return true;
     }
 
-
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
         return state.get(BlockStateProperties.LIT) ? 14 : 0;
@@ -60,7 +62,7 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-        return (BlockState) this.getDefaultState().with(BlockStateProperties.FACING, ctx.getPlacementHorizontalFacing().getOpposite());
+        return (BlockState) this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override
@@ -81,7 +83,13 @@ public abstract class BlockIronFurnaceBase extends Block {
             return ActionResultType.SUCCESS;
         } else {
             if (player.getHeldItem(handIn).getItem() instanceof ItemAugment && !(player.isCrouching())) {
-                this.interactAugment(world, pos, player, handIn, stack);
+                return this.interactAugment(world, pos, player, handIn, stack);
+            } else if (player.getHeldItem(handIn).getItem() instanceof ItemSpooky && !(player.isCrouching())) {
+                return this.interactJovial(world, pos, player, handIn, 1);
+            } else if (player.getHeldItem(handIn).getItem() instanceof ItemXmas && !(player.isCrouching())) {
+                return this.interactJovial(world, pos, player, handIn, 2);
+            } else if (player.getHeldItem(handIn).isEmpty() && player.isCrouching()) {
+                return this.interactJovial(world, pos, player, handIn, 0);
             } else {
                 this.interactWith(world, pos, player);
             }
@@ -108,6 +116,19 @@ public abstract class BlockIronFurnaceBase extends Block {
         if (!player.isCreative()) {
             player.getHeldItem(handIn).shrink(1);
         }
+        return ActionResultType.SUCCESS;
+    }
+    private ActionResultType interactJovial(World world, BlockPos pos, PlayerEntity player, Hand handIn, int jovial) {
+        if (!(player.getHeldItem(handIn).getItem() instanceof ItemSpooky
+                || !(player.getHeldItem(handIn).getItem() instanceof ItemXmas)
+                || !(player.getHeldItem(handIn).isEmpty()))) {
+            return ActionResultType.SUCCESS;
+        }
+        TileEntity te = world.getTileEntity(pos);
+        if (!(te instanceof BlockIronFurnaceTileBase)) {
+            return ActionResultType.SUCCESS;
+        }
+        ((BlockIronFurnaceTileBase)te).setJovial(jovial);
         return ActionResultType.SUCCESS;
     }
 
@@ -148,7 +169,7 @@ public abstract class BlockIronFurnaceBase extends Block {
                     world.playSound(lvt_5_1_, lvt_7_1_, lvt_9_1_, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                 }
 
-                Direction lvt_11_1_ = (Direction)state.get(BlockStateProperties.FACING);
+                Direction lvt_11_1_ = (Direction)state.get(BlockStateProperties.HORIZONTAL_FACING);
                 Direction.Axis lvt_12_1_ = lvt_11_1_.getAxis();
                 double lvt_13_1_ = 0.52D;
                 double lvt_15_1_ = rand.nextDouble() * 0.6D - 0.3D;
@@ -167,7 +188,7 @@ public abstract class BlockIronFurnaceBase extends Block {
                     world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                 }
 
-                Direction direction = state.get(BlockStateProperties.FACING);
+                Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
                 Direction.Axis direction$axis = direction.getAxis();
                 double d3 = 0.52D;
                 double d4 = rand.nextDouble() * 0.6D - 0.3D;
@@ -195,6 +216,6 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.FACING, BlockStateProperties.LIT, TYPE);
+        builder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT, TYPE, JOVIAL);
     }
 }

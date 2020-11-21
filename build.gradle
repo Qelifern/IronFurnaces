@@ -148,7 +148,7 @@ jar {
 dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
-    compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${project.ftb_gui_library_version}")
+    //compile fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${project.ftb_gui_library_version}")
 }
 
 // Example configuration to allow publishing using the maven-publish task

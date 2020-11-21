@@ -2,6 +2,6 @@
     "pack": {
         "description": "ironfurnaces resources",
         "pack_format": 6,
-        "_comment": "A pack_format of 6 requires json lang files. Note: we require v4 pack meta for all mods."
+        "_comment": "A pack_format of 6 requires json lang files. Note: we require v6 pack meta for all mods."
     }
 }

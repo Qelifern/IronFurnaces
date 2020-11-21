@@ -1,3 +1,9 @@
+2.5.0
+Bump to 2.5.0 for 1.16.4
++Fixed blockstate facing bug
++Fixed blockstate looking for up and down faces
++Halloween and Christmas decorations
++Removed required Dependency FTB GUI Library (NOT needed for JEI) made it optional
 2.4.0
 Bump to 2.4.0 for 1.16.3
 +Added Dependency FTB GUI Library (needed for JEI)

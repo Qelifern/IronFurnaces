@@ -40,6 +40,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     private static final int[] SLOTS_DOWN = new int[]{2, 1};
     private static final int[] SLOTS_HORIZONTAL = new int[]{1};
 
+    private int jovial = 0;
     private int timer;
     private int currentAugment = 0; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
     /**
@@ -240,6 +241,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 {
                     world.setBlockState(pos, state.with(BlockIronFurnaceBase.TYPE, this.getStateType()), 3);
                 }
+                if (state.get(BlockIronFurnaceBase.JOVIAL) != this.jovial)
+                {
+                    world.setBlockState(pos, state.with(BlockIronFurnaceBase.JOVIAL, this.jovial), 3);
+                }
             }
         }
 
@@ -323,6 +328,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         this.timer = 0;
         this.currentAugment = tag.getInt("Augment");
         this.currentItemBurnTime = getBurnTime(this.inventory.get(1));
+        this.jovial = tag.getInt("Jovial");
         int i = tag.getShort("RecipesUsedSize");
         for (int j = 0; j < i; ++j) {
             ResourceLocation resourcelocation = new ResourceLocation(tag.getString("RecipeLocation" + j));
@@ -344,6 +350,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         tag.putInt("CookTime", this.cookTime);
         tag.putInt("CookTimeTotal", this.totalCookTime);
         tag.putInt("Augment", this.currentAugment);
+        tag.putInt("Jovial", this.jovial);
         tag.putShort("RecipesUsedSize", (short) this.recipeUseCounts.size());
         int i = 0;
 
@@ -457,6 +464,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             ItemStack itemstack = this.inventory.get(1);
             return FurnaceTileEntity.isFuel(stack) || FurnaceFuelSlot.isBucket(stack) && itemstack.getItem() != Items.BUCKET || itemstack.getItem() instanceof ItemHeater;
         }
+    }
+
+    public void setJovial(int value)
+    {
+        this.jovial = value;
     }
 
     public void func_213995_d(PlayerEntity p_213995_1_) {

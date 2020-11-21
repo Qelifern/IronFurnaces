@@ -3,8 +3,10 @@ package ironfurnaces.blocks;
 import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import ironfurnaces.tileentity.BlockNetheriteFurnaceTile;
+import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FurnaceBlock;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -54,7 +56,7 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
                     world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                 }
 
-                Direction direction = state.get(BlockStateProperties.FACING);
+                Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
                 Direction.Axis direction$axis = direction.getAxis();
                 double d3 = 0.52D;
                 double d4 = rand.nextDouble() * 0.6D - 0.3D;

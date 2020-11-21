@@ -13,6 +13,8 @@
     "item.ironfurnaces.augment_smoking": "Augment: Smoking",
     "item.ironfurnaces.augment_speed": "Augment: Speed",
     "item.ironfurnaces.augment_fuel": "Augment: Fuel Efficiency",
+    "item.ironfurnaces.item_spooky": "Furnace Spooka-lator",
+    "item.ironfurnaces.item_xmas": "Furnace Wrapping Papers",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
