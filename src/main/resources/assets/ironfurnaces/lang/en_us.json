@@ -7,9 +7,14 @@
     "item.ironfurnaces.upgrade_obsidian": "Emerald to Obsidian Furnace Upgrade",
     "item.ironfurnaces.upgrade_crystal": "Diamond to Crystal Furnace Upgrade",
     "item.ironfurnaces.upgrade_obsidian2": "Crystal to Obsidian Furnace Upgrade",
-    "item.ironfurnaces.item_heater": "Wireless Heater",
+    "item.ironfurnaces.upgrade_netherite": "Obsidian to Netherite Furnace Upgrade",
+    "item.ironfurnaces.item_heater": "Wireless Heat Receiver",
     "item.ironfurnaces.augment_blasting": "Augment: Blasting",
     "item.ironfurnaces.augment_smoking": "Augment: Smoking",
+    "item.ironfurnaces.augment_speed": "Augment: Speed",
+    "item.ironfurnaces.augment_fuel": "Augment: Fuel Efficiency",
+    "item.ironfurnaces.item_spooky": "Furnace Spooka-lator",
+    "item.ironfurnaces.item_xmas": "Furnace Wrapping Papers",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
@@ -21,9 +26,18 @@
     "block.ironfurnaces.emerald_furnace": "Emerald Furnace",
     "block.ironfurnaces.obsidian_furnace": "Obsidian Furnace",
     "block.ironfurnaces.crystal_furnace": "Crystal Furnace",
+    "block.ironfurnaces.netherite_furnace": "Netherite Furnace",
     "block.ironfurnaces.copper_furnace": "Copper Furnace",
     "block.ironfurnaces.silver_furnace": "Silver Furnace",
-    "block.ironfurnaces.heater": "Wireless Heater",
+    "block.ironfurnaces.heater": "Wireless Heat Transmitter",
+
+    "_comment": "ATM",
+    "block.ironfurnaces.allthemodium_furnace": "AllTheModium Furnace",
+    "block.ironfurnaces.vibranium_furnace": "Vibranium Furnace",
+    "block.ironfurnaces.unobtanium_furnace": "Unobtanium Furnace",
+    "container.allthemodium_furnace": "AllTheModium Furnace",
+    "container.vibranium_furnace": "Vibranium Furnace",
+    "container.unobtanium_furnace": "Unobtanium Furnace",
 
 
 
@@ -34,6 +48,7 @@
     "container.emerald_furnace": "Emerald Furnace",
     "container.obsidian_furnace": "Obsidian Furnace",
     "container.crystal_furnace": "Crystal Furnace",
+    "container.netherite_furnace": "Netherite Furnace",
     "container.copper_furnace": "Copper Furnace",
     "container.silver_furnace": "Silver Furnace",
     "container.wireless_energy_heater": "Wireless Heater",

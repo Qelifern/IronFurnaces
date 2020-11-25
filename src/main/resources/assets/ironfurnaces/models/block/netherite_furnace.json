@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "ironfurnaces:block/netherite_furnace_side",
+        "front": "ironfurnaces:block/netherite_furnace_front",
+        "side": "ironfurnaces:block/netherite_furnace_side"
+    }
+}

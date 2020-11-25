@@ -1,3 +1,35 @@
+2.5.1
++All The Mods Furnaces!
++Allthemodium Furnace
++Vibranium Furnace
++Unobtanium Furnace
+2.5.0
+Bump to 2.5.0 for 1.16.4
++Fixed blockstate facing bug
++Fixed blockstate looking for up and down faces
++Halloween and Christmas decorations
++Removed required Dependency FTB GUI Library (NOT needed for JEI) made it optional
+2.4.0
+Bump to 2.4.0 for 1.16.3
++Added Dependency FTB GUI Library (needed for JEI)
+not sure if this will be in other versions
++Fixed Diamond Furnace Front Texture
+2.3.0
++Improved visuals
++Fixed item heater tooltip
++Fixed Stone To Iron Upgrade creating ghostblocks and causing crashes
+2.2.0
+Bump to 2.2.0 for 1.16.2 update
+2.1.1
++Hotfix for Blasting and Smoking Augments, they now work as intended
+2.1.0
+Bump to 2.1.0 for 1.16.1 update
++Netherite Furnace
+2.0.3
+Fixed a bug that made Stone to Iron Upgrade not work
+2.0.2
++Speed Augment
++Fuel Eff. Augment
 2.0.0
 Bump to 2.0 for massive refactoring from 1.13.2 and 1.14.4
 +Crystal Furnace
