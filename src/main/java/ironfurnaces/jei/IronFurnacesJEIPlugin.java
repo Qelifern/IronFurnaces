@@ -46,6 +46,15 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.NETHERITE_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.COPPER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
+			if (Config.enableATMFurnaces.get())
+			{
+				registry.addRecipeCatalyst(new ItemStack(Registration.ALLTHEMODIUM_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
+				registry.addRecipeCatalyst(new ItemStack(Registration.VIBRANIUM_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
+				registry.addRecipeCatalyst(new ItemStack(Registration.UNOBTANIUM_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
+				registry.addRecipeCatalyst(new ItemStack(Registration.ALLTHEMODIUM_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
+				registry.addRecipeCatalyst(new ItemStack(Registration.VIBRANIUM_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
+				registry.addRecipeCatalyst(new ItemStack(Registration.UNOBTANIUM_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
+			}
 		}
 	}
 
@@ -61,6 +70,12 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeClickArea(BlockNetheriteFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockCopperFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockSilverFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
+			if (Config.enableATMFurnaces.get())
+			{
+				registry.addRecipeClickArea(BlockAllthemodiumFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
+				registry.addRecipeClickArea(BlockVibraniumFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
+				registry.addRecipeClickArea(BlockUnobtaniumFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
+			}
 		}
 	}
 

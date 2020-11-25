@@ -70,7 +70,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         ItemStack stack = this.getStackInSlot(3);
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof ItemAugmentSpeed || stack.getItem() instanceof ItemAugmentBlasting || stack.getItem() instanceof ItemAugmentSmoking) {
-                return getCookTimeConfig() / 2;
+                return getCookTimeConfig() > 1 ? getCookTimeConfig() / 2 : getCookTimeConfig();
             }
             if (stack.getItem() instanceof ItemAugmentFuel)
             {

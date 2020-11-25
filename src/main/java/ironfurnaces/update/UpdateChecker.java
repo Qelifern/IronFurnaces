@@ -25,7 +25,7 @@ public class UpdateChecker {
 
 
     public static final String DOWNLOAD_LINK = "https://www.curseforge.com/minecraft/mc-mods/iron-furnaces";
-    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.16.3/ifchangelog.txt";
+    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/IronFurnaces/" + IronFurnaces.MC_VERSION + "/ifchangelog.txt";
     public static boolean checkFailed;
     public static boolean needsUpdateNotify;
     public static int updateVersionInt;

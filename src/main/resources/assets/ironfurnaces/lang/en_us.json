@@ -31,6 +31,14 @@
     "block.ironfurnaces.silver_furnace": "Silver Furnace",
     "block.ironfurnaces.heater": "Wireless Heat Transmitter",
 
+    "_comment": "ATM",
+    "block.ironfurnaces.allthemodium_furnace": "AllTheModium Furnace",
+    "block.ironfurnaces.vibranium_furnace": "Vibranium Furnace",
+    "block.ironfurnaces.unobtanium_furnace": "Unobtanium Furnace",
+    "container.allthemodium_furnace": "AllTheModium Furnace",
+    "container.vibranium_furnace": "Vibranium Furnace",
+    "container.unobtanium_furnace": "Unobtanium Furnace",
+
 
 
     "_comment": "GUI",
