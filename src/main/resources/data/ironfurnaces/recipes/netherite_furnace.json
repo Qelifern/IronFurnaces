@@ -10,7 +10,7 @@
       "item": "minecraft:magma_cream"
     },
     "X": {
-       "item": "ironfurnaces:obsidian_furnace"
+      "tag": "forge:furnaces/obsidian"
     },
     "S": {
       "tag": "minecraft:soul_fire_base_blocks"

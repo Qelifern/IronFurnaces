@@ -10,7 +10,7 @@
       "tag": "forge:obsidian"
     },
     "X": {
-       "item": "ironfurnaces:crystal_furnace"
+      "tag": "forge:furnaces/crystal"
     },
     "Y": {
       "tag": "forge:rods/blaze"

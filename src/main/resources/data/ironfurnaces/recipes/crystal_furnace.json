@@ -10,7 +10,7 @@
       "tag": "forge:glass"
     },
     "X": {
-       "item": "ironfurnaces:diamond_furnace"
+      "tag": "forge:furnaces/crystal"
     },
     "E": {
       "item": "minecraft:ender_eye"

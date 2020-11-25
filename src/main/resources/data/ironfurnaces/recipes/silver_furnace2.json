@@ -10,7 +10,7 @@
       "tag": "forge:ingots/silver"
     },
     "X": {
-       "item": "ironfurnaces:copper_furnace"
+      "tag": "forge:furnaces/copper"
     }
   },
   "result": {

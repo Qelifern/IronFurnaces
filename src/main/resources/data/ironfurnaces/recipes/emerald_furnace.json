@@ -10,7 +10,7 @@
       "tag": "forge:gems/emerald"
     },
     "X": {
-       "item": "ironfurnaces:diamond_furnace"
+      "tag": "forge:furnaces/diamond"
     }
   },
   "result": {

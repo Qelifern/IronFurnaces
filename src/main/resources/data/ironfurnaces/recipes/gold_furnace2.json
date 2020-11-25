@@ -10,7 +10,7 @@
       "tag": "forge:storage_blocks/gold"
     },
     "X": {
-       "item": "ironfurnaces:silver_furnace"
+       "tag": "forge:furnaces/silver"
     },
     "#": {
       "tag": "forge:glass"

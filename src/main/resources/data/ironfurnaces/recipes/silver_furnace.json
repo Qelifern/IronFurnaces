@@ -10,7 +10,7 @@
       "tag": "forge:ingots/silver"
     },
     "X": {
-       "item": "ironfurnaces:iron_furnace"
+      "tag": "forge:furnaces/iron"
     },
     "G": {
       "tag": "forge:glass"

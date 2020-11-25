@@ -10,7 +10,7 @@
       "tag": "forge:ingots/gold"
     },
     "X": {
-       "item": "ironfurnaces:iron_furnace"
+       "tag": "forge:furnaces/iron"
     },
     "Y": {
       "tag": "forge:storage_blocks/gold"

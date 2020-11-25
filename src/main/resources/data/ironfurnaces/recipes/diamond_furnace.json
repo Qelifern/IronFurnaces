@@ -10,7 +10,7 @@
       "tag": "forge:gems/diamond"
     },
     "X": {
-       "item": "ironfurnaces:gold_furnace"
+      "tag": "forge:furnaces/gold"
     },
     "Y": {
       "tag": "forge:storage_blocks/diamond"
