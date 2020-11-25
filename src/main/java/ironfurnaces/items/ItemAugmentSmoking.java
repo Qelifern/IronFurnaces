@@ -15,16 +15,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class ItemAugmentSmoking extends Item {
+public class ItemAugmentSmoking extends ItemAugment {
 
-    public ItemAugmentSmoking() {
-        super(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1));
-    }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").setStyle(new Style().setColor(TextFormatting.GREEN)));
-        tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
+        tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
     }
 }

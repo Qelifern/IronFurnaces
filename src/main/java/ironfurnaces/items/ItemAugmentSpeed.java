@@ -12,14 +12,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class ItemAugmentBlasting extends ItemAugment {
+public class ItemAugmentSpeed extends ItemAugment {
 
-
+    
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for blasting recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
-        tooltip.add(new StringTextComponent("-Only allows for blasting recipes.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
+        tooltip.add(new StringTextComponent("+Halves the cooktime for all recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
+        tooltip.add(new StringTextComponent("-Uses up twice the amount of fuel.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
     }
 }

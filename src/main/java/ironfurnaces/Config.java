@@ -11,13 +11,12 @@ import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
-import static net.minecraftforge.fml.Logging.CORE;
-
 @Mod.EventBusSubscriber
 public class Config {
 
     public static final String CATEGORY_GENERAL = "general";
     public static final String CATEGORY_FURNACE = "furnaces";
+    public static final String CATEGORY_MODDED_FURNACE = "modded_furnaces";
     public static final String CATEGORY_JEI = "jei";
     public static final String CATEGORY_UPDATES = "updates";
 
@@ -30,6 +29,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue emeraldFurnaceSpeed;
     public static ForgeConfigSpec.IntValue obsidianFurnaceSpeed;
     public static ForgeConfigSpec.IntValue crystalFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue netheriteFurnaceSpeed;
     public static ForgeConfigSpec.IntValue copperFurnaceSpeed;
     public static ForgeConfigSpec.IntValue silverFurnaceSpeed;
     public static ForgeConfigSpec.BooleanValue enableJeiPlugin;
@@ -37,6 +37,13 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue enableJeiClickArea;
 
     public static ForgeConfigSpec.BooleanValue checkUpdates;
+
+    //ALLTHEMODS
+    public static ForgeConfigSpec.BooleanValue enableATMFurnaces;
+    public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue allthemodiumFurnaceSpeed;
+
 
     static {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
@@ -48,6 +55,12 @@ public class Config {
         COMMON_BUILDER.comment("Furnace Settings").push(CATEGORY_FURNACE);
 
         setupFurnacesConfig(COMMON_BUILDER, CLIENT_BUILDER);
+
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Modded Furnace Settings").push(CATEGORY_MODDED_FURNACE);
+
+        setupModdedFurnacesConfig(COMMON_BUILDER, CLIENT_BUILDER);
 
         COMMON_BUILDER.pop();
 
@@ -95,6 +108,10 @@ public class Config {
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 40")
                 .defineInRange("crystal_furnace.speed", 40, 2, 72000);
 
+        netheriteFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
+                .defineInRange("netherite_furnace.speed", 5, 2, 72000);
+
         copperFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 180")
                 .defineInRange("copper_furnace.speed", 180, 2, 72000);
@@ -102,6 +119,22 @@ public class Config {
         silverFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 140")
                 .defineInRange("silver_furnace.speed", 140, 2, 72000);
+
+    }
+
+    private static void setupModdedFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+
+        enableATMFurnaces = COMMON_BUILDER
+                .comment(" Enable or disable the ATM Furnaces (requires restart).\n Default: false").define("atm.enable", false);
+        allthemodiumFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
+                .defineInRange("allthemodium_furnace.speed", 5, 1, 72000);
+        vibraniumFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 3")
+                .defineInRange("vibranium_furnace.speed", 3, 1, 72000);
+        unobtaniumFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 1")
+                .defineInRange("unobtanium_furnace.speed", 1, 1, 72000);
 
     }
 
@@ -143,12 +176,12 @@ public class Config {
 
     @SubscribeEvent
     public static void onLoad(final ModConfig.Loading configEvent) {
-        IronFurnaces.LOGGER.debug("Loaded {} config file {}", IronFurnaces.MOD_ID, configEvent.getConfig().getFileName());
+
     }
 
     @SubscribeEvent
     public static void onReload(final ModConfig.Reloading configEvent) {
-        IronFurnaces.LOGGER.fatal(CORE, "{} config just got changed on the file system!", IronFurnaces.MOD_ID);
+
     }
 
     @SubscribeEvent

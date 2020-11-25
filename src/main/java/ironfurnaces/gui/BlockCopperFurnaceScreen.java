@@ -1,7 +1,6 @@
 package ironfurnaces.gui;
 
 import ironfurnaces.container.BlockCopperFurnaceContainer;
-import ironfurnaces.container.BlockObsidianFurnaceContainer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;

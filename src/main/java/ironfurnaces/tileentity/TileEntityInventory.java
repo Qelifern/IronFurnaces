@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -32,7 +33,7 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(pkt.getNbtCompound());
+        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
         world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
     }
 
@@ -43,6 +44,7 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
         this.write(compound);
         return compound;
     }
+
 
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
@@ -125,12 +127,12 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
         if (compound.contains("CustomName", 8)) {
-            this.name = ITextComponent.Serializer.fromJson(compound.getString("CustomName"));
+            this.name = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
         }
     }
 

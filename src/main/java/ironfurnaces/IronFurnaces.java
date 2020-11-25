@@ -7,6 +7,7 @@ import ironfurnaces.proxy.ClientProxy;
 import ironfurnaces.proxy.IProxy;
 import ironfurnaces.proxy.ServerProxy;
 import ironfurnaces.update.UpdateChecker;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -23,17 +24,23 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "200";
-    public static final String MC_VERSION = "1.15.2";
+    public static final String VERSION = "251";
+    public static final String MC_VERSION = "1.16.4";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
     public static final Logger LOGGER = LogManager.getLogger();
 
+    public static IEventBus MOD_EVENT_BUS;
+
     public IronFurnaces() {
+
+        MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.COMMON_CONFIG);
+
+        MOD_EVENT_BUS.register(Registration.class);
 
         Registration.init();
 

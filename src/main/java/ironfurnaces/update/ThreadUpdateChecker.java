@@ -23,24 +23,15 @@ public class ThreadUpdateChecker extends Thread {
     public void run() {
         IronFurnaces.LOGGER.info("Starting Update Check...");
         try {
-            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/1.15.2/update/updateVersions.properties");
+            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/" + IronFurnaces.MC_VERSION + "/update/updateVersions.properties");
             Properties updateProperties = new Properties();
             updateProperties.load(new InputStreamReader(newestURL.openStream()));
 
-            int highest = 0;
-            String highestString = "";
+            String currentMcVersion = IronFurnaces.MC_VERSION;
+            String newestVersionProp = updateProperties.getProperty(currentMcVersion);
 
-            for(String updateMC : updateProperties.stringPropertyNames()){
-                String updateVersion = updateProperties.getProperty(updateMC);
-                int update = Integer.parseInt(updateVersion);
-                if(highest < update){
-                    highest = update;
-                    highestString = updateMC+"-release"+updateVersion;
-                }
-            }
-
-            UpdateChecker.updateVersionInt = highest;
-            UpdateChecker.updateVersionString = highestString;
+            UpdateChecker.updateVersionInt = Integer.parseInt(newestVersionProp);
+            UpdateChecker.updateVersionString = currentMcVersion + "-release" + newestVersionProp;
 
             int clientVersion = Integer.parseInt(IronFurnaces.VERSION);
             if (UpdateChecker.updateVersionInt > clientVersion) {
