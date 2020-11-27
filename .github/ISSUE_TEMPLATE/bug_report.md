@@ -23,3 +23,8 @@ A clear and concise description of what you expected to happen.
 - **Iron Furnaces**: x.x.x
 - **Forge**: x.x.x
 - **Fabric**: x.x.x
+
+<details>
+  <summary>Crashlog</summary>
+  Log goes here
+<details>
