@@ -13,6 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -123,7 +125,7 @@ public class Registration {
 
 
     public static RegistryObject<BlockAllthemodiumFurnace> ALLTHEMODIUM_FURNACE = BLOCKS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, BlockAllthemodiumFurnace::new);
-    public static final RegistryObject<Item> ALLTHEMODIUM_FURNACE_ITEM = ITEMS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> new BlockItem(ALLTHEMODIUM_FURNACE.get(), Config.enableATMFurnaces.get() ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
+    public static final RegistryObject<Item> ALLTHEMODIUM_FURNACE_ITEM = ITEMS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> new BlockItem(ALLTHEMODIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<TileEntityType<BlockAllthemodiumFurnaceTile>> ALLTHEMODIUM_FURNACE_TILE = TILES.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> TileEntityType.Builder.create(BlockAllthemodiumFurnaceTile::new, ALLTHEMODIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<ContainerType<BlockAllthemodiumFurnaceContainer>> ALLTHEMODIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {
@@ -133,7 +135,7 @@ public class Registration {
 
 
     public static final RegistryObject<BlockVibraniumFurnace> VIBRANIUM_FURNACE = BLOCKS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, BlockVibraniumFurnace::new);
-    public static final RegistryObject<Item> VIBRANIUM_FURNACE_ITEM = ITEMS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> new BlockItem(VIBRANIUM_FURNACE.get(), Config.enableATMFurnaces.get() ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
+    public static final RegistryObject<Item> VIBRANIUM_FURNACE_ITEM = ITEMS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> new BlockItem(VIBRANIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<TileEntityType<BlockVibraniumFurnaceTile>> VIBRANIUM_FURNACE_TILE = TILES.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> TileEntityType.Builder.create(BlockVibraniumFurnaceTile::new, VIBRANIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<ContainerType<BlockVibraniumFurnaceContainer>> VIBRANIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {
@@ -142,7 +144,7 @@ public class Registration {
     }));
 
     public static final RegistryObject<BlockUnobtaniumFurnace> UNOBTANIUM_FURNACE = BLOCKS.register(BlockUnobtaniumFurnace.UNOBTANIUM_FURNACE, BlockUnobtaniumFurnace::new);
-    public static final RegistryObject<Item> UNOBTANIUM_FURNACE_ITEM = ITEMS.register(BlockUnobtaniumFurnace.UNOBTANIUM_FURNACE, () -> new BlockItem(UNOBTANIUM_FURNACE.get(), Config.enableATMFurnaces.get() ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
+    public static final RegistryObject<Item> UNOBTANIUM_FURNACE_ITEM = ITEMS.register(BlockUnobtaniumFurnace.UNOBTANIUM_FURNACE, () -> new BlockItem(UNOBTANIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<TileEntityType<BlockUnobtaniumFurnaceTile>> UNOBTANIUM_FURNACE_TILE = TILES.register(BlockUnobtaniumFurnace.UNOBTANIUM_FURNACE, () -> TileEntityType.Builder.create(BlockUnobtaniumFurnaceTile::new, UNOBTANIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<ContainerType<BlockUnobtaniumFurnaceContainer>> UNOBTANIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockUnobtaniumFurnace.UNOBTANIUM_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {

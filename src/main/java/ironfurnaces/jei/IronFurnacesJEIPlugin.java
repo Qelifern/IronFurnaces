@@ -8,10 +8,13 @@ import ironfurnaces.init.Registration;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 
 @JeiPlugin
 public class IronFurnacesJEIPlugin implements IModPlugin {
@@ -19,6 +22,11 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 	@Override
 	public ResourceLocation getPluginUid() {
 		return new ResourceLocation(IronFurnaces.MOD_ID, "plugin_" + IronFurnaces.MOD_ID);
+	}
+
+	@Override
+	public void registerAdvanced(IAdvancedRegistration registration) {
+
 	}
 
 	@Override
@@ -46,7 +54,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.NETHERITE_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.COPPER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
-			if (Config.enableATMFurnaces.get())
+			if (ModList.get().isLoaded("allthemodium"))
 			{
 				registry.addRecipeCatalyst(new ItemStack(Registration.ALLTHEMODIUM_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 				registry.addRecipeCatalyst(new ItemStack(Registration.VIBRANIUM_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
@@ -70,7 +78,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeClickArea(BlockNetheriteFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockCopperFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 			registry.addRecipeClickArea(BlockSilverFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
-			if (Config.enableATMFurnaces.get())
+			if (ModList.get().isLoaded("allthemodium"))
 			{
 				registry.addRecipeClickArea(BlockAllthemodiumFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);
 				registry.addRecipeClickArea(BlockVibraniumFurnaceScreen.class, 79, 35, 24, 17, VanillaRecipeCategoryUid.FURNACE, VanillaRecipeCategoryUid.FUEL);

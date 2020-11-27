@@ -39,7 +39,6 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue checkUpdates;
 
     //ALLTHEMODS
-    public static ForgeConfigSpec.BooleanValue enableATMFurnaces;
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue allthemodiumFurnaceSpeed;
@@ -124,8 +123,6 @@ public class Config {
 
     private static void setupModdedFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
 
-        enableATMFurnaces = COMMON_BUILDER
-                .comment(" Enable or disable the ATM Furnaces (requires restart).\n Default: false").define("atm.enable", false);
         allthemodiumFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
                 .defineInRange("allthemodium_furnace.speed", 5, 1, 72000);
