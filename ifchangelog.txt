@@ -1,3 +1,5 @@
+2.5.2
++Fixed crystal furnace recipe
 2.5.1
 +All The Mods Furnaces!
 +Allthemodium Furnace
