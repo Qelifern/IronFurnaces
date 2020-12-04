@@ -18,24 +18,16 @@ public class BlockObsidianFurnaceTile extends BlockIronFurnaceTileBase {
     protected int getCookTimeConfig()
     {
         int i = Config.obsidianFurnaceSpeed.get();
-        if (this.recipeType != IRecipeType.SMELTING)
+        int j = this.recipeType != null && this.recipeType != IRecipeType.SMELTING ? 2 : 1;
+        if (this.world != null)
         {
-            if (this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
-                    .orElse((i / 2))
-                    < (i / 2))
+            int k = this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime).orElse((i / j));
+            if (this.recipeType != null && k < (i / j))
             {
-                return this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
-                        .orElse((i / 2));
+                return k;
             }
         }
-        else if (this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
-                .orElse(i)
-                < i)
-        {
-            return this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
-                    .orElse(i);
-        }
-        return i;
+        return i / j;
     }
 
     @Override
