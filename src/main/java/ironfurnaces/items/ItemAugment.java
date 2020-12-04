@@ -17,7 +17,7 @@ public class ItemAugment extends Item {
 
 
     public ItemAugment() {
-        super(new Properties().group(ModSetup.ITEM_GROUP));
+        super(new Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1));
     }
 
     @OnlyIn(Dist.CLIENT)

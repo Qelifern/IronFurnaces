@@ -56,7 +56,7 @@ public class SlotIronFurnace extends Slot {
     protected void onCrafting(ItemStack stack) {
         stack.onCrafting(this.player.world, this.player, this.removeCount);
         if (!this.player.world.isRemote && this.inventory instanceof BlockIronFurnaceTileBase) {
-            ((BlockIronFurnaceTileBase)this.inventory).func_213995_d(this.player);
+            ((BlockIronFurnaceTileBase)this.inventory).unlockRecipes(this.player);
         }
 
         this.removeCount = 0;

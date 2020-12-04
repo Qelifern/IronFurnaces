@@ -8,6 +8,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
@@ -27,6 +28,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
     protected final World world;
+    private final IRecipeType<? extends AbstractCookingRecipe> recipeType;
 
     public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         this(containerType, windowId, world, pos, playerInventory, player, new IntArray(4));
@@ -35,6 +37,8 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
         super(containerType, windowId);
         this.te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
+        this.recipeType = te.recipeType;
+        assertInventorySize(this.te, 4);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         this.world = playerInventory.player.world;
@@ -47,22 +51,6 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
         this.addSlot(new SlotIronFurnaceAugment(te, 3, 26, 35));
         layoutPlayerInventorySlots(8, 84);
-
-
-
-        /**
-        func_216958_a(new IntReferenceHolder() {
-            @Override
-            public int get() {
-                return getEnergy();
-            }
-
-            @Override
-            public void set(int value) {
-                tileEntity.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> ((CustomEnergyStorage)h).setEnergy(value));
-            }
-        });
-         **/
     }
 
 
@@ -73,19 +61,19 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
     @OnlyIn(Dist.CLIENT)
     public int getCookScaled(int pixels) {
-        int lvt_1_1_ = this.fields.get(2);
-        int lvt_2_1_ = this.fields.get(3);
-        return lvt_2_1_ != 0 && lvt_1_1_ != 0 ? lvt_1_1_ * pixels / lvt_2_1_ : 0;
+        int i = this.fields.get(2);
+        int j = this.fields.get(3);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public int getBurnScaled(int pixels) {
-        int lvt_1_1_ = this.fields.get(1);
-        if (lvt_1_1_ == 0) {
-            lvt_1_1_ = 200;
+    public int getBurnLeftScaled(int pixels) {
+        int i = this.fields.get(1);
+        if (i == 0) {
+            i = 200;
         }
 
-        return this.fields.get(0) * pixels / lvt_1_1_;
+        return this.fields.get(0) * pixels / i;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -95,12 +83,6 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.te.fields.set(id, data);
     }
 
-    /**
-    public int getEnergy() {
-        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
-    }
-     **/
-
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -109,13 +91,13 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
             if (index == 2) {
-                if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
+                if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0 && index != 3) {
-                if (this.func_217057_a(itemstack1)) {
+                if (this.hasRecipe(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -123,14 +105,18 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 4 && index < 30) {
-                    if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
+                } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 30 && index < 39 && !this.mergeItemStack(itemstack1, 4, 30, false)) {
+                } else if (index >= 4 && index < 31) {
+                    if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 4, 39, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -177,8 +163,8 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
-    protected boolean func_217057_a(ItemStack p_217057_1_) {
-        return this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(new ItemStack[]{p_217057_1_}), this.world).isPresent();
-    }
 
+    protected boolean hasRecipe(ItemStack stack) {
+        return this.world.getRecipeManager().getRecipe((IRecipeType)this.recipeType, new Inventory(stack), this.world).isPresent();
+    }
 }

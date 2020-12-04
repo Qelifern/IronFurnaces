@@ -6,6 +6,8 @@ import ironfurnaces.init.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 
 public class BlockAllthemodiumFurnaceTile extends BlockIronFurnaceTileBase {
     public BlockAllthemodiumFurnaceTile() {
@@ -13,9 +15,30 @@ public class BlockAllthemodiumFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected int getCookTimeConfig() {
-        return Config.allthemodiumFurnaceSpeed.get();
+    protected int getCookTimeConfig()
+    {
+        int i = Config.allthemodiumFurnaceSpeed.get();
+        if (this.recipeType != IRecipeType.SMELTING)
+        {
+            if (this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
+                    .orElse((i / 2))
+                    < (i / 2))
+            {
+                return this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
+                        .orElse((i / 2));
+            }
+        }
+        else if (this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
+                .orElse(i)
+                < i)
+        {
+            return this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime)
+                    .orElse(i);
+        }
+        return i;
     }
+
+
 
     @Override
     public String IgetName() {

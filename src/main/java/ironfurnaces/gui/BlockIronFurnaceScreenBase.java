@@ -47,7 +47,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         this.blit(matrix, relX, relY, 0, 0, this.xSize, this.ySize);
         int i;
         if (((BlockIronFurnaceContainerBase)this.container).isBurning()) {
-            i = ((BlockIronFurnaceContainerBase)this.container).getBurnScaled(13);
+            i = ((BlockIronFurnaceContainerBase)this.container).getBurnLeftScaled(13);
             this.blit(matrix, guiLeft + 56, guiTop + 36 + 12 - i, 176, 12 - i, 14, i + 1);
         }
 
