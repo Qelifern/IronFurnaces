@@ -1,12 +1,9 @@
 package ironfurnaces.blocks;
 
-import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -29,8 +26,8 @@ public class BlockWirelessEnergyHeater extends Block {
 
     public static final String HEATER = "heater";
 
-    public BlockWirelessEnergyHeater() {
-        super(Properties.from(Blocks.IRON_BLOCK));
+    public BlockWirelessEnergyHeater(Properties properties) {
+        super(properties);
         this.setDefaultState(this.getDefaultState());
     }
 
@@ -91,23 +88,5 @@ public class BlockWirelessEnergyHeater extends Block {
 
             super.onReplaced(state, world, pos, oldState, p_196243_5_);
         }
-    }
-
-    @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.isCreative()) {
-            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
-            if (te.hasCustomName() || te.getEnergy() > 0) {
-                ItemStack itemstack = new ItemStack(Registration.HEATER.get());
-                if (te.hasCustomName()) {
-                    itemstack.setDisplayName(te.getName());
-                }
-                itemstack.getOrCreateTag().putInt("Energy", te.getEnergy());
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
-            } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.HEATER.get())));
-            }
-        }
-        super.onBlockHarvested(world, pos, state, player);
     }
 }

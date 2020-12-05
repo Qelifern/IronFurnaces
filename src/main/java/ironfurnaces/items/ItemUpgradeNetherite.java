@@ -3,7 +3,7 @@ package ironfurnaces.items;
 public class ItemUpgradeNetherite extends ItemUpgrade {
 
 
-    public ItemUpgradeNetherite() {
-        super(new int[]{0, 0, 0, 0, 0, 0, 0, 1});
+    public ItemUpgradeNetherite(Properties properties) {
+        super(properties, new int[]{0, 0, 0, 0, 0, 0, 0, 1});
     }
 }

@@ -29,8 +29,8 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
 
     public static final String NETHERITE_FURNACE = "netherite_furnace";
 
-    public BlockNetheriteFurnace() {
-        super(Properties.from(Blocks.DIAMOND_BLOCK).hardnessAndResistance(50.0F, 6000.0F));
+    public BlockNetheriteFurnace(Properties properties) {
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -67,21 +67,6 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
                 world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
             }
         }
-    }
-
-    @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.isCreative()) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
-            if (te.hasCustomName()) {
-                ItemStack itemstack = new ItemStack(Registration.NETHERITE_FURNACE.get());
-                itemstack.setDisplayName(te.getName());
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
-            } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.NETHERITE_FURNACE.get())));
-            }
-        }
-        super.onBlockHarvested(world, pos, state, player);
     }
 
     @Override

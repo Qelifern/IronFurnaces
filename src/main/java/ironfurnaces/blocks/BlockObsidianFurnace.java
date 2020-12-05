@@ -19,23 +19,8 @@ public class BlockObsidianFurnace extends BlockIronFurnaceBase {
 
     public static final String OBSIDIAN_FURNACE = "obsidian_furnace";
 
-    public BlockObsidianFurnace() {
-        super(Properties.from(Blocks.OBSIDIAN).hardnessAndResistance(50.0F, 6000.0F));
-    }
-
-    @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.isCreative()) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
-            if (te.hasCustomName()) {
-                ItemStack itemstack = new ItemStack(Registration.OBSIDIAN_FURNACE.get());
-                itemstack.setDisplayName(te.getName());
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
-            } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.OBSIDIAN_FURNACE.get())));
-            }
-        }
-        super.onBlockHarvested(world, pos, state, player);
+    public BlockObsidianFurnace(Properties properties) {
+        super(properties);
     }
 
     @Override

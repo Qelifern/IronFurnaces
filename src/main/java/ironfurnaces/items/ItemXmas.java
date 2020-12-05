@@ -16,8 +16,8 @@ import java.util.List;
 public class ItemXmas extends Item {
 
 
-    public ItemXmas() {
-        super(new Properties().group(ModSetup.ITEM_GROUP));
+    public ItemXmas(Properties properties) {
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)

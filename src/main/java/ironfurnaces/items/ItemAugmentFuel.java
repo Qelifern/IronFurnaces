@@ -14,6 +14,9 @@ import java.util.List;
 
 public class ItemAugmentFuel extends ItemAugment {
 
+    public ItemAugmentFuel(Properties properties) {
+        super(properties);
+    }
     
     @OnlyIn(Dist.CLIENT)
     @Override

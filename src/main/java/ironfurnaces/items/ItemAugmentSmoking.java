@@ -17,6 +17,10 @@ import java.util.List;
 
 public class ItemAugmentSmoking extends ItemAugment {
 
+    public ItemAugmentSmoking(Properties properties) {
+        super(properties);
+    }
+
 
     @OnlyIn(Dist.CLIENT)
     @Override

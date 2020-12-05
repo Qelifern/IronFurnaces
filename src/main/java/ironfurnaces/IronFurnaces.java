@@ -3,12 +3,8 @@ package ironfurnaces;
 import ironfurnaces.init.ClientSetup;
 import ironfurnaces.init.ModSetup;
 import ironfurnaces.init.Registration;
-import ironfurnaces.proxy.ClientProxy;
-import ironfurnaces.proxy.IProxy;
-import ironfurnaces.proxy.ServerProxy;
 import ironfurnaces.update.UpdateChecker;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -24,10 +20,8 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "253";
+    public static final String VERSION = "254";
     public static final String MC_VERSION = "1.16.4";
-
-    public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
     public static final Logger LOGGER = LogManager.getLogger();
 

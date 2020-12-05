@@ -15,6 +15,10 @@ import java.util.List;
 public class ItemAugmentBlasting extends ItemAugment {
 
 
+    public ItemAugmentBlasting(Properties properties) {
+        super(properties);
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

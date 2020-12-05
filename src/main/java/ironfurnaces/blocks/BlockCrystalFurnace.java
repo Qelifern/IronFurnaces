@@ -25,23 +25,8 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase {
 
     public static final String CRYSTAL_FURNACE = "crystal_furnace";
 
-    public BlockCrystalFurnace() {
-        super(Properties.from(Blocks.PRISMARINE).notSolid());
-    }
-
-    @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.isCreative()) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
-            if (te.hasCustomName()) {
-                ItemStack itemstack = new ItemStack(Registration.CRYSTAL_FURNACE.get());
-                itemstack.setDisplayName(te.getName());
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
-            } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.CRYSTAL_FURNACE.get())));
-            }
-        }
-        super.onBlockHarvested(world, pos, state, player);
+    public BlockCrystalFurnace(Properties properties) {
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)

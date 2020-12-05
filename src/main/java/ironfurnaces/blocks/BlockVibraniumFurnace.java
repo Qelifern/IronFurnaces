@@ -19,23 +19,8 @@ public class BlockVibraniumFurnace extends BlockIronFurnaceBase {
 
     public static final String VIBRANIUM_FURNACE = "vibranium_furnace";
 
-    public BlockVibraniumFurnace() {
-        super(Properties.from(Blocks.DIAMOND_BLOCK));
-    }
-
-    @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.isCreative()) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
-            if (te.hasCustomName()) {
-                ItemStack itemstack = new ItemStack(Registration.VIBRANIUM_FURNACE.get());
-                itemstack.setDisplayName(te.getName());
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemstack));
-            } else {
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Registration.VIBRANIUM_FURNACE.get())));
-            }
-        }
-        super.onBlockHarvested(world, pos, state, player);
+    public BlockVibraniumFurnace(Properties properties) {
+        super(properties);
     }
 
     @Override

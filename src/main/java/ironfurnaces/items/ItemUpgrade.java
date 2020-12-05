@@ -1,6 +1,5 @@
 package ironfurnaces.items;
 
-import ironfurnaces.init.ModSetup;
 import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
@@ -32,8 +31,8 @@ public class ItemUpgrade extends Item {
     private int[] available;
     boolean one = false;
 
-    public ItemUpgrade(int[] available) {
-        super(new Properties().group(ModSetup.ITEM_GROUP));
+    public ItemUpgrade(Properties properties, int[] available) {
+        super(properties);
         this.available = available;
     }
 

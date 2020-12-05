@@ -48,9 +48,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     protected AbstractCookingRecipe curRecipe;
     protected ItemStack failedMatch = ItemStack.EMPTY;
 
-    private int jovial = 0;
+    private int jovial;
     private int timer;
-    private int currentAugment = 0; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
+    private int currentAugment; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
     /**
      * The number of ticks that the furnace will keep burning
      */

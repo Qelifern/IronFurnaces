@@ -1,3 +1,9 @@
+2.5.4
++Fixed diamond furnace tag
++Migrated to a loot_table based blockbreak (fixes compatibility with other mods).
++Removed proxy (not needed anymore)
++Proper invalidation of energy capability
++Moved create properties to block/item creation instead of the block/item class itself which is me being a bad boy
 2.5.3
 Closing in on an actual release
 +Recipe count will now be reset (fixes furance giving too much XP)
@@ -5,8 +11,9 @@ Closing in on an actual release
 +A lesson from FastFurnace, furnace methods streamlined (saves you from lag)
 +Shift-clicking now respects augments (i.e cant shift-click gold ore into a smoker augmented furnace)
 +Shift-clicking an augment will now place it in the augment slot (augment stack size is now limited to 1)
-+You can't upgrade a fastfurnace to and iron furnace (compatability reasons), if you make the upgrade you can get your materials back
++You can't upgrade a fastfurnace to and iron furnace (unknown compatability reasons), if you make the upgrade you can get your materials back
 +Furnaces now respect recipe cooktimes if cooktime from recipe is lower than cooktime the recipe cooktime should be the cooktime
++Fixed an issue where IRecipe<?> was null without nullpointer-exception check, causing worlds to crash.
 2.5.2
 +Fixed crystal furnace recipe
 2.5.1

@@ -16,8 +16,8 @@ import java.util.List;
 public class ItemAugment extends Item {
 
 
-    public ItemAugment() {
-        super(new Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1));
+    public ItemAugment(Properties properties) {
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,6 +1,5 @@
 package ironfurnaces.tileentity;
 
-import com.google.common.collect.Lists;
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.energy.HeaterEnergyStorage;
 import ironfurnaces.init.Registration;
@@ -10,17 +9,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implements ITickableTileEntity {
 
@@ -125,5 +121,11 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
             return energy.cast();
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void remove() {
+        super.remove();
+        energy.invalidate();
     }
 }

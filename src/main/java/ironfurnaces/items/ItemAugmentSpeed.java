@@ -14,7 +14,10 @@ import java.util.List;
 
 public class ItemAugmentSpeed extends ItemAugment {
 
-    
+    public ItemAugmentSpeed(Properties properties) {
+        super(properties);
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

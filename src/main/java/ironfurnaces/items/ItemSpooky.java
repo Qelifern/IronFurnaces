@@ -16,8 +16,8 @@ import java.util.List;
 public class ItemSpooky extends Item {
 
 
-    public ItemSpooky() {
-        super(new Properties().group(ModSetup.ITEM_GROUP));
+    public ItemSpooky(Properties properties) {
+        super(properties);
     }
 
     @OnlyIn(Dist.CLIENT)
