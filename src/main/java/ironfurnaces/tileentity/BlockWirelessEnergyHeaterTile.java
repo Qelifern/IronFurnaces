@@ -108,7 +108,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
 
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
-        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+        //world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
         if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == Direction.UP)
                 return handlers[0].cast();

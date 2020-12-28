@@ -1,3 +1,32 @@
+2.5.5
++Fixed Augments not forcing recipe switch from smelting to blasting/smoking | blasting/smoking to smelting
++Fixed Augments not updating if augment wasn't placed from inventory
++Fixed other than stone to iron upgrades not working with fastfurnace installed
++Fixed typo in Unobtainium, from Unobtanium to Unobtainium !!! TileEntity also renamed, will delete Unobtainium Furnace from existing worlds !!!
++Fixed switching of augments in quick succession not updating furnace recipe
++Reworked Furnace Upgrade Items
++Changed tooltip for Wireless Heat Receiver
++Changed order of item and block registration, makes creative tab more pleasing to look at
++Changed colour of item tooltip text to gray, makes the text more pleasing to the eye
++Changed recipe for Stone To Iron Upgrade, now only accepts minecraft:stone_tool_materials, cobblestone/blackstone
++Changed texture of the Copper Furnace
++Changed texture of the Wireless Heat Transmitter
++Added tooltip to Wireless Heat Transmitter
++Added Stone To Copper Upgrade
++Added Copper To Iron Upgrade
++Added Copper To Silver Upgrade
++Added Iron To Silver Upgrade
++Added Silver To Gold Upgrade
++Added Netherite To Allthemodium Upgrade
++Added Allthemodium To Vibranium Upgrade
++Added Vibranium To Unobtainium Upgrade
++Added recipes for allthemods furnaces and upgrades
++Added Stone To Copper Upgrade to refund eligible upgrades (with fastfurnace installed), gives you your materials back in the same way Stone To Iron Upgrades work
++Added the Rainbow Furnace, can smelt 64 items at once, insanely stupid to craft, celebrating over 1 Million downloads!!!
++Added Rainbow Coal (uncraftable), smelts for 1,024,000 ticks or 5,120 items
++Added 16/32/64 smelting items at once for allthemods furnaces, configurable
++Added translation keys for tooltips
++Release version
 2.5.4
 +Fixed diamond furnace tag
 +Migrated to a loot_table based blockbreak (fixes compatibility with other mods).

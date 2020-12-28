@@ -46,10 +46,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public static final int OUTPUT = 2;
 
     protected AbstractCookingRecipe curRecipe;
-    protected ItemStack failedMatch = ItemStack.EMPTY;
 
     private int jovial;
-    private int timer;
+    protected int timer;
     private int currentAugment; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
     /**
      * The number of ticks that the furnace will keep burning
@@ -163,6 +162,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     if (this.recipeType != IRecipeType.SMOKING) {
                         this.recipeType = IRecipeType.SMOKING;
                     }
+                } else {
+                    if (this.recipeType != IRecipeType.SMELTING) {
+                        this.recipeType = IRecipeType.SMELTING;
+                    }
                 }
             } else {
                 if (this.recipeType != IRecipeType.SMELTING) {
@@ -171,7 +174,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
             ItemStack itemstack = this.inventory.get(FUEL);
             if (this.isBurning() || !itemstack.isEmpty() && !this.inventory.get(INPUT).isEmpty()) {
-                AbstractCookingRecipe irecipe = getRecipe();
+                AbstractCookingRecipe irecipe = world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>) this.recipeType, this, this.world).orElse(null);
                 boolean valid = this.canSmelt(irecipe);
                 if (!this.isBurning() && valid) {
                     if (itemstack.getItem() instanceof ItemHeater) {
@@ -218,7 +221,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         }
                     }
                 }
-
                 if (this.isBurning() && valid) {
                     ++this.cookTime;
                     if (this.cookTime >= this.totalCookTime) {
@@ -255,19 +257,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     }
 
-    @SuppressWarnings("unchecked")
-    protected AbstractCookingRecipe getRecipe() {
-        ItemStack input = this.getStackInSlot(INPUT);
-        if (input.isEmpty() || input == failedMatch) return null;
-        if (curRecipe != null && curRecipe.matches(this, world)) return curRecipe;
-        else {
-            AbstractCookingRecipe rec = world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>) this.recipeType, this, this.world).orElse(null);
-            if (rec == null) failedMatch = input;
-            else failedMatch = ItemStack.EMPTY;
-            return curRecipe = rec;
-        }
-    }
-
     private int getStateType()
     {
         if (this.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get())
@@ -288,7 +277,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return this.furnaceBurnTime > 0;
     }
 
-    private boolean canSmelt(@Nullable IRecipe<?> recipe) {
+    protected boolean canSmelt(@Nullable IRecipe<?> recipe) {
         if (!this.inventory.get(0).isEmpty() && recipe != null) {
             ItemStack recipeOutput = recipe.getRecipeOutput();
             if (!recipeOutput.isEmpty()) {
@@ -301,7 +290,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return false;
     }
 
-    private void smeltItem(@Nullable IRecipe<?> recipe) {
+    protected void smeltItem(@Nullable IRecipe<?> recipe) {
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
             ItemStack itemstack = this.inventory.get(INPUT);

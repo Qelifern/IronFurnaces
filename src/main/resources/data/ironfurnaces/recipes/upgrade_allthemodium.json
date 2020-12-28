@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "B#B",
+    "#X#",
+    "B#B"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/allthemodium"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/allthemodium"
+    },
+    "X": {
+      "tag": "ironfurnaces:netherite_upgrade_crafting"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:upgrade_allthemodium"
+  }
+}

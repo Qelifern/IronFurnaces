@@ -1,0 +1,47 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "forge",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Augment",
+                  "target": "BlockEntityTag.Augment",
+                  "op": "replace"
+                },
+                {
+                  "source": "Jovial",
+                  "target": "BlockEntityTag.Jovial",
+                  "op": "replace"
+                },
+                {
+                  "source": "Tag",
+                  "target": "BlockEntityTag.Tag",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "ironfurnaces:million_furnace"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

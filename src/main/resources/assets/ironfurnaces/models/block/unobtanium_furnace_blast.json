@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "ironfurnaces:block/unobtanium_furnace_side",
-        "front": "ironfurnaces:block/unobtanium_furnace_front_blast",
-        "side": "ironfurnaces:block/unobtanium_furnace_side"
-    }
-}

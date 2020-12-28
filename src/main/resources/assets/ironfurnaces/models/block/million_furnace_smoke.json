@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "ironfurnaces:block/million_furnace_top_smoke",
+        "front": "ironfurnaces:block/million_furnace_front_smoke",
+        "side": "ironfurnaces:block/million_furnace_side"
+    }
+}

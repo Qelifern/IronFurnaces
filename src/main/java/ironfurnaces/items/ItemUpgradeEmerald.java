@@ -1,9 +1,11 @@
 package ironfurnaces.items;
 
+import ironfurnaces.init.Registration;
+
 public class ItemUpgradeEmerald extends ItemUpgrade {
 
 
     public ItemUpgradeEmerald(Properties properties) {
-        super(properties, new int[]{0, 0, 0, 1, 0, 0, 0, 0});
+        super(properties, Registration.DIAMOND_FURNACE.get(), Registration.EMERALD_FURNACE.get());
     }
 }

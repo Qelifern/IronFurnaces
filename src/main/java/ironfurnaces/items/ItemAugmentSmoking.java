@@ -5,10 +5,7 @@ import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,7 +23,7 @@ public class ItemAugmentSmoking extends ItemAugment {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for smoking recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
-        tooltip.add(new StringTextComponent("-Only allows for smoking recipes.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_smoking_pro").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_smoking_con").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
     }
 }

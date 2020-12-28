@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###",
+    "#S#",
+    "#X#"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/silver"
+    },
+    "X": {
+      "tag": "forge:ingots/copper"
+    },
+    "S": {
+      "tag": "minecraft:stone_tool_materials"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:upgrade_silver"
+  }
+}

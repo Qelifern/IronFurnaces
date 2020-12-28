@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_ingot"
+  ]
+}

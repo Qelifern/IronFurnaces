@@ -26,4 +26,5 @@ public class SlotIronFurnaceAugment extends Slot {
     public int getItemStackLimit(ItemStack stack) {
         return 1;
     }
+
 }

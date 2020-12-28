@@ -1,9 +1,12 @@
 package ironfurnaces.items;
 
+import ironfurnaces.init.Registration;
+import net.minecraft.block.Blocks;
+
 public class ItemUpgradeIron extends ItemUpgrade {
 
 
     public ItemUpgradeIron(Properties properties) {
-        super(properties, new int[]{1, 0, 0, 0, 0, 0, 0, 0});
+        super(properties, Blocks.FURNACE, Registration.IRON_FURNACE.get());
     }
 }

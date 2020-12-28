@@ -1,12 +1,10 @@
 package ironfurnaces.items;
 
 import ironfurnaces.IronFurnaces;
-import ironfurnaces.init.ModSetup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,13 +22,14 @@ public class ItemHeater extends Item {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag()) {
-            tooltip.add(new StringTextComponent("Bound to: "));
-            tooltip.add(new StringTextComponent("X: " + stack.getTag().getInt("X")));
-            tooltip.add(new StringTextComponent("Y: " + stack.getTag().getInt("Y")));
-            tooltip.add(new StringTextComponent("Z: " + stack.getTag().getInt("Z")));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterX").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("X")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterY").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Y")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterZ").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Z")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
         } else {
-            tooltip.add(new StringTextComponent("Has yet to be bound to an energy source!"));
-            tooltip.add(new StringTextComponent("Only works from Iron tier and above."));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_not_bound").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
         }
     }
 }

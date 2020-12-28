@@ -1,9 +1,11 @@
 package ironfurnaces.items;
 
+import ironfurnaces.init.Registration;
+
 public class ItemUpgradeNetherite extends ItemUpgrade {
 
 
     public ItemUpgradeNetherite(Properties properties) {
-        super(properties, new int[]{0, 0, 0, 0, 0, 0, 0, 1});
+        super(properties, Registration.OBSIDIAN_FURNACE.get(), Registration.NETHERITE_FURNACE.get());
     }
 }

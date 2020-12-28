@@ -54,6 +54,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     }
 
 
+
     @OnlyIn(Dist.CLIENT)
     public boolean isBurning() {
         return this.te.isBurning();

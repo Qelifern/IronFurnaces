@@ -1,0 +1,37 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "ROY",
+    "FGF",
+    "BPM"
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:red_stained_glass"
+    },
+    "O": {
+      "item": "minecraft:orange_stained_glass"
+    },
+    "Y": {
+      "item": "minecraft:yellow_stained_glass"
+    },
+    "F": {
+      "item": "ironfurnaces:netherite_furnace"
+    },
+    "G": {
+      "item": "minecraft:green_stained_glass"
+    },
+    "B": {
+      "item": "minecraft:blue_stained_glass"
+    },
+    "P": {
+      "item": "minecraft:purple_stained_glass"
+    },
+    "M": {
+      "item": "minecraft:magenta_stained_glass"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:rainbow_core"
+  }
+}

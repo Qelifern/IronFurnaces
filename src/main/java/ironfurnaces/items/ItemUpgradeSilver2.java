@@ -1,0 +1,11 @@
+package ironfurnaces.items;
+
+import ironfurnaces.init.Registration;
+
+public class ItemUpgradeSilver2 extends ItemUpgrade {
+
+
+    public ItemUpgradeSilver2(Properties properties) {
+        super(properties, Registration.COPPER_FURNACE.get(), Registration.SILVER_FURNACE.get());
+    }
+}

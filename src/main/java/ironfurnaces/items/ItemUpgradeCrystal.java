@@ -1,9 +1,11 @@
 package ironfurnaces.items;
 
+import ironfurnaces.init.Registration;
+
 public class ItemUpgradeCrystal extends ItemUpgrade {
 
 
     public ItemUpgradeCrystal(Properties properties) {
-        super(properties, new int[]{0, 0, 0, 0, 0, 1, 0, 0});
+        super(properties, Registration.DIAMOND_FURNACE.get(), Registration.CRYSTAL_FURNACE.get());
     }
 }

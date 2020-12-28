@@ -1,11 +1,13 @@
 package ironfurnaces.items;
 
-import ironfurnaces.init.ModSetup;
+import ironfurnaces.IronFurnaces;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,8 +25,8 @@ public class ItemXmas extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new StringTextComponent("Right-click on furnace to wrap it as a gift!"));
-        tooltip.add(new StringTextComponent("But won't the wrappings catch fire?"));
-        tooltip.add(new StringTextComponent("Sneaking and right-clicking on a furnace opens the gift"));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas_right_click").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas2").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
     }
 }

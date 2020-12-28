@@ -1,7 +1,8 @@
 package ironfurnaces.items;
 
-import ironfurnaces.init.Registration;
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import ironfurnaces.util.ItemTagsIronFurnaces;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,8 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -28,18 +28,20 @@ import java.util.List;
 
 public class ItemUpgrade extends Item {
 
-    private int[] available;
+    private Block from;
+    private Block to;
     boolean one = false;
 
-    public ItemUpgrade(Properties properties, int[] available) {
+    public ItemUpgrade(Properties properties, Block from, Block to) {
         super(properties);
-        this.available = available;
+        this.from = from;
+        this.to = to;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new StringTextComponent("Sneak & right-click to upgrade"));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".upgrade_right_click").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
     }
 
     @Override
@@ -47,8 +49,9 @@ public class ItemUpgrade extends Item {
         World world = ctx.getWorld();
         BlockPos pos = ctx.getPos();
         boolean playSound = false;
+        ctx.getPlayer().sendMessage(new StringTextComponent(ctx.getPlayer().getUniqueID().toString()), ctx.getPlayer().getUniqueID());
         if (!world.isRemote) {
-            if (ModList.get().isLoaded("fastfurnace"))
+            if ((ctx.getItem().getItem() instanceof ItemUpgradeIron || ctx.getItem().getItem() instanceof ItemUpgradeCopper) && ModList.get().isLoaded("fastfurnace"))
             {
                 ctx.getPlayer().sendMessage(new StringTextComponent("FastFurnace Mod is loaded, will not upgrade, drop the upgrade on the floor together with one cobblestone to get your materials back."), ctx.getPlayer().getUniqueID());
                 return super.onItemUse(ctx);
@@ -64,7 +67,11 @@ public class ItemUpgrade extends Item {
                     currentItemBurnTime = ((BlockIronFurnaceTileBase) te).fields.get(1);
                     cooktime = ((BlockIronFurnaceTileBase) te).fields.get(2);
                 }
-                BlockState next = this.getNextTierBlock(te, available).getStateForPlacement(ctx2) != Blocks.AIR.getStateForPlacement(ctx2) ? this.getNextTierBlock(te, available).getStateForPlacement(ctx2) : world.getBlockState(pos);
+                if (te.getBlockState().getBlock() != from)
+                {
+                    return ActionResultType.PASS;
+                }
+                BlockState next = to.getStateForPlacement(ctx2) != Blocks.AIR.getStateForPlacement(ctx2) ? to.getStateForPlacement(ctx2) : world.getBlockState(pos);
                 if (next == world.getBlockState(pos)) {
                     return ActionResultType.PASS;
                 }
@@ -96,44 +103,38 @@ public class ItemUpgrade extends Item {
         return super.onItemUse(ctx);
     }
 
-    public static Block getNextTierBlock(TileEntity te, int[] available) {
-        Block block = te.getBlockState().getBlock();
-        if (block == Blocks.FURNACE && available[0] == 1) {
-            return Registration.IRON_FURNACE.get();
-        } else
-        if (block == Registration.IRON_FURNACE.get() && available[1] == 1) {
-            return Registration.GOLD_FURNACE.get();
-        } else
-        if (block == Registration.GOLD_FURNACE.get() && available[2] == 1) {
-            return Registration.DIAMOND_FURNACE.get();
-        } else
-        if (block == Registration.DIAMOND_FURNACE.get() && available[3] == 1) {
-            return Registration.EMERALD_FURNACE.get();
-        } else
-        if (block == Registration.EMERALD_FURNACE.get() && available[4] == 1) {
-            return Registration.OBSIDIAN_FURNACE.get();
-        }
-        if (block == Registration.DIAMOND_FURNACE.get() && available[5] == 1) {
-            return Registration.CRYSTAL_FURNACE.get();
-        }
-        if (block == Registration.CRYSTAL_FURNACE.get() && available[6] == 1) {
-            return Registration.OBSIDIAN_FURNACE.get();
-        }
-        if (block == Registration.OBSIDIAN_FURNACE.get() && available[7] == 1) {
-            return Registration.NETHERITE_FURNACE.get();
-        }
-        return Blocks.AIR;
-    }
-
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        if (!(stack.getItem() instanceof ItemUpgradeIron))
-        {
-            return false;
-        }
         if (!ModList.get().isLoaded("fastfurnace"))
         {
             return false;
+        }
+        ItemStack materials = ItemStack.EMPTY;
+        if (!(stack.getItem() instanceof ItemUpgradeIron) && !(stack.getItem() instanceof ItemUpgradeCopper))
+        {
+            return false;
+        }
+        else
+        {
+            if (stack.getItem() instanceof ItemUpgradeIron)
+            {
+                materials = new ItemStack(Items.IRON_INGOT, 8);
+            }
+            else
+            {
+                if (ItemTagsIronFurnaces.getOreDict("ingots/copper") != null)
+                {
+                    ItemStack copper = new ItemStack(ItemTagsIronFurnaces.getOreDict("ingots/copper"), 8);
+                    if (copper.isEmpty()) {
+                        return false;
+                    }
+                    materials = copper;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
         World world = entity.getEntityWorld();
         if (!world.isRemote) {
@@ -156,7 +157,7 @@ public class ItemUpgrade extends Item {
                 lightningboltentity.moveForced(pos.getX(), pos.getY(), pos.getZ());
                 lightningboltentity.setEffectOnly(true);
                 world.addEntity(lightningboltentity);
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.IRON_INGOT, 8)));
+                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), materials));
 
                 one = false;
             }

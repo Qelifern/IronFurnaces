@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "B#B",
+    "#X#",
+    "B#B"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:ingots/unobtainium"
+    },
+    "X": {
+      "tag": "forge:furnaces/vibranium"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/unobtainium"
+    }
+  },
+  "result": {
+    "item": "ironfurnaces:unobtainium_furnace"
+  }
+}

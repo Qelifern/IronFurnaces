@@ -1,6 +1,5 @@
 package ironfurnaces.init;
 
-import ironfurnaces.Config;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.gui.*;
 import net.minecraft.client.gui.ScreenManager;
@@ -21,12 +20,13 @@ public class ClientSetup {
         ScreenManager.registerFactory(Registration.NETHERITE_FURNACE_CONTAINER.get(), BlockNetheriteFurnaceScreen::new);
         ScreenManager.registerFactory(Registration.COPPER_FURNACE_CONTAINER.get(), BlockCopperFurnaceScreen::new);
         ScreenManager.registerFactory(Registration.SILVER_FURNACE_CONTAINER.get(), BlockSilverFurnaceScreen::new);
+        ScreenManager.registerFactory(Registration.MILLION_FURNACE_CONTAINER.get(), BlockMillionFurnaceScreen::new);
         ScreenManager.registerFactory(Registration.HEATER_CONTAINER.get(), BlockWirelessEnergyHeaterScreen::new);
 
 
         ScreenManager.registerFactory(Registration.ALLTHEMODIUM_FURNACE_CONTAINER.get(), BlockAllthemodiumFurnaceScreen::new);
         ScreenManager.registerFactory(Registration.VIBRANIUM_FURNACE_CONTAINER.get(), BlockVibraniumFurnaceScreen::new);
-        ScreenManager.registerFactory(Registration.UNOBTANIUM_FURNACE_CONTAINER.get(), BlockUnobtaniumFurnaceScreen::new);
+        ScreenManager.registerFactory(Registration.UNOBTAINIUM_FURNACE_CONTAINER.get(), BlockUnobtainiumFurnaceScreen::new);
 
     }
 

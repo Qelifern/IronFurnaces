@@ -1,11 +1,12 @@
 package ironfurnaces.items;
 
+import ironfurnaces.IronFurnaces;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,7 +23,7 @@ public class ItemAugmentSpeed extends ItemAugment {
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new StringTextComponent("+Halves the cooktime for all recipes.").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
-        tooltip.add(new StringTextComponent("-Uses up twice the amount of fuel.").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_speed_pro").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_speed_con").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
     }
 }

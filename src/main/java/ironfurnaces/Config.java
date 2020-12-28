@@ -2,14 +2,22 @@ package ironfurnaces;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
+import ironfurnaces.init.Registration;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.IWorld;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber
 public class Config {
@@ -19,6 +27,7 @@ public class Config {
     public static final String CATEGORY_MODDED_FURNACE = "modded_furnaces";
     public static final String CATEGORY_JEI = "jei";
     public static final String CATEGORY_UPDATES = "updates";
+    public static final String CATEGORY_MISC = "misc";
 
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
@@ -32,9 +41,12 @@ public class Config {
     public static ForgeConfigSpec.IntValue netheriteFurnaceSpeed;
     public static ForgeConfigSpec.IntValue copperFurnaceSpeed;
     public static ForgeConfigSpec.IntValue silverFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue millionFurnaceSpeed;
     public static ForgeConfigSpec.BooleanValue enableJeiPlugin;
     public static ForgeConfigSpec.BooleanValue enableJeiCatalysts;
     public static ForgeConfigSpec.BooleanValue enableJeiClickArea;
+
+    public static ForgeConfigSpec.BooleanValue GIVEN_COAL;
 
     public static ForgeConfigSpec.BooleanValue checkUpdates;
 
@@ -42,6 +54,9 @@ public class Config {
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue allthemodiumFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue vibraniumFurnaceSmeltMult;
+    public static ForgeConfigSpec.IntValue unobtaniumFurnaceSmeltMult;
+    public static ForgeConfigSpec.IntValue allthemodiumFurnaceSmeltMult;
 
 
     static {
@@ -66,6 +81,14 @@ public class Config {
         COMMON_BUILDER.comment("JEI Settings").push(CATEGORY_JEI);
 
         setupJEIConfig(COMMON_BUILDER, CLIENT_BUILDER);
+
+        COMMON_BUILDER.pop();
+
+
+        COMMON_BUILDER.comment("Misc").push(CATEGORY_MISC);
+
+        GIVEN_COAL = COMMON_BUILDER
+                .comment(" Given or not given the Rainbow Coal to our champion").define("misc.coal", false);
 
         COMMON_BUILDER.pop();
 
@@ -119,6 +142,11 @@ public class Config {
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 140")
                 .defineInRange("silver_furnace.speed", 140, 2, 72000);
 
+        millionFurnaceSpeed = COMMON_BUILDER
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 200")
+                .defineInRange("rainbow_furnace.speed", 200, 2, 72000);
+
+
     }
 
     private static void setupModdedFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
@@ -132,6 +160,15 @@ public class Config {
         unobtaniumFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 1")
                 .defineInRange("unobtanium_furnace.speed", 1, 1, 72000);
+        allthemodiumFurnaceSmeltMult = COMMON_BUILDER
+                .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 16")
+                .defineInRange("allthemodium_furnace.mult", 16, 1, 64);
+        vibraniumFurnaceSmeltMult = COMMON_BUILDER
+                .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 32")
+                .defineInRange("vibranium_furnace.mult", 32, 1, 64);
+        unobtaniumFurnaceSmeltMult = COMMON_BUILDER
+                .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 64")
+                .defineInRange("unobtanium_furnace.mult", 64, 1, 64);
 
     }
 
@@ -185,7 +222,37 @@ public class Config {
     public static void onWorldLoad(final WorldEvent.Load event) {
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+
+    }
+    @SubscribeEvent
+    public static void player(final TickEvent.PlayerTickEvent event) {
+        if (!Config.GIVEN_COAL.get())
+        {
+            PlayerEntity player = getPlayer(event.player.world);
+            if (player != null)
+            {
+                Config.GIVEN_COAL.set(true);
+                player.world.addEntity(new ItemEntity(player.world, player.getPosX(), player.getPosY(), player.getPosZ(), new ItemStack(Registration.RAINBOW_COAL.get())));
+            }
+        }
     }
 
+    @Nullable
+    public static PlayerEntity getPlayer(IWorld world)
+    {
+        if (world == null)
+        {
+            return null;
+        }
+        if (world.getPlayerByUuid(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963")) != null)
+        {
+            return world.getPlayerByUuid(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963"));
+        }
+        if (world.getPlayerByUuid(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41")) != null)
+        {
+            return world.getPlayerByUuid(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41"));
+        }
+        return null;
+    }
 
 }
