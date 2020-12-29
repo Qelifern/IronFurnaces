@@ -212,6 +212,7 @@ public class Registration {
     public static final RegistryObject<ItemAugmentSmoking> SMOKING_AUGMENT = ITEMS.register("augment_smoking", () -> new ItemAugmentSmoking(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
     public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", () -> new ItemAugmentSpeed(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", () -> new ItemAugmentFuel(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
+    public static final RegistryObject<ItemAugmentRedstone> REDSTONE_AUGMENT = ITEMS.register("augment_redstone", () -> new ItemAugmentRedstone(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
 
     public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", () -> new ItemSpooky(new Item.Properties().group(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties().group(ModSetup.ITEM_GROUP)));

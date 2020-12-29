@@ -34,12 +34,15 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BlockIronFurnaceTileBase extends TileEntityInventory implements ITickableTileEntity, IRecipeHolder, IRecipeHelperPopulator {
     private static final int[] SLOTS_UP = new int[]{0};
     private static final int[] SLOTS_DOWN = new int[]{2, 1};
     private static final int[] SLOTS_HORIZONTAL = new int[]{1};
+    public final int[] provides = new int[Direction.values().length];
+    private final int[] lastProvides = new int[this.provides.length];
 
     public static final int INPUT = 0;
     public static final int FUEL = 1;
@@ -47,6 +50,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected AbstractCookingRecipe curRecipe;
 
+    public int comparatorSub;
     private int jovial;
     protected int timer;
     private int currentAugment; // 0 == none 1 == Blasting 2 == Smoking 3 == Speed 4 == Fuel
@@ -96,6 +100,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     return BlockIronFurnaceTileBase.this.cookTime;
                 case 3:
                     return BlockIronFurnaceTileBase.this.totalCookTime;
+                case 4:
+                    return BlockIronFurnaceTileBase.this.comparatorSub;
                 default:
                     return 0;
             }
@@ -114,12 +120,15 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     break;
                 case 3:
                     BlockIronFurnaceTileBase.this.totalCookTime = value;
+                    break;
+                case 4:
+                    BlockIronFurnaceTileBase.this.comparatorSub = value;
             }
 
         }
 
         public int size() {
-            return 4;
+            return 5;
         }
     };
 
@@ -132,8 +141,27 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return 3;
         } else if (stack.getItem() instanceof ItemAugmentFuel) {
             return 4;
+        } else if (stack.getItem() instanceof ItemAugmentRedstone) {
+            return 5;
         }
         return 0;
+    }
+
+    private void forceUpdateAllStates()
+    {
+        BlockState state = world.getBlockState(pos);
+        if (state.get(BlockStateProperties.LIT) != this.isBurning())
+        {
+            world.setBlockState(pos, state.with(BlockStateProperties.LIT, this.isBurning()), 3);
+        }
+        if (state.get(BlockIronFurnaceBase.TYPE) != this.getStateType())
+        {
+            world.setBlockState(pos, state.with(BlockIronFurnaceBase.TYPE, this.getStateType()), 3);
+        }
+        if (state.get(BlockIronFurnaceBase.JOVIAL) != this.jovial)
+        {
+            world.setBlockState(pos, state.with(BlockIronFurnaceBase.JOVIAL, this.jovial), 3);
+        }
     }
 
     @Override
@@ -149,16 +177,66 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
 
         if (!this.world.isRemote) {
+
             timer++;
+            if (this.doesNeedUpdateSend()) {
+                this.onUpdateSent();
+            }
             if (this.totalCookTime != this.getCookTime()) {
                 this.totalCookTime = this.getCookTime();
             }
             if (!this.getStackInSlot(3).isEmpty()) {
-                if (this.getStackInSlot(3).getItem() instanceof ItemAugmentBlasting) {
+                ItemStack stack = this.getStackInSlot(3);
+                if (stack.getItem() instanceof ItemAugmentRedstone) {
+                    if (stack.hasTag())
+                    {
+                        int mode = stack.getTag().getInt("Mode");
+                        if (mode == 0)
+                        {
+                            int i = 0;
+                            for (Direction side : Direction.values())
+                            {
+                                if (world.getRedstonePower(pos.offset(side), side) > 0)
+                                {
+                                    i++;
+                                }
+                            }
+                            if (i != 0)
+                            {
+                                this.cookTime = 0;
+                                this.furnaceBurnTime = 0;
+                                forceUpdateAllStates();
+                                return;
+                            }
+                        }
+                        else if (mode == 1)
+                        {
+                            boolean flag = false;
+                            for (Direction side : Direction.values())
+                            {
+
+                                if (world.getRedstonePower(pos.offset(side), side) > 0)
+                                {
+                                    flag = true;
+                                }
+                            }
+                            if (!flag)
+                            {
+                                this.cookTime = 0;
+                                this.furnaceBurnTime = 0;
+                                forceUpdateAllStates();
+                                return;
+                            }
+                        }
+                        for (int i = 0; i < Direction.values().length; i++)
+                            this.provides[i] = getBlockState().getStrongPower(this.world, pos, Direction.byIndex(i));
+                    }
+                }
+                if (stack.getItem() instanceof ItemAugmentBlasting) {
                     if (this.recipeType != IRecipeType.BLASTING) {
                         this.recipeType = IRecipeType.BLASTING;
                     }
-                } else if (this.getStackInSlot(3).getItem() instanceof ItemAugmentSmoking) {
+                } else if (stack.getItem() instanceof ItemAugmentSmoking) {
                     if (this.recipeType != IRecipeType.SMOKING) {
                         this.recipeType = IRecipeType.SMOKING;
                     }
@@ -277,6 +355,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return this.furnaceBurnTime > 0;
     }
 
+    public boolean hasRedstoneAugment() {
+        return this.getStackInSlot(3).getItem() instanceof ItemAugmentRedstone && this.getStackInSlot(3).getOrCreateTag().getInt("Mode") == 3;
+    }
+
     protected boolean canSmelt(@Nullable IRecipe<?> recipe) {
         if (!this.inventory.get(0).isEmpty() && recipe != null) {
             ItemStack recipeOutput = recipe.getRecipeOutput();
@@ -323,6 +405,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         this.timer = 0;
         this.currentAugment = tag.getInt("Augment");
         this.jovial = tag.getInt("Jovial");
+        this.comparatorSub = tag.getInt("ComparatorSub");
         this.recipesUsed = this.getBurnTime(this.inventory.get(1));
         CompoundNBT compoundnbt = tag.getCompound("RecipesUsed");
 
@@ -345,6 +428,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         tag.putInt("CookTimeTotal", this.totalCookTime);
         tag.putInt("Augment", this.currentAugment);
         tag.putInt("Jovial", this.jovial);
+        tag.putInt("ComparatorSub", this.comparatorSub);
         CompoundNBT compoundnbt = new CompoundNBT();
         this.recipes.forEach((recipeId, craftedAmount) -> {
             compoundnbt.putInt(recipeId.toString(), craftedAmount);
@@ -499,5 +583,14 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             helper.accountStack(itemstack);
         }
 
+    }
+
+    protected boolean doesNeedUpdateSend() {
+        return !Arrays.equals(this.provides, this.lastProvides);
+    }
+
+    public void onUpdateSent() {
+        System.arraycopy(this.provides, 0, this.lastProvides, 0, this.provides.length);
+        this.world.notifyNeighborsOfStateChange(this.pos, getBlockState().getBlock());
     }
 }

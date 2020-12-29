@@ -3,6 +3,7 @@ package ironfurnaces;
 import ironfurnaces.init.ClientSetup;
 import ironfurnaces.init.ModSetup;
 import ironfurnaces.init.Registration;
+import ironfurnaces.network.Messages;
 import ironfurnaces.update.UpdateChecker;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,7 +21,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "255";
+    public static final String VERSION = "256";
     public static final String MC_VERSION = "1.16.4";
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -43,6 +44,8 @@ public class IronFurnaces
 
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
         Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+
+        Messages.registerMessages("ironfurnaces_network");
 
         if (Config.checkUpdates.get()) {
             new UpdateChecker();

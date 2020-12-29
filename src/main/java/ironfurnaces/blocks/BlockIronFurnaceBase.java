@@ -2,16 +2,19 @@ package ironfurnaces.blocks;
 
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemAugment;
+import ironfurnaces.items.ItemAugmentRedstone;
 import ironfurnaces.items.ItemSpooky;
 import ironfurnaces.items.ItemXmas;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -111,11 +114,14 @@ public abstract class BlockIronFurnaceBase extends Block {
                 InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), ((IInventory) te).getStackInSlot(3));
             }
         }
-        ((IInventory) te).setInventorySlotContents(3, new ItemStack(stack.getItem(), 1));
+        ItemStack newStack = new ItemStack(stack.getItem(), 1);
+        newStack.setTag(stack.getTag());
+        ((IInventory) te).setInventorySlotContents(3, newStack);
         world.playSound(null, te.getPos(), SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
         if (!player.isCreative()) {
             player.getHeldItem(handIn).shrink(1);
         }
+        ((BlockIronFurnaceTileBase)te).onUpdateSent();
         return ActionResultType.SUCCESS;
     }
     private ActionResultType interactJovial(World world, BlockPos pos, PlayerEntity player, Hand handIn, int jovial) {
@@ -212,6 +218,72 @@ public abstract class BlockIronFurnaceBase extends Block {
 
             super.onReplaced(state, world, pos, oldState, p_196243_5_);
         }
+    }
+
+    public boolean hasComparatorInputOverride(BlockState p_149740_1_) {
+        return true;
+    }
+
+    public int getComparatorInputOverride(BlockState p_180641_1_, World p_180641_2_, BlockPos p_180641_3_) {
+        return Container.calcRedstone(p_180641_2_.getTileEntity(p_180641_3_));
+    }
+
+    public BlockRenderType getRenderType(BlockState p_149645_1_) {
+        return BlockRenderType.MODEL;
+    }
+
+    public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
+        return (BlockState)p_185499_1_.with(BlockStateProperties.HORIZONTAL_FACING, p_185499_2_.rotate((Direction)p_185499_1_.get(BlockStateProperties.HORIZONTAL_FACING)));
+    }
+
+    public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
+        return p_185471_1_.rotate(p_185471_2_.toRotation((Direction)p_185471_1_.get(BlockStateProperties.HORIZONTAL_FACING)));
+    }
+
+    private int calculateOutput(ItemStack stack, World worldIn, BlockPos pos, BlockState state) {
+        if (!stack.hasTag()) return 0;
+        int i = this.getComparatorInputOverride(state, worldIn, pos);
+        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase)worldIn.getTileEntity(pos));
+        if (tile != null)
+        {
+            int j = tile.comparatorSub;
+            return stack.getTag().getInt("Mode") == 3 ? Math.max(i - j, 0) : i;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean canProvidePower(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+        return getWeakPower(blockState, world, pos, side);
+    }
+
+    @Override
+    public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+        BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
+        if (furnace != null)
+        {
+            if (furnace.getStackInSlot(3).getItem() instanceof ItemAugmentRedstone)
+            {
+                if (furnace.getStackInSlot(3).hasTag())
+                {
+                    if (furnace.getStackInSlot(3).getTag().getInt("Mode") == 0)
+                    {
+                        return 0;
+                    }
+                    if (furnace.getStackInSlot(3).getTag().getInt("Mode") == 1)
+                    {
+                        return 0;
+                    }
+                    return calculateOutput(furnace.getStackInSlot(3), furnace.getWorld(), pos, blockState);
+                }
+            }
+        }
+        return 0;
     }
 
     @Override

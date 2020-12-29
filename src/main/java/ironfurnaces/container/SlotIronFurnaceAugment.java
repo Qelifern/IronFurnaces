@@ -27,4 +27,9 @@ public class SlotIronFurnaceAugment extends Slot {
         return 1;
     }
 
+
+    @Override
+    public void onSlotChanged() {
+        te.onUpdateSent();
+    }
 }

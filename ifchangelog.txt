@@ -1,3 +1,8 @@
+2.5.6
++Fixed shift-clicking an item when switching augments causing a server-client sync issue,
+will now properly only allow shift-clicking to the inputslot if the item can be smelted in the current recipeType
++Removed debug message when upgrading a furnace
++Added Redstone Augment
 2.5.5
 +Fixed Augments not forcing recipe switch from smelting to blasting/smoking | blasting/smoking to smelting
 +Fixed Augments not updating if augment wasn't placed from inventory
@@ -26,6 +31,8 @@
 +Added Rainbow Coal (uncraftable), smelts for 1,024,000 ticks or 5,120 items
 +Added 16/32/64 smelting items at once for allthemods furnaces, configurable
 +Added translation keys for tooltips
++Added comparator output for all furnaces
++Added redstone augment, 3 modes redstone control, comparator, comparator subtract
 +Release version
 2.5.4
 +Fixed diamond furnace tag

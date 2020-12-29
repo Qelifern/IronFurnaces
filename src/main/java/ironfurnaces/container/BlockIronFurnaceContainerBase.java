@@ -1,5 +1,7 @@
 package ironfurnaces.container;
 
+import ironfurnaces.items.ItemAugmentBlasting;
+import ironfurnaces.items.ItemAugmentSmoking;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -28,10 +30,10 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
     protected final World world;
-    private final IRecipeType<? extends AbstractCookingRecipe> recipeType;
+    private IRecipeType<? extends AbstractCookingRecipe> recipeType;
 
     public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        this(containerType, windowId, world, pos, playerInventory, player, new IntArray(4));
+        this(containerType, windowId, world, pos, playerInventory, player, new IntArray(5));
     }
 
     public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
@@ -43,7 +45,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.playerInventory = new InvWrapper(playerInventory);
         this.world = playerInventory.player.world;
         this.fields = fields;
-        assertIntArraySize(this.fields, 4);
+        assertIntArraySize(this.fields, 5);
         this.trackIntArray(this.fields);
 
         this.addSlot(new Slot(te, 0, 56, 17));
@@ -53,7 +55,20 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         layoutPlayerInventorySlots(8, 84);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    public boolean hasRedstoneAugment() {
+        return this.te.hasRedstoneAugment();
+    }
 
+    @OnlyIn(Dist.CLIENT)
+    public BlockPos getPos() {
+        return this.te.getPos();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getComSub() {
+        return this.fields.get(4);
+    }
 
     @OnlyIn(Dist.CLIENT)
     public boolean isBurning() {
@@ -166,6 +181,20 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     }
 
     protected boolean hasRecipe(ItemStack stack) {
+        ItemStack augment = this.getInventory().get(3);
+        if (augment.getItem() instanceof ItemAugmentBlasting) {
+            if (this.recipeType != IRecipeType.BLASTING) {
+                this.recipeType = IRecipeType.BLASTING;
+            }
+        } else if (augment.getItem() instanceof ItemAugmentSmoking) {
+            if (this.recipeType != IRecipeType.SMOKING) {
+                this.recipeType = IRecipeType.SMOKING;
+            }
+        } else {
+            if (this.recipeType != IRecipeType.SMELTING) {
+                this.recipeType = IRecipeType.SMELTING;
+            }
+        }
         return this.world.getRecipeManager().getRecipe((IRecipeType)this.recipeType, new Inventory(stack), this.world).isPresent();
     }
 }
