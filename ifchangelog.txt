@@ -1,3 +1,17 @@
+2.5.7
++Added Furnace configs, default with any furnace
++Added a config option to disable all rainbow content
++Fixed recipes loading for copper and silver even though silver and copper doesn't exist
++Fixed allthemodium recipes loading when allthemodium mod was not present
++Fixed Wireless Heater Transmitter name not showing in GUI
++Fixed furnaces not respecting recipe cooktime
++Fixed furances not giving xp when broken
++Fixed Copper to Iron and Copper to Silver upgrades not working
++Fixed Wireless Heater not saving energy stored when breaking
++Changed Wireless Redstone Receiver to now burn for 200 ticks and only use 1600 energy
++Changed diamond furnace recipe, 6 diamonds instead of 17 lol
++Changed Item model for Crystal furnace
+-Removed Redstone Augment, now default with any furnace
 2.5.6
 +Fixed shift-clicking an item when switching augments causing a server-client sync issue,
 will now properly only allow shift-clicking to the inputslot if the item can be smelted in the current recipeType

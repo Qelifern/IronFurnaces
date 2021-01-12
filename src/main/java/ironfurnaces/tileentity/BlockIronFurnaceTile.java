@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipeType;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BlockIronFurnaceTile extends BlockIronFurnaceTileBase {
     public BlockIronFurnaceTile() {
@@ -15,24 +16,13 @@ public class BlockIronFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected int getCookTimeConfig()
-    {
-        int i = Config.ironFurnaceSpeed.get();
-        int j = this.recipeType != null && this.recipeType != IRecipeType.SMELTING ? 2 : 1;
-        if (this.world != null)
-        {
-            int k = this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime).orElse((i / j));
-            if (this.recipeType != null && k < (i / j))
-            {
-                return k;
-            }
-        }
-        return i / j;
+    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+        return Config.ironFurnaceSpeed;
     }
 
     @Override
     public String IgetName() {
-        return "container.iron_furnace";
+        return "container.ironfurnaces.iron_furnace";
     }
 
     @Override

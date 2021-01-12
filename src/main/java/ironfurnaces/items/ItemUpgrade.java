@@ -61,10 +61,18 @@ public class ItemUpgrade extends Item {
                 int cooktime = 0;
                 int currentItemBurnTime = 0;
                 int furnaceBurnTime = 0;
+                int show = 0;
+                int[] settings = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                 if (te instanceof BlockIronFurnaceTileBase) {
                     furnaceBurnTime = ((BlockIronFurnaceTileBase) te).fields.get(0);
                     currentItemBurnTime = ((BlockIronFurnaceTileBase) te).fields.get(1);
                     cooktime = ((BlockIronFurnaceTileBase) te).fields.get(2);
+                    show = ((BlockIronFurnaceTileBase) te).fields.get(4);
+                    for (int i = 0; i < ((BlockIronFurnaceTileBase) te).furnaceSettings.size(); i++)
+                    {
+                        settings[i] = ((BlockIronFurnaceTileBase) te).furnaceSettings.get(i);
+                    }
+
                 }
                 if (te.getBlockState().getBlock() != from)
                 {
@@ -93,7 +101,13 @@ public class ItemUpgrade extends Item {
                     ((BlockIronFurnaceTileBase)newTe).fields.set(0, furnaceBurnTime);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(1, currentItemBurnTime);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(2, cooktime);
+                    ((BlockIronFurnaceTileBase)newTe).fields.set(4, show);
+                    for (int i = 0; i < ((BlockIronFurnaceTileBase)newTe).furnaceSettings.size(); i++)
+                    {
+                        ((BlockIronFurnaceTileBase)newTe).furnaceSettings.set(i, settings[i]);
+                    }
                 }
+                world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 3);
                 if (!ctx.getPlayer().isCreative()) {
                     ctx.getItem().shrink(1);
                 }

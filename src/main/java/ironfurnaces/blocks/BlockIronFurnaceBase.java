@@ -2,7 +2,6 @@ package ironfurnaces.blocks;
 
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemAugment;
-import ironfurnaces.items.ItemAugmentRedstone;
 import ironfurnaces.items.ItemSpooky;
 import ironfurnaces.items.ItemXmas;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
@@ -27,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -213,6 +213,7 @@ public abstract class BlockIronFurnaceBase extends Block {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof BlockIronFurnaceTileBase) {
                 InventoryHelper.dropInventoryItems(world, pos, (BlockIronFurnaceTileBase) te);
+                ((BlockIronFurnaceTileBase)te).grantStoredRecipeExperience(world, Vector3d.copyCentered(pos));
                 world.updateComparatorOutputLevel(pos, this);
             }
 
@@ -224,8 +225,9 @@ public abstract class BlockIronFurnaceBase extends Block {
         return true;
     }
 
-    public int getComparatorInputOverride(BlockState p_180641_1_, World p_180641_2_, BlockPos p_180641_3_) {
-        return Container.calcRedstone(p_180641_2_.getTileEntity(p_180641_3_));
+    public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
+        return Container.calcRedstone(world.getTileEntity(pos));
+
     }
 
     public BlockRenderType getRenderType(BlockState p_149645_1_) {
@@ -240,14 +242,13 @@ public abstract class BlockIronFurnaceBase extends Block {
         return p_185471_1_.rotate(p_185471_2_.toRotation((Direction)p_185471_1_.get(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
-    private int calculateOutput(ItemStack stack, World worldIn, BlockPos pos, BlockState state) {
-        if (!stack.hasTag()) return 0;
-        int i = this.getComparatorInputOverride(state, worldIn, pos);
+    private int calculateOutput(World worldIn, BlockPos pos, BlockState state) {
         BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase)worldIn.getTileEntity(pos));
+        int i = this.getComparatorInputOverride(state, worldIn, pos);
         if (tile != null)
         {
-            int j = tile.comparatorSub;
-            return stack.getTag().getInt("Mode") == 3 ? Math.max(i - j, 0) : i;
+            int j = tile.furnaceSettings.get(9);
+            return tile.furnaceSettings.get(8) == 4 ? Math.max(i - j, 0) : i;
         }
         return 0;
     }
@@ -267,20 +268,22 @@ public abstract class BlockIronFurnaceBase extends Block {
         BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
         if (furnace != null)
         {
-            if (furnace.getStackInSlot(3).getItem() instanceof ItemAugmentRedstone)
+            int mode = furnace.furnaceSettings.get(8);
+            if (mode == 0)
             {
-                if (furnace.getStackInSlot(3).hasTag())
-                {
-                    if (furnace.getStackInSlot(3).getTag().getInt("Mode") == 0)
-                    {
-                        return 0;
-                    }
-                    if (furnace.getStackInSlot(3).getTag().getInt("Mode") == 1)
-                    {
-                        return 0;
-                    }
-                    return calculateOutput(furnace.getStackInSlot(3), furnace.getWorld(), pos, blockState);
-                }
+                return 0;
+            }
+            else if (mode == 1)
+            {
+                return 0;
+            }
+            else if (mode == 2)
+            {
+                return 0;
+            }
+            else
+            {
+                return calculateOutput(furnace.getWorld(), pos, blockState);
             }
         }
         return 0;

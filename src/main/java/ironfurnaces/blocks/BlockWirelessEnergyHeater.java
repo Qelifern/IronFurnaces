@@ -1,5 +1,6 @@
 package ironfurnaces.blocks;
 
+import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,6 +49,24 @@ public class BlockWirelessEnergyHeater extends Block {
         return new BlockWirelessEnergyHeaterTile();
     }
 
+
+    @Override
+    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!world.isRemote) {
+            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
+            ItemStack stack = new ItemStack(Registration.HEATER.get());
+            if (te.hasCustomName()) {
+                stack.setDisplayName(te.getDisplayName());
+            }
+            if (te.getEnergy() > 0) {
+                stack.getOrCreateTag().putInt("Energy", te.getEnergy());
+            }
+            InventoryHelper.spawnItemStack(world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), stack);
+        }
+        super.onBlockHarvested(world, pos, state, player);
+    }
+
+
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
@@ -55,7 +74,7 @@ public class BlockWirelessEnergyHeater extends Block {
             if (stack.hasDisplayName()) {
                 te.setCustomName(stack.getDisplayName());
             }
-            if (stack.hasTag() && stack.getTag().getInt("Energy") > 0) {
+            if (stack.hasTag()) {
                 te.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> {
                     h.receiveEnergy(stack.getTag().getInt("Energy"), false);
                 });

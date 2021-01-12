@@ -1,5 +1,7 @@
 package ironfurnaces.init;
 
+import ironfurnaces.Config;
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.blocks.*;
 import ironfurnaces.container.*;
 import ironfurnaces.items.*;
@@ -14,6 +16,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.extensions.IForgeContainerType;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -181,19 +184,9 @@ public class Registration {
     public static final RegistryObject<ItemUpgradeVibranium> VIBRANIUM_UPGRADE = ITEMS.register("upgrade_vibranium", () -> new ItemUpgradeVibranium(ModList.get().isLoaded("allthemodium") ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<ItemUpgradeUnobtainium> UNOBTAINIUM_UPGRADE = ITEMS.register("upgrade_unobtainium", () -> new ItemUpgradeUnobtainium(ModList.get().isLoaded("allthemodium") ? new Item.Properties().group(ModSetup.ITEM_GROUP) : new Item.Properties()));
 
-    public static final RegistryObject<BlockMillionFurnace> MILLION_FURNACE = BLOCKS.register(BlockMillionFurnace.MILLION_FURNACE, () -> new BlockMillionFurnace(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
-    public static final RegistryObject<Item> MILLION_FURNACE_ITEM = ITEMS.register(BlockMillionFurnace.MILLION_FURNACE, () -> new BlockItem(MILLION_FURNACE.get(), new Item.Properties().group(ModSetup.ITEM_GROUP)));
-    public static final RegistryObject<TileEntityType<BlockMillionFurnaceTile>> MILLION_FURNACE_TILE = TILES.register(BlockMillionFurnace.MILLION_FURNACE, () -> TileEntityType.Builder.create(BlockMillionFurnaceTile::new, MILLION_FURNACE.get()).build(null));
 
-    public static final RegistryObject<ContainerType<BlockMillionFurnaceContainer>> MILLION_FURNACE_CONTAINER = CONTAINERS.register(BlockMillionFurnace.MILLION_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {
-        BlockPos pos = data.readBlockPos();
-        World world = inv.player.getEntityWorld();
-        return new BlockMillionFurnaceContainer(windowId, world, pos, inv, inv.player);
-    }));
 
-    public static final RegistryObject<Item> RAINBOW_CORE = ITEMS.register("rainbow_core", () -> new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)));
-    public static final RegistryObject<Item> RAINBOW_PLATING = ITEMS.register("rainbow_plating", () -> new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)));
-    public static final RegistryObject<ItemRainbowCoal> RAINBOW_COAL = ITEMS.register("rainbow_coal", () -> new ItemRainbowCoal(new Item.Properties().group(ModSetup.ITEM_GROUP).maxDamage(5120)));
+
 
 
     public static final RegistryObject<BlockWirelessEnergyHeater> HEATER = BLOCKS.register(BlockWirelessEnergyHeater.HEATER, () -> new BlockWirelessEnergyHeater(AbstractBlock.Properties.from(Blocks.IRON_BLOCK)));
@@ -212,9 +205,41 @@ public class Registration {
     public static final RegistryObject<ItemAugmentSmoking> SMOKING_AUGMENT = ITEMS.register("augment_smoking", () -> new ItemAugmentSmoking(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
     public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", () -> new ItemAugmentSpeed(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", () -> new ItemAugmentFuel(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
-    public static final RegistryObject<ItemAugmentRedstone> REDSTONE_AUGMENT = ITEMS.register("augment_redstone", () -> new ItemAugmentRedstone(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
 
     public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", () -> new ItemSpooky(new Item.Properties().group(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties().group(ModSetup.ITEM_GROUP)));
+
+    public static final BlockMillionFurnace MILLION_FURNACE = new BlockMillionFurnace(AbstractBlock.Properties.from(Blocks.IRON_BLOCK));
+    public static final Item MILLION_FURNACE_ITEM = new BlockItem(MILLION_FURNACE, new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, BlockMillionFurnace.MILLION_FURNACE);
+
+    public static final Item RAINBOW_CORE = new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_core");
+    public static final Item RAINBOW_PLATING = new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_plating");
+    public static final ItemRainbowCoal RAINBOW_COAL = new ItemRainbowCoal(new Item.Properties().group(ModSetup.ITEM_GROUP));
+
+
+    public static void registerBlocks(RegistryEvent.Register<Block> event)
+    {
+        if (Config.enableRainbowContent.get())
+        {
+            event.getRegistry().registerAll(MILLION_FURNACE);
+        }
+    }
+
+
+    public static void registerItems(RegistryEvent.Register<Item> event)
+    {
+        if (Config.enableRainbowContent.get())
+        {
+            event.getRegistry().registerAll(MILLION_FURNACE_ITEM, RAINBOW_CORE, RAINBOW_PLATING, RAINBOW_COAL);
+        }
+    }
+
+    public static final RegistryObject<TileEntityType<BlockMillionFurnaceTile>> MILLION_FURNACE_TILE = TILES.register(BlockMillionFurnace.MILLION_FURNACE, () -> TileEntityType.Builder.create(BlockMillionFurnaceTile::new, MILLION_FURNACE).build(null));
+
+    public static final RegistryObject<ContainerType<BlockMillionFurnaceContainer>> MILLION_FURNACE_CONTAINER = CONTAINERS.register(BlockMillionFurnace.MILLION_FURNACE, () -> IForgeContainerType.create((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        World world = inv.player.getEntityWorld();
+        return new BlockMillionFurnaceContainer(windowId, world, pos, inv, inv.player);
+    }));
 
 }

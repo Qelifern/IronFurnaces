@@ -1,5 +1,6 @@
 package ironfurnaces.container;
 
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.items.ItemAugmentBlasting;
 import ironfurnaces.items.ItemAugmentSmoking;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
@@ -15,6 +16,8 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -56,18 +59,110 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean hasRedstoneAugment() {
-        return this.te.hasRedstoneAugment();
+    public boolean showInventoryButtons() {
+        return this.te.fields.get(4) == 1;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getRedstoneMode() {
+        return this.te.getRedstoneSetting();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getComSub() {
+        return this.te.getRedstoneComSub();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean getAutoInput() {
+        return this.te.getAutoInput() == 1;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public boolean getAutoOutput() {
+        return this.te.getAutoOutput() == 1;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public ITextComponent getTooltip(int index) {
+        switch (te.furnaceSettings.get(index))
+        {
+            case 1:
+                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input");
+            case 2:
+                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_output");
+            case 3:
+                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input_output");
+            case 4:
+                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_fuel");
+            default:
+                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_none");
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingTop()
+    {
+        return this.te.getSettingTop();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingBottom()
+    {
+        return this.te.getSettingBottom();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingFront()
+    {
+        return this.te.getSettingFront();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingBack()
+    {
+        return this.te.getSettingBack();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingLeft()
+    {
+        return this.te.getSettingLeft();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getSettingRight()
+    {
+        return this.te.getSettingRight();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getIndexFront()
+    {
+        return this.te.getIndexFront();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getIndexBack()
+    {
+        return this.te.getIndexBack();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getIndexLeft()
+    {
+        return this.te.getIndexLeft();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getIndexRight()
+    {
+        return this.te.getIndexRight();
     }
 
     @OnlyIn(Dist.CLIENT)
     public BlockPos getPos() {
         return this.te.getPos();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getComSub() {
-        return this.fields.get(4);
     }
 
     @OnlyIn(Dist.CLIENT)

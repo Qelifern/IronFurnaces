@@ -18,5 +18,14 @@
   },
   "result": {
     "item": "ironfurnaces:silver_furnace"
-  }
+  },
+  "conditions": [
+    {
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/silver"
+      },
+      "type": "forge:not"
+    }
+  ]
 }

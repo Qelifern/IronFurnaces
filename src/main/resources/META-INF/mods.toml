@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[35,)" #mandatory
+loaderVersion="[35.1,)" #mandatory
 
 license="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" #mandatory
 
@@ -47,3 +47,9 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
    versionRange="[1,)"
    ordering="NONE"
    side="BOTH"
+[[dependencies.ironfurnaces]]
+  modId="allthemodium"
+  mandatory=false
+  versionRange="[1.1,)"
+  ordering="NONE"
+  side="BOTH"

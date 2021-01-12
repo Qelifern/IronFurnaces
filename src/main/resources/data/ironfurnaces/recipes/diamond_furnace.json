@@ -2,8 +2,8 @@
   "type": "crafting_shaped",
   "pattern": [
     "###",
-    "#X#",
-    "#Y#"
+    "GXG",
+    "###"
   ],
   "key": {
     "#": {
@@ -12,8 +12,8 @@
     "X": {
       "tag": "forge:furnaces/gold"
     },
-    "Y": {
-      "tag": "forge:storage_blocks/diamond"
+    "G": {
+      "tag": "forge:glass"
     }
   },
   "result": {

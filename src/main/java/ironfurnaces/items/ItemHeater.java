@@ -1,6 +1,8 @@
 package ironfurnaces.items;
 
 import ironfurnaces.IronFurnaces;
+import ironfurnaces.gui.BlockIronFurnaceScreenBase;
+import ironfurnaces.util.StringHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,15 +23,24 @@ public class ItemHeater extends Item {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTag()) {
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterX").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("X")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterY").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Y")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterZ").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Z")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
-        } else {
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_not_bound").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+
+
+        if (BlockIronFurnaceScreenBase.isShiftKeyDown())
+        {
+            if (stack.hasTag()) {
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterX").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("X")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterY").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Y")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heaterZ").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))).append(new StringTextComponent("" + stack.getTag().getInt("Z")).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY)))));
+            } else {
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_not_bound").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+                tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_tip1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            }
+        }
+        else
+        {
+            tooltip.add(StringHelper.getShiftInfoText());
         }
     }
 }

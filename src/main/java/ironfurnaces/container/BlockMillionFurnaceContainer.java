@@ -21,6 +21,6 @@ public class BlockMillionFurnaceContainer extends BlockIronFurnaceContainerBase 
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.MILLION_FURNACE.get());
+        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.MILLION_FURNACE);
     }
 }

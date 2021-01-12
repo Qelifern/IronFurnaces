@@ -18,5 +18,11 @@
   },
   "result": {
     "item": "ironfurnaces:upgrade_allthemodium"
-  }
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "allthemodium"
+    }
+  ]
 }

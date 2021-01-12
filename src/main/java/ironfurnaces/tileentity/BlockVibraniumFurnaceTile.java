@@ -9,9 +9,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nullable;
 
@@ -53,24 +52,13 @@ public class BlockVibraniumFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected int getCookTimeConfig()
-    {
-        int i = Config.vibraniumFurnaceSpeed.get();
-        int j = this.recipeType != null && this.recipeType != IRecipeType.SMELTING ? 2 : 1;
-        if (this.world != null)
-        {
-            int k = this.world.getRecipeManager().getRecipe((IRecipeType<AbstractCookingRecipe>)this.recipeType, this, this.world).map(AbstractCookingRecipe::getCookTime).orElse((i / j));
-            if (this.recipeType != null && k < (i / j))
-            {
-                return k;
-            }
-        }
-        return i / j;
+    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+        return Config.vibraniumFurnaceSpeed;
     }
 
     @Override
     public String IgetName() {
-        return "container.vibranium_furnace";
+        return "container.ironfurnaces.vibranium_furnace";
     }
 
     @Override

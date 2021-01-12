@@ -15,5 +15,14 @@
   },
   "result": {
     "item": "ironfurnaces:upgrade_copper"
-  }
+  },
+  "conditions": [
+    {
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/copper"
+      },
+      "type": "forge:not"
+    }
+  ]
 }

@@ -25,10 +25,16 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
         super(Registration.HEATER_TILE.get(), 1);
     }
 
+    private HeaterEnergyStorage energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
 
-    private IEnergyStorage createEnergy() {
-        return new HeaterEnergyStorage(1000000, 1000000, 0);
+    private HeaterEnergyStorage createEnergy() {
+        return new HeaterEnergyStorage(1000000, 1000000, 0) {
+            @Override
+            protected void onEnergyChanged() {
+                markDirty();
+            }
+        };
     }
 
     @Override
@@ -64,18 +70,14 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
-        energy.ifPresent(h ->{
-            ((HeaterEnergyStorage)h).writeToNBT(compound);
-        });
+        energyStorage.deserializeNBT(compound.getCompound("Energy"));
         return compound;
     }
 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
         super.read(state, compound);
-        energy.ifPresent(h ->{
-            ((HeaterEnergyStorage)h).readFromNBT(compound);
-        });
+        energyStorage.serializeNBT();
     }
 
     @Override
@@ -90,7 +92,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
 
     @Override
     public String IgetName() {
-        return "container.wireless_energy_heater";
+        return "container.ironfurnaces.wireless_energy_heater";
     }
 
     @Override

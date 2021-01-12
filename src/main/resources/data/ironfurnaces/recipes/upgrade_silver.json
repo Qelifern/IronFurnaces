@@ -18,5 +18,21 @@
   },
   "result": {
     "item": "ironfurnaces:upgrade_silver"
-  }
+  },
+  "conditions": [
+    {
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/silver"
+      },
+      "type": "forge:not"
+    },
+    {
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/copper"
+      },
+      "type": "forge:not"
+    }
+  ]
 }

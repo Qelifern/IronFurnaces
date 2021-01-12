@@ -1,6 +1,6 @@
 package ironfurnaces.blocks;
 
-import ironfurnaces.tileentity.BlockIronFurnaceTile;
+import ironfurnaces.IronFurnaces;
 import ironfurnaces.tileentity.BlockMillionFurnaceTile;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +14,7 @@ public class BlockMillionFurnace extends BlockIronFurnaceBase {
 
     public BlockMillionFurnace(Properties properties) {
         super(properties);
+        setRegistryName(IronFurnaces.MOD_ID, MILLION_FURNACE);
     }
 
     @Override

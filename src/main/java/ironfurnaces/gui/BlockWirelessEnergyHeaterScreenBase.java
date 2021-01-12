@@ -36,7 +36,7 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
         this.minecraft.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
-        this.minecraft.fontRenderer.func_243248_b(matrix, name, 7 + this.xSize / 2 - this.minecraft.fontRenderer.getStringWidth(name.toString()) / 2, 6, 4210752);
+        this.minecraft.fontRenderer.func_243248_b(matrix, name, this.xSize / 2 - this.minecraft.fontRenderer.getStringWidth(name.getString()) / 2, 6, 4210752);
 
         int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
         int actualMouseY = mouseY - ((this.height - this.ySize) / 2);

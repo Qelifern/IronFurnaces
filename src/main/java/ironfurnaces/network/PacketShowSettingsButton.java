@@ -8,14 +8,14 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketButton {
+public class PacketShowSettingsButton {
 
 	private int x;
 	private int y;
 	private int z;
 	private int set;
 
-	public PacketButton(ByteBuf buf) {
+	public PacketShowSettingsButton(ByteBuf buf) {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
@@ -29,7 +29,7 @@ public class PacketButton {
 		buf.writeInt(set);
 	}
 
-	public PacketButton(BlockPos pos, int set) {
+	public PacketShowSettingsButton(BlockPos pos, int set) {
 		this.x = pos.getX();
 		this.y = pos.getY();
 		this.z = pos.getZ();
@@ -42,7 +42,7 @@ public class PacketButton {
 			BlockPos pos = new BlockPos(x, y, z);
 			BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) player.getServerWorld().getTileEntity(pos);
 			if (player.world.isBlockLoaded(pos)) {
-				te.comparatorSub+= set;
+				te.show_inventory_settings = set;
 				te.markDirty();
 			}
 		});

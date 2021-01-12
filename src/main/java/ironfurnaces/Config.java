@@ -50,6 +50,8 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue checkUpdates;
 
+    public static ForgeConfigSpec.BooleanValue enableRainbowContent;
+
     //ALLTHEMODS
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
@@ -89,6 +91,10 @@ public class Config {
 
         GIVEN_COAL = COMMON_BUILDER
                 .comment(" Given or not given the Rainbow Coal to our champion").define("misc.coal", false);
+
+        enableRainbowContent = COMMON_BUILDER
+                .comment(" Enable or disable the Rainbow Content").define("misc.rainbow", true);
+
 
         COMMON_BUILDER.pop();
 
@@ -232,7 +238,7 @@ public class Config {
             if (player != null)
             {
                 Config.GIVEN_COAL.set(true);
-                player.world.addEntity(new ItemEntity(player.world, player.getPosX(), player.getPosY(), player.getPosZ(), new ItemStack(Registration.RAINBOW_COAL.get())));
+                player.world.addEntity(new ItemEntity(player.world, player.getPosX(), player.getPosY(), player.getPosZ(), new ItemStack(Registration.RAINBOW_COAL)));
             }
         }
     }
