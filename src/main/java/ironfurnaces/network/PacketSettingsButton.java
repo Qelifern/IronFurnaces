@@ -47,6 +47,7 @@ public class PacketSettingsButton {
 			BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) player.getServerWorld().getTileEntity(pos);
 			if (player.world.isBlockLoaded(pos)) {
 				te.furnaceSettings.set(index, set);
+				te.getWorld().notifyBlockUpdate(pos, te.getWorld().getBlockState(pos).getBlock().getDefaultState(), te.getWorld().getBlockState(pos), 2);
 				te.markDirty();
 			}
 		});

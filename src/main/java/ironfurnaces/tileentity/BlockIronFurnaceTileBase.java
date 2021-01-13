@@ -75,23 +75,32 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public FurnaceSettings furnaceSettings;
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
-        world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 3);
+    public SUpdateTileEntityPacket getUpdatePacket(){
+        CompoundNBT nbtTag = new CompoundNBT();
+        this.write(nbtTag);
+        this.markDirty();
+        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
     }
 
     @Override
-    public CompoundNBT getUpdateTag() {
-        CompoundNBT compound = new CompoundNBT();
-
-        this.write(compound);
-        return compound;
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
+        CompoundNBT tag = pkt.getNbtCompound();
+        this.read(world.getBlockState(pos), tag);
+        this.markDirty();
+        world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
     }
+
+
 
     public BlockIronFurnaceTileBase(TileEntityType<?> tileentitytypeIn) {
         super(tileentitytypeIn, 4);
         this.recipeType = IRecipeType.SMELTING;
-        furnaceSettings = new FurnaceSettings();
+        furnaceSettings = new FurnaceSettings() {
+            @Override
+            public void onChanged() {
+                markDirty();
+            }
+        };
 
     }
 
@@ -209,6 +218,15 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     @Override
     public void tick() {
+        if (furnaceSettings.size() <= 0)
+        {
+            furnaceSettings = new FurnaceSettings() {
+                @Override
+                public void onChanged() {
+                    markDirty();
+                }
+            };
+        }
         boolean wasBurning = this.isBurning();
         boolean flag1 = false;
         if (currentAugment != getAugment(this.getStackInSlot(3))) {
@@ -218,13 +236,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         if (this.isBurning()) {
             --this.furnaceBurnTime;
         }
-        if (furnaceSettings.size() <= 0)
-        {
-            furnaceSettings = new FurnaceSettings();
-        }
         if (!this.world.isRemote) {
 
             timer++;
+
             if (this.totalCookTime != this.getCookTime()) {
                 this.totalCookTime = this.getCookTime();
             }

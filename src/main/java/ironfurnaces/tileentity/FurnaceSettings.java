@@ -79,6 +79,7 @@ public class FurnaceSettings {
                 redstoneSettings[1] = value;
                 break;
         }
+        onChanged();
     }
 
     public int size()
@@ -90,11 +91,17 @@ public class FurnaceSettings {
         this.settings = tag.getIntArray("Settings");
         this.autoIO = tag.getIntArray("AutoIO");
         this.redstoneSettings = tag.getIntArray("Redstone");
+        onChanged();
     }
 
     public void write(CompoundNBT tag) {
         tag.putIntArray("Settings", settings);
         tag.putIntArray("AutoIO", autoIO);
         tag.putIntArray("Redstone", redstoneSettings);
+    }
+
+    public void onChanged()
+    {
+
     }
 }

@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import com.google.common.base.Preconditions;
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.energy.HeaterEnergyStorage;
 import ironfurnaces.init.Registration;
@@ -11,7 +12,10 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -70,14 +74,14 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
-        energyStorage.deserializeNBT(compound.getCompound("Energy"));
+        compound.put("Energy", energyStorage.serializeNBT());
         return compound;
     }
 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
         super.read(state, compound);
-        energyStorage.serializeNBT();
+        energyStorage.deserializeNBT(compound.getCompound("Energy"));
     }
 
     @Override
@@ -130,4 +134,6 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
         super.remove();
         energy.invalidate();
     }
+
+
 }

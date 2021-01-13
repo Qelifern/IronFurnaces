@@ -32,8 +32,18 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(world.getBlockState(pkt.getPos()), pkt.getNbtCompound());
+    public SUpdateTileEntityPacket getUpdatePacket(){
+        CompoundNBT nbtTag = new CompoundNBT();
+        this.write(nbtTag);
+        this.markDirty();
+        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
+        CompoundNBT tag = pkt.getNbtCompound();
+        this.read(world.getBlockState(pos), tag);
+        this.markDirty();
         world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
     }
 
@@ -43,12 +53,6 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
 
         this.write(compound);
         return compound;
-    }
-
-
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(pos, 1, this.getUpdateTag());
     }
 
 

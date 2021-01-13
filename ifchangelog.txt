@@ -1,3 +1,7 @@
+2.5.8
++Fixed Furnace config not syncing when playing on a server
++Fixed furnace upgrade recipes loading for copper and silver even though silver and copper doesn't exist
++Forge 35.1.36
 2.5.7
 +Added Furnace configs, default with any furnace
 +Added a config option to disable all rainbow content
