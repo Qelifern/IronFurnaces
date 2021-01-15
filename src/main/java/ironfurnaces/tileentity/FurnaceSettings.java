@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import ironfurnaces.IronFurnaces;
 import net.minecraft.nbt.CompoundNBT;
 
 public class FurnaceSettings {
@@ -17,31 +18,40 @@ public class FurnaceSettings {
 
     public int get(int index)
     {
-        switch (index)
-        {
-            case 0:
-                return settings[0];
-            case 1:
-                return settings[1];
-            case 2:
-                return settings[2];
-            case 3:
-                return settings[3];
-            case 4:
-                return settings[4];
-            case 5:
-                return settings[5];
-            case 6:
-                return autoIO[0];
-            case 7:
-                return autoIO[1];
-            case 8:
-                return redstoneSettings[0];
-            case 9:
-                return redstoneSettings[1];
-            default:
-                return 0;
+        try {
+            switch (index) {
+                case 0:
+                    return settings[0];
+                case 1:
+                    return settings[1];
+                case 2:
+                    return settings[2];
+                case 3:
+                    return settings[3];
+                case 4:
+                    return settings[4];
+                case 5:
+                    return settings[5];
+                case 6:
+                    return autoIO[0];
+                case 7:
+                    return autoIO[1];
+                case 8:
+                    return redstoneSettings[0];
+                case 9:
+                    return redstoneSettings[1];
+                default:
+                    return 0;
+            }
         }
+        catch(ArrayIndexOutOfBoundsException e) {
+            IronFurnaces.LOGGER.error("Something went wrong: https://github.com/Qelifern/IronFurnaces/issues/30");
+            for (int i = 0; i < e.getStackTrace().length; i++)
+            {
+                IronFurnaces.LOGGER.error(e.getStackTrace()[i].toString());
+            }
+        }
+        return 0;
     }
 
     public void set(int index, int value)
@@ -77,6 +87,8 @@ public class FurnaceSettings {
                 break;
             case 9:
                 redstoneSettings[1] = value;
+                break;
+            default:
                 break;
         }
         onChanged();

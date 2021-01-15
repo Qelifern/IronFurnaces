@@ -61,7 +61,7 @@ public class BlockWirelessEnergyHeater extends Block {
             if (te.getEnergy() > 0) {
                 stack.getOrCreateTag().putInt("Energy", te.getEnergy());
             }
-            InventoryHelper.spawnItemStack(world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), stack);
+            if (!player.isCreative()) InventoryHelper.spawnItemStack(world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), stack);
         }
         super.onBlockHarvested(world, pos, state, player);
     }

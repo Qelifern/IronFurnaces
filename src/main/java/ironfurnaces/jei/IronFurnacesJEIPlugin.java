@@ -1,3 +1,5 @@
+/**
+
 package ironfurnaces.jei;
 
 
@@ -100,3 +102,8 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 	}
 
 }
+
+
+
+
+**/
