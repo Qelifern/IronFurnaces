@@ -1,3 +1,6 @@
+2.6.1
+Now works with 1.16.4 and 1.16.5
+Forge has to be 35.1 >
 2.6.0
 Bump to 2.6.0 for 1.16.5
 +Fixed Wireless Heat Transmitter dropping while breaking in creative mode
