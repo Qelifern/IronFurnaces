@@ -3,17 +3,21 @@ package ironfurnaces.blocks;
 import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockCrystalFurnaceTile;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.IWaterLoggable;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,12 +25,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockCrystalFurnace extends BlockIronFurnaceBase {
+public class BlockCrystalFurnace extends BlockIronFurnaceBase implements IWaterLoggable {
 
     public static final String CRYSTAL_FURNACE = "crystal_furnace";
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public BlockCrystalFurnace(Properties properties) {
         super(properties);
+        this.setDefaultState(this.getDefaultState().with(BlockStateProperties.LIT, false).with(TYPE, 0).with(JOVIAL, 0).with(WATERLOGGED, Boolean.valueOf(false)));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getPos());
+        return (BlockState) this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -61,6 +73,18 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase {
         super.animateTick(state, world, pos, rand);
     }
 
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.get(WATERLOGGED)) {
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+        }
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
     @Override
     public int getHarvestLevel(BlockState state) {
         return 2;
@@ -72,4 +96,8 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase {
         return new BlockCrystalFurnaceTile();
     }
 
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        super.fillStateContainer(builder.add(WATERLOGGED));
+    }
 }

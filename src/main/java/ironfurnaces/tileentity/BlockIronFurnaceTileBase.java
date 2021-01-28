@@ -1,6 +1,7 @@
 package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
+import harmonised.pmmo.events.FurnaceHandler;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.blocks.BlockIronFurnaceBase;
 import ironfurnaces.init.Registration;
@@ -38,6 +39,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -655,7 +657,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.inventory.get(FUEL).isEmpty() && this.inventory.get(FUEL).getItem() == Items.BUCKET) {
                 this.inventory.set(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
-
+            if (ModList.get().isLoaded("pmmo"))
+            {
+                FurnaceHandler.handleSmelted(itemstack, itemstack2, world, pos, 0);
+                FurnaceHandler.handleSmelted(itemstack, itemstack2, world, pos, 1);
+            }
             itemstack.shrink(1);
         }
     }

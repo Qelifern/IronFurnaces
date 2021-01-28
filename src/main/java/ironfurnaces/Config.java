@@ -150,7 +150,7 @@ public class Config {
 
         millionFurnaceSpeed = COMMON_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 200")
-                .defineInRange("rainbow_furnace.speed", 200, 2, 72000);
+                .defineInRange("rainbow_furnace.speed", 50, 2, 72000);
 
 
     }
