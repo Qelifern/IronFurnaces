@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import ironfurnaces.Config;
 import ironfurnaces.IronFurnaces;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -45,10 +46,11 @@ public class FurnaceSettings {
             }
         }
         catch(ArrayIndexOutOfBoundsException e) {
-            IronFurnaces.LOGGER.error("Something went wrong: https://github.com/Qelifern/IronFurnaces/issues/30");
-            for (int i = 0; i < e.getStackTrace().length; i++)
-            {
-                IronFurnaces.LOGGER.error(e.getStackTrace()[i].toString());
+            if (Config.showErrors.get()) {
+                IronFurnaces.LOGGER.error("Something went wrong: https://github.com/Qelifern/IronFurnaces/issues/30");
+                for (int i = 0; i < e.getStackTrace().length; i++) {
+                    IronFurnaces.LOGGER.error(e.getStackTrace()[i].toString());
+                }
             }
         }
         return 0;

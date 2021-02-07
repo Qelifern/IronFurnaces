@@ -1,3 +1,5 @@
+2.6.3
++Added config option to enable error logging in debug situations (was forced enabled before)
 2.6.2
 +ProjectMMO integration
 +Waterlogged Crystal Furnace and fixed rendering

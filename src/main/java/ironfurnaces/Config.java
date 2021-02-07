@@ -52,6 +52,8 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue enableRainbowContent;
 
+    public static ForgeConfigSpec.BooleanValue showErrors;
+
     //ALLTHEMODS
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
@@ -94,6 +96,9 @@ public class Config {
 
         enableRainbowContent = COMMON_BUILDER
                 .comment(" Enable or disable the Rainbow Content").define("misc.rainbow", true);
+
+        showErrors = COMMON_BUILDER
+                .comment(" Show furnace settings errors in chat, used for debugging").define("misc.errors", false);
 
 
         COMMON_BUILDER.pop();
