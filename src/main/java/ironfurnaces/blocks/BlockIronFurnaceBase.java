@@ -2,6 +2,7 @@ package ironfurnaces.blocks;
 
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemAugment;
+import ironfurnaces.items.ItemFurnaceCopy;
 import ironfurnaces.items.ItemSpooky;
 import ironfurnaces.items.ItemXmas;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
@@ -27,6 +28,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -75,6 +77,7 @@ public abstract class BlockIronFurnaceBase extends Block {
             if (stack.hasDisplayName()) {
                 te.setCustomName(stack.getDisplayName());
             }
+            te.placeConfig();
         }
     }
 
@@ -93,6 +96,8 @@ public abstract class BlockIronFurnaceBase extends Block {
                 return this.interactJovial(world, pos, player, handIn, 2);
             } else if (player.getHeldItem(handIn).isEmpty() && player.isCrouching()) {
                 return this.interactJovial(world, pos, player, handIn, 0);
+            } else if (player.getHeldItem(handIn).getItem() instanceof ItemFurnaceCopy && !(player.isCrouching())) {
+                return this.interactCopy(world, pos, player, handIn);
             } else {
                 this.interactWith(world, pos, player);
             }
@@ -101,6 +106,28 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     }
 
+    private ActionResultType interactCopy(World world, BlockPos pos, PlayerEntity player, Hand handIn) {
+        int j = player.inventory.currentItem;
+        ItemStack stack = player.inventory.getStackInSlot(j);
+        if (!(stack.getItem() instanceof ItemFurnaceCopy)) {
+            return ActionResultType.SUCCESS;
+        }
+        TileEntity te = world.getTileEntity(pos);
+        if (!(te instanceof BlockIronFurnaceTileBase)) {
+            return ActionResultType.SUCCESS;
+        }
+
+        int[] settings = new int[] {0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < 6; i++)
+        {
+            settings[i] = ((BlockIronFurnaceTileBase) te).furnaceSettings.get(i);
+        }
+        stack.getOrCreateTag().putIntArray("settings", settings);
+
+        ((BlockIronFurnaceTileBase)te).onUpdateSent();
+        player.sendMessage(new StringTextComponent("Settings copied"), player.getUniqueID());
+        return ActionResultType.SUCCESS;
+    }
     private ActionResultType interactAugment(World world, BlockPos pos, PlayerEntity player, Hand handIn, ItemStack stack) {
         if (!(player.getHeldItem(handIn).getItem() instanceof ItemAugment)) {
             return ActionResultType.SUCCESS;

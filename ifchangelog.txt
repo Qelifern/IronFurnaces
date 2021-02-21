@@ -1,3 +1,6 @@
+2.6.4
++Added an item to copy furnace settings from and to another
++Added defualt furnace config so that when placing a furnace it defaults to how a vanilla furnace works. (with hoppers and pipes etc.)
 2.6.3
 +Added config option to enable error logging in debug situations (was forced enabled before)
 2.6.2

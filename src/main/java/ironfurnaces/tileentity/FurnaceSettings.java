@@ -9,16 +9,14 @@ public class FurnaceSettings {
     public int[] autoIO;
     public int[] redstoneSettings;
 
-    public FurnaceSettings()
-    {
+    public FurnaceSettings() {
         settings = new int[]{0, 0, 0, 0, 0, 0};
         autoIO = new int[]{0, 0};
         // (mode 1, 2, 3, 4, subtract) ignored, low/high, comparator, comparator sub, subtract
         redstoneSettings = new int[]{0, 0};
     }
 
-    public int get(int index)
-    {
+    public int get(int index) {
         try {
             switch (index) {
                 case 0:
@@ -44,10 +42,9 @@ public class FurnaceSettings {
                 default:
                     return 0;
             }
-        }
-        catch(ArrayIndexOutOfBoundsException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             if (Config.showErrors.get()) {
-                IronFurnaces.LOGGER.error("Something went wrong: https://github.com/Qelifern/IronFurnaces/issues/30");
+                IronFurnaces.LOGGER.error("Something went wrong.");
                 for (int i = 0; i < e.getStackTrace().length; i++) {
                     IronFurnaces.LOGGER.error(e.getStackTrace()[i].toString());
                 }
@@ -56,48 +53,54 @@ public class FurnaceSettings {
         return 0;
     }
 
-    public void set(int index, int value)
-    {
-        switch (index)
-        {
-            case 0:
-                settings[0] = value;
-                break;
-            case 1:
-                settings[1] = value;
-                break;
-            case 2:
-                settings[2] = value;
-                break;
-            case 3:
-                settings[3] = value;
-                break;
-            case 4:
-                settings[4] = value;
-                break;
-            case 5:
-                settings[5] = value;
-                break;
-            case 6:
-                autoIO[0] = value;
-                break;
-            case 7:
-                autoIO[1] = value;
-                break;
-            case 8:
-                redstoneSettings[0] = value;
-                break;
-            case 9:
-                redstoneSettings[1] = value;
-                break;
-            default:
-                break;
+    public void set(int index, int value) {
+        try {
+            switch (index) {
+                case 0:
+                    settings[0] = value;
+                    break;
+                case 1:
+                    settings[1] = value;
+                    break;
+                case 2:
+                    settings[2] = value;
+                    break;
+                case 3:
+                    settings[3] = value;
+                    break;
+                case 4:
+                    settings[4] = value;
+                    break;
+                case 5:
+                    settings[5] = value;
+                    break;
+                case 6:
+                    autoIO[0] = value;
+                    break;
+                case 7:
+                    autoIO[1] = value;
+                    break;
+                case 8:
+                    redstoneSettings[0] = value;
+                    break;
+                case 9:
+                    redstoneSettings[1] = value;
+                    break;
+                default:
+                    break;
+            }
+            onChanged();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            if (Config.showErrors.get()) {
+                IronFurnaces.LOGGER.error("Something went wrong.");
+                for (int i = 0; i < e.getStackTrace().length; i++) {
+                    IronFurnaces.LOGGER.error(e.getStackTrace()[i].toString());
+                }
+            }
         }
-        onChanged();
     }
 
-    public int size()
-    {
+    public int size() {
         return settings.length + autoIO.length + redstoneSettings.length;
     }
 
@@ -114,8 +117,7 @@ public class FurnaceSettings {
         tag.putIntArray("Redstone", redstoneSettings);
     }
 
-    public void onChanged()
-    {
+    public void onChanged() {
 
     }
 }

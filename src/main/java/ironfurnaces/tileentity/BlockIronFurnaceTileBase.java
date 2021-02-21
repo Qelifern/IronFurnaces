@@ -888,4 +888,21 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
 
+    public void placeConfig() {
+
+        if (this.furnaceSettings != null)
+        {
+            this.furnaceSettings.set(0, 2);
+            this.furnaceSettings.set(1, 1);
+            for (Direction dir : Direction.values())
+            {
+                if (dir != Direction.DOWN && dir != Direction.UP)
+                {
+                    this.furnaceSettings.set(dir.getIndex(), 4);
+                }
+            }
+            world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 3);
+        }
+
+    }
 }

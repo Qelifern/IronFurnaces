@@ -48,7 +48,6 @@ public class ItemUpgrade extends Item {
     public ActionResultType onItemUse(ItemUseContext ctx) {
         World world = ctx.getWorld();
         BlockPos pos = ctx.getPos();
-        boolean playSound = false;
         if (!world.isRemote) {
             if ((ctx.getItem().getItem() instanceof ItemUpgradeIron || ctx.getItem().getItem() instanceof ItemUpgradeCopper) && ModList.get().isLoaded("fastfurnace"))
             {
