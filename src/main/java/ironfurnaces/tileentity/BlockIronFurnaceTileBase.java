@@ -397,13 +397,13 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 if (this.getAutoInput() == 1) {
                                     if (this.furnaceSettings.get(dir.getIndex()) == 1 || this.furnaceSettings.get(dir.getIndex()) == 3) {
                                         ItemStack stack = other.extractItem(i, 64, true);
-                                        if (hasRecipe(stack) && getStackInSlot(INPUT).isEmpty() || getStackInSlot(INPUT).getItem() == stack.getItem()) {
+                                        if (hasRecipe(stack) && getStackInSlot(INPUT).isEmpty() || ItemHandlerHelper.canItemStacksStack(getStackInSlot(INPUT), stack)) {
                                             insertItemInternal(INPUT, other.extractItem(i, 64 - this.getStackInSlot(INPUT).getCount(), false), false);
                                         }
                                     }
                                     if (this.furnaceSettings.get(dir.getIndex()) == 4) {
                                         ItemStack stack = other.extractItem(i, 64, true);
-                                        if (isItemFuel(stack) && getStackInSlot(FUEL).isEmpty() || getStackInSlot(FUEL).getItem() == stack.getItem()) {
+                                        if (isItemFuel(stack) && getStackInSlot(FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getStackInSlot(FUEL), stack)) {
                                             insertItemInternal(FUEL, other.extractItem(i, 64 - this.getStackInSlot(FUEL).getCount(), false), false);
                                         }
                                     }
@@ -411,7 +411,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 if (this.getAutoOutput() == 1) {
                                     if (this.furnaceSettings.get(dir.getIndex()) == 2 || this.furnaceSettings.get(dir.getIndex()) == 3) {
                                         ItemStack stack = extractItemInternal(OUTPUT, 64 - other.getStackInSlot(i).getCount(), true);
-                                        if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (other.getStackInSlot(i).getItem() == stack.getItem() && other.getStackInSlot(i).getCount() + stack.getCount() <= 64))) {
+                                        if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= 64))) {
                                             other.insertItem(i, extractItemInternal(OUTPUT, stack.getCount(), false), false);
                                         }
                                     }
