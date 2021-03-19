@@ -149,15 +149,19 @@ jar {
 }
 
 dependencies {
-    //compileOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}:api")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-1.16.4:${project.jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:${project.jei_version}")
+
+    compileOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
 
     //Project MMO
-    compileOnly fg.deobf("curse.maven:project-mmo-353935:3184724")
-    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3184724")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3245083")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3245083")
 
+    /**
+    //Drawers
+    compileOnly fg.deobf("curse.maven:storage-drawers-223852:3180569")
+    runtimeOnly fg.deobf("curse.maven:storage-drawers-223852:3180569")
+     **/
 }
 
 // Example configuration to allow publishing using the maven-publish task

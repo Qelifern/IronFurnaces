@@ -1,3 +1,9 @@
+2.6.5
++Forge 36.1
++JEI 1.16.5-7.6.1.75
++Project MMO 3.47.3
++Fixed auto input and output causing a lot of lag
++Items can no longer be automaticly outputed to an adjacent storage drawer which fixes an issue where that item might end up being deleted
 2.6.4
 +Added an item to copy furnace settings from and to another
 +Added defualt furnace config so that when placing a furnace it defaults to how a vanilla furnace works. (with hoppers and pipes etc.)
