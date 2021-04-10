@@ -2,6 +2,7 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import harmonised.pmmo.events.FurnaceHandler;
+import ironfurnaces.Config;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.blocks.BlockIronFurnaceBase;
 import ironfurnaces.init.Registration;
@@ -48,6 +49,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public abstract class BlockIronFurnaceTileBase extends TileEntityInventory implements ITickableTileEntity, IRecipeHolder, IRecipeHelperPopulator {
     public final int[] provides = new int[Direction.values().length];
@@ -241,6 +243,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             timer++;
             if (this.cookTime <= 0) {
                 autoIO();
+                flag1 = true;
             }
 
             if (this.totalCookTime != this.getCookTime()) {
@@ -378,6 +381,30 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 }
 
 
+            }
+            if (timer % 30 == 0)
+            {
+                if (!world.isRemote)
+                {
+                    if (this.getUpdateTag().getCompound("RecipesUsed").size() > Config.furnaceXPDropValue.get())
+                    {
+                        Random rand = new Random();
+                        this.grantStoredRecipeExperience(world, new Vector3d(pos.getX() + rand.nextInt(2) - 1, pos.getY(), pos.getZ() + rand.nextInt(2) - 1));
+                        this.recipes.clear();
+                    }
+
+                    for (Object2IntMap.Entry<ResourceLocation> entry : this.recipes.object2IntEntrySet()) {
+                        world.getRecipeManager().getRecipe(entry.getKey()).ifPresent((recipe) -> {
+                            if (entry.getIntValue() > Config.furnaceXPDropValue2.get())
+                            {
+                                Random rand = new Random();
+                                this.grantStoredRecipeExperience(world, new Vector3d(pos.getX() + rand.nextInt(2) - 1, pos.getY(), pos.getZ() + rand.nextInt(2) - 1));
+                                this.recipes.clear();
+                            }
+                        });
+                    }
+
+                }
             }
         }
 
@@ -724,11 +751,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         tag.putInt("CookTimeTotal", this.totalCookTime);
         tag.putInt("Augment", this.currentAugment);
         tag.putInt("Jovial", this.jovial);
-        CompoundNBT compoundnbt = new CompoundNBT();
-        this.recipes.forEach((recipeId, craftedAmount) -> {
-            compoundnbt.putInt(recipeId.toString(), craftedAmount);
-        });
-        tag.put("RecipesUsed", compoundnbt);
+
         tag.putInt("ShowInvSettings", this.show_inventory_settings);
         this.furnaceSettings.write(tag);
         /**
@@ -737,6 +760,12 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
          tag.put("energy", compound);
          });
          **/
+
+        CompoundNBT compoundnbt = new CompoundNBT();
+        this.recipes.forEach((recipeId, craftedAmount) -> {
+            compoundnbt.putInt(recipeId.toString(), craftedAmount);
+        });
+        tag.put("RecipesUsed", compoundnbt);
 
         return super.write(tag);
     }

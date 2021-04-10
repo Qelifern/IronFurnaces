@@ -32,6 +32,9 @@ public class Config {
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
+    public static ForgeConfigSpec.IntValue furnaceXPDropValue;
+    public static ForgeConfigSpec.IntValue furnaceXPDropValue2;
+
     public static ForgeConfigSpec.IntValue ironFurnaceSpeed;
     public static ForgeConfigSpec.IntValue goldFurnaceSpeed;
     public static ForgeConfigSpec.IntValue diamondFurnaceSpeed;
@@ -157,6 +160,13 @@ public class Config {
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 200")
                 .defineInRange("rainbow_furnace.speed", 50, 2, 72000);
 
+        furnaceXPDropValue = COMMON_BUILDER
+                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10, Recipes")
+                .defineInRange("furance_xp_drop.value", 10, 1, 500);
+
+        furnaceXPDropValue2 = COMMON_BUILDER
+                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10000, Single recipe uses")
+                .defineInRange("furance_xp_drop.value_two", 100000, 1, 1000000);
 
     }
 

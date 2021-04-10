@@ -1,3 +1,9 @@
+2.6.6
++Forge 36.1.4
++When playing with a lot of mods and smelting a lot of stuff,
+the furnace built up so much xp/recipes stored that it would cause a lot of lag.
+Now the furnace will spit out the xp if you smelt over (default) 10 different items/recipes, which fixes this lag machine.
+Another value was also added to regulate single recipe uses, (default) over 100 000 will spit out the xp.
 2.6.5
 +Forge 36.1
 +JEI 1.16.5-7.6.1.75
