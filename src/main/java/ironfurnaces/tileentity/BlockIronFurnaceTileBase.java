@@ -61,6 +61,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected AbstractCookingRecipe curRecipe;
 
+    private Random rand = new Random();
+
     public int show_inventory_settings;
     private int jovial;
     protected int timer;
@@ -231,6 +233,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
         boolean wasBurning = this.isBurning();
         boolean flag1 = false;
+        boolean flag2 = false;
         if (currentAugment != getAugment(this.getStackInSlot(3))) {
             this.currentAugment = getAugment(this.getStackInSlot(3));
             this.furnaceBurnTime = 0;
@@ -382,28 +385,26 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
 
             }
-            if (timer % 30 == 0)
-            {
-                if (!world.isRemote)
-                {
-                    if (this.getUpdateTag().getCompound("RecipesUsed").size() > Config.furnaceXPDropValue.get())
-                    {
-                        Random rand = new Random();
+            if (timer % 30 == 0) {
+                if (!world.isRemote) {
+                    if (this.getUpdateTag().getCompound("RecipesUsed").size() > Config.furnaceXPDropValue.get()) {
                         this.grantStoredRecipeExperience(world, new Vector3d(pos.getX() + rand.nextInt(2) - 1, pos.getY(), pos.getZ() + rand.nextInt(2) - 1));
                         this.recipes.clear();
-                    }
-
-                    for (Object2IntMap.Entry<ResourceLocation> entry : this.recipes.object2IntEntrySet()) {
-                        world.getRecipeManager().getRecipe(entry.getKey()).ifPresent((recipe) -> {
-                            if (entry.getIntValue() > Config.furnaceXPDropValue2.get())
-                            {
-                                Random rand = new Random();
-                                this.grantStoredRecipeExperience(world, new Vector3d(pos.getX() + rand.nextInt(2) - 1, pos.getY(), pos.getZ() + rand.nextInt(2) - 1));
-                                this.recipes.clear();
+                    } else {
+                        for (Object2IntMap.Entry<ResourceLocation> entry : this.recipes.object2IntEntrySet()) {
+                            if (world.getRecipeManager().getRecipe(entry.getKey()).isPresent()) {
+                                if (entry.getIntValue() > Config.furnaceXPDropValue2.get()) {
+                                    if (!flag2) {
+                                        this.grantStoredRecipeExperience(world, new Vector3d(pos.getX() + rand.nextInt(2) - 1, pos.getY(), pos.getZ() + rand.nextInt(2) - 1));
+                                    }
+                                    flag2 = true;
+                                }
                             }
-                        });
+                        }
+                        if (flag2) {
+                            this.recipes.clear();
+                        }
                     }
-
                 }
             }
         }
@@ -459,10 +460,26 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 }
                             }
                             if (this.getAutoOutput() == 1) {
-                                if (this.getStackInSlot(OUTPUT).isEmpty()) {
-                                    continue;
+
+                                if (this.furnaceSettings.get(dir.getIndex()) == 4) {
+                                    if (this.getStackInSlot(FUEL).isEmpty()) {
+                                        continue;
+                                    }
+                                    ItemStack stack = extractItemInternal(FUEL, 1, true);
+                                    if (stack.getItem() != Items.BUCKET) {
+                                        continue;
+                                    }
+                                    for (int i = 0; i < other.getSlots(); i++) {
+                                        if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
+                                            other.insertItem(i, extractItemInternal(FUEL, stack.getCount(), false), false);
+                                        }
+                                    }
                                 }
+
                                 if (this.furnaceSettings.get(dir.getIndex()) == 2 || this.furnaceSettings.get(dir.getIndex()) == 3) {
+                                    if (this.getStackInSlot(OUTPUT).isEmpty()) {
+                                        continue;
+                                    }
                                     if (tile.getBlockState().getBlock().getRegistryName().toString().contains("storagedrawers:")) {
                                         continue;
                                     }
@@ -846,8 +863,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return index == 2;
         } else if (this.furnaceSettings.get(direction.getIndex()) == 3) {
             return index == 2;
-        } else if (this.furnaceSettings.get(direction.getIndex()) == 4) {
+        } else if (this.furnaceSettings.get(direction.getIndex()) == 4 && stack.getItem() != Items.BUCKET) {
             return false;
+        } else if (this.furnaceSettings.get(direction.getIndex()) == 4 && stack.getItem() == Items.BUCKET) {
+            return true;
         }
         return false;
     }

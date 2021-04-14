@@ -1,3 +1,11 @@
+2.6.7
++Fixed crashing when clearing recipe data after emptying xp
++Fixed buckets not being extracted by hoppers from fuel sides
++Fixed Energy not being saved in the Wireless Transmitter when exiting/loading worlds
++Changed rainbow core recipe, removed netherite/copper/silver requirements
++Changed default speed of the rainbow furnace
++PMMO 3.52.6
++JEI 7.6.4.86
 2.6.6
 +Forge 36.1.4
 +When playing with a lot of mods and smelting a lot of stuff,

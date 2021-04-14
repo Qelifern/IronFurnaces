@@ -157,15 +157,15 @@ public class Config {
                 .defineInRange("silver_furnace.speed", 140, 2, 72000);
 
         millionFurnaceSpeed = COMMON_BUILDER
-                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 200")
-                .defineInRange("rainbow_furnace.speed", 50, 2, 72000);
+                .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
+                .defineInRange("rainbow_furnace.speed", 20, 2, 72000);
 
         furnaceXPDropValue = COMMON_BUILDER
                 .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10, Recipes")
                 .defineInRange("furance_xp_drop.value", 10, 1, 500);
 
         furnaceXPDropValue2 = COMMON_BUILDER
-                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10000, Single recipe uses")
+                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 100000, Single recipe uses")
                 .defineInRange("furance_xp_drop.value_two", 100000, 1, 1000000);
 
     }

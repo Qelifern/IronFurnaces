@@ -154,8 +154,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
 
     //Project MMO
-    compileOnly fg.deobf("curse.maven:project-mmo-353935:3245083")
-    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3245083")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3272192")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3272192")
 
     /**
     //Drawers

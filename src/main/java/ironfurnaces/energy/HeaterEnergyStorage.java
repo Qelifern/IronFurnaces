@@ -1,10 +1,8 @@
 package ironfurnaces.energy;
 
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
-public class HeaterEnergyStorage extends EnergyStorage implements INBTSerializable<CompoundNBT> {
+public class HeaterEnergyStorage extends EnergyStorage {
 
     public HeaterEnergyStorage(int capacity) {
         super(capacity);
@@ -84,17 +82,5 @@ public class HeaterEnergyStorage extends EnergyStorage implements INBTSerializab
             this.energy = 0;
         }
         onEnergyChanged();
-    }
-
-    @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
-        tag.putInt("Energy", getEnergyStored());
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        setEnergy(nbt.getInt("Energy"));
     }
 }
