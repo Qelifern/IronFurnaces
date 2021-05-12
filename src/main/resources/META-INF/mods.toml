@@ -56,6 +56,6 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
 [[dependencies.ironfurnaces]]
     modId="pmmo"
     mandatory=false
-    versionRange="[3,)"
+    versionRange="[1.16.5-3,)"
     ordering="NONE"
     side="BOTH"
