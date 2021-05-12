@@ -215,10 +215,12 @@ public class Registration {
     public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", () -> new ItemSpooky(new Item.Properties().group(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties().group(ModSetup.ITEM_GROUP)));
 
-    public static final RegistryObject<ItemFurnaceCopy> ITEM_COPY = ITEMS.register("item_copy", () -> new ItemFurnaceCopy(new Item.Properties().group(ModSetup.ITEM_GROUP)));
+    public static final RegistryObject<ItemFurnaceCopy> ITEM_COPY = ITEMS.register("item_copy", () -> new ItemFurnaceCopy(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
+
+    //public static final RegistryObject<ItemLinker> ITEM_LINKER = ITEMS.register("item_linker", () -> new ItemLinker(new Item.Properties().group(ModSetup.ITEM_GROUP).maxStackSize(1)));
 
     public static final BlockMillionFurnace MILLION_FURNACE = new BlockMillionFurnace(AbstractBlock.Properties.from(Blocks.IRON_BLOCK));
-    public static final Item MILLION_FURNACE_ITEM = new BlockItem(MILLION_FURNACE, new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, BlockMillionFurnace.MILLION_FURNACE);
+    public static final Item MILLION_FURNACE_ITEM = new ItemMillionFurnace(MILLION_FURNACE, new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, BlockMillionFurnace.MILLION_FURNACE);
 
     public static final Item RAINBOW_CORE = new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_core");
     public static final Item RAINBOW_PLATING = new Item(new Item.Properties().group(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_plating");

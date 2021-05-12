@@ -1,5 +1,6 @@
 package ironfurnaces.tileentity;
 
+import com.google.common.collect.Lists;
 import ironfurnaces.Config;
 import ironfurnaces.container.BlockMillionFurnaceContainer;
 import ironfurnaces.init.Registration;
@@ -9,16 +10,55 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
     public BlockMillionFurnaceTile() {
         super(Registration.MILLION_FURNACE_TILE.get());
+    }
+
+    public List<BlockIronFurnaceTileBase> furnaces = Lists.newArrayList();
+
+    public boolean providing;
+
+
+    @Override
+    public void tick() {
+
+        /**
+        boolean flag = true;
+        if (!world.isRemote) {
+
+            if (furnaces.size() >= 7) {
+                for (BlockIronFurnaceTileBase furnace : furnaces) {
+                    world.getChunkAt(furnace.getPos()).setLoaded(true);
+                    if (furnace.cookTime <= 0) {
+                        flag = false;
+                    }
+                }
+            }
+
+
+        }
+        if (flag) {
+            providing = true;
+            if (!world.isRemote) {
+                for (Direction dir : Direction.values()) {
+                    TileEntity tile = world.getTileEntity(pos.offset(dir));
+                    if (tile != null) {
+                        tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).ifPresent(h -> {
+                            h.receiveEnergy(10000, false);
+                        });
+                    }
+                }
+            }
+        }
+        **/
+        super.tick();
     }
 
     @Override
@@ -39,8 +79,7 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
             }
 
             if (!this.world.isRemote) {
-                for (int i = 0; i < smelt; i++)
-                {
+                for (int i = 0; i < smelt; i++) {
                     this.setRecipeUsed(recipe);
                 }
             }
@@ -67,7 +106,6 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return new BlockMillionFurnaceContainer(i, world, pos, playerInventory, playerEntity, this.fields);
     }
-
 
 
 }

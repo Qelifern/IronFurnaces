@@ -117,8 +117,8 @@ public abstract class BlockIronFurnaceBase extends Block {
             return ActionResultType.SUCCESS;
         }
 
-        int[] settings = new int[] {0, 0, 0, 0, 0, 0};
-        for (int i = 0; i < 6; i++)
+        int[] settings = new int[((BlockIronFurnaceTileBase) te).furnaceSettings.size()];
+        for (int i = 0; i < ((BlockIronFurnaceTileBase) te).furnaceSettings.size(); i++)
         {
             settings[i] = ((BlockIronFurnaceTileBase) te).furnaceSettings.get(i);
         }

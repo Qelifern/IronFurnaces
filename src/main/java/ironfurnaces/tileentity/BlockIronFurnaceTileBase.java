@@ -71,7 +71,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
      * The number of ticks that the furnace will keep burning
      */
     private int furnaceBurnTime;
-    private int cookTime;
+    public int cookTime;
     private int totalCookTime = this.getCookTime();
     private int recipesUsed;
     private final Object2IntOpenHashMap<ResourceLocation> recipes = new Object2IntOpenHashMap<>();

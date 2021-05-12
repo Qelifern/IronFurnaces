@@ -36,6 +36,10 @@ public class ItemFurnaceCopy extends Item {
             tooltip.add(new StringTextComponent("South: " + stack.getTag().getIntArray("settings")[3]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
             tooltip.add(new StringTextComponent("West: " + stack.getTag().getIntArray("settings")[4]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
             tooltip.add(new StringTextComponent("East: " + stack.getTag().getIntArray("settings")[5]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new StringTextComponent("Auto Input: " + stack.getTag().getIntArray("settings")[6]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new StringTextComponent("Auto Output: " + stack.getTag().getIntArray("settings")[7]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new StringTextComponent("Redstone Mode: " + stack.getTag().getIntArray("settings")[8]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new StringTextComponent("Redstone Value: " + stack.getTag().getIntArray("settings")[9]).setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
         }
         tooltip.add(new StringTextComponent("Right-click to copy settings"));
         tooltip.add(new StringTextComponent("Sneak & right-click to apply settings"));
@@ -61,7 +65,7 @@ public class ItemFurnaceCopy extends Item {
             if (stack.hasTag())
             {
                 int[] settings = stack.getTag().getIntArray("settings");
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < settings.length; i++)
                 ((BlockIronFurnaceTileBase) te).furnaceSettings.set(i, settings[i]);
             }
             world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 3);

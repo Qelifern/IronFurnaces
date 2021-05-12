@@ -1,3 +1,10 @@
+2.6.8
++Fixed PMMO not working with newer versions of Forge
++Fixed Furnace Copy Tool not copying over all settings
++Introduced new concept [not yet implemented] Rainbow Furnace acting as a Forge Energy Generator when all types of furnaces are cooking
++PMMO 3.56
++JEI 7.6.4.90
++Forge 36.1.16
 2.6.7
 +Fixed crashing when clearing recipe data after emptying xp
 +Fixed buckets not being extracted by hoppers from fuel sides
