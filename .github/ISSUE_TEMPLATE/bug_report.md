@@ -26,5 +26,7 @@ A clear and concise description of what you expected to happen.
 
 <details>
   <summary>Crashlog</summary>
+  
+  ```
   Log goes here
-<details>
+  ```
