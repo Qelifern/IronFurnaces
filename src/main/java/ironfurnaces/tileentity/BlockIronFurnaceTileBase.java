@@ -431,30 +431,30 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         if (this.getAutoInput() != 0 || this.getAutoOutput() != 0) {
                             if (this.getAutoInput() == 1) {
                                 if (this.furnaceSettings.get(dir.getIndex()) == 1 || this.furnaceSettings.get(dir.getIndex()) == 3) {
-                                    if (this.getStackInSlot(INPUT).getCount() >= this.getInventoryStackLimit()) {
+                                    if (this.getStackInSlot(INPUT).getCount() >= this.getStackInSlot(INPUT).getMaxStackSize()) {
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
                                         if (other.getStackInSlot(i).isEmpty()) {
                                             continue;
                                         }
-                                        ItemStack stack = other.extractItem(i, 64, true);
+                                        ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
                                         if (hasRecipe(stack) && getStackInSlot(INPUT).isEmpty() || ItemHandlerHelper.canItemStacksStack(getStackInSlot(INPUT), stack)) {
-                                            insertItemInternal(INPUT, other.extractItem(i, 64 - this.getStackInSlot(INPUT).getCount(), false), false);
+                                            insertItemInternal(INPUT, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getStackInSlot(INPUT).getCount(), false), false);
                                         }
                                     }
                                 }
                                 if (this.furnaceSettings.get(dir.getIndex()) == 4) {
-                                    if (this.getStackInSlot(FUEL).getCount() >= this.getInventoryStackLimit()) {
+                                    if (this.getStackInSlot(FUEL).getCount() >= this.getStackInSlot(FUEL).getMaxStackSize()) {
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
                                         if (other.getStackInSlot(i).isEmpty()) {
                                             continue;
                                         }
-                                        ItemStack stack = other.extractItem(i, 64, true);
+                                        ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
                                         if (isItemFuel(stack) && getStackInSlot(FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getStackInSlot(FUEL), stack)) {
-                                            insertItemInternal(FUEL, other.extractItem(i, 64 - this.getStackInSlot(FUEL).getCount(), false), false);
+                                            insertItemInternal(FUEL, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getStackInSlot(FUEL).getCount(), false), false);
                                         }
                                     }
                                 }
@@ -484,7 +484,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
-                                        ItemStack stack = extractItemInternal(OUTPUT, 64 - other.getStackInSlot(i).getCount(), true);
+                                        ItemStack stack = extractItemInternal(OUTPUT, this.getStackInSlot(OUTPUT).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                             other.insertItem(i, extractItemInternal(OUTPUT, stack.getCount(), false), false);
                                         }

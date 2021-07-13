@@ -1,3 +1,5 @@
+2.6.9
++Fixed Auto Input, now respects individual item stack sizes
 2.6.8
 +Fixed PMMO not working with newer versions of Forge
 +Fixed Furnace Copy Tool not copying over all settings

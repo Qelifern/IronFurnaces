@@ -131,6 +131,9 @@ repositories {
     maven {
         url "https://www.cursemaven.com"
     }
+    maven {
+        url "https://maven.shedaniel.me/"
+    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -154,8 +157,13 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
 
     //Project MMO
-    compileOnly fg.deobf("curse.maven:project-mmo-353935:3306465")
-    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3306465")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3384033")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3384033")
+
+    /**
+    compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:6.0.263-alpha")
+    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:6.0.263-alpha")
+     **/
 
     /**
     //Drawers
