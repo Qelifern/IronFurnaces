@@ -70,41 +70,41 @@ public class Config {
         ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
         ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
 
-        COMMON_BUILDER.comment("Settings").push(CATEGORY_GENERAL);
-        COMMON_BUILDER.pop();
+        CLIENT_BUILDER.comment("Settings").push(CATEGORY_GENERAL);
+        CLIENT_BUILDER.pop();
 
-        COMMON_BUILDER.comment("Furnace Settings").push(CATEGORY_FURNACE);
+        CLIENT_BUILDER.comment("Furnace Settings").push(CATEGORY_FURNACE);
 
         setupFurnacesConfig(COMMON_BUILDER, CLIENT_BUILDER);
 
-        COMMON_BUILDER.pop();
+        CLIENT_BUILDER.pop();
 
-        COMMON_BUILDER.comment("Modded Furnace Settings").push(CATEGORY_MODDED_FURNACE);
+        CLIENT_BUILDER.comment("Modded Furnace Settings").push(CATEGORY_MODDED_FURNACE);
 
         setupModdedFurnacesConfig(COMMON_BUILDER, CLIENT_BUILDER);
 
-        COMMON_BUILDER.pop();
+        CLIENT_BUILDER.pop();
 
-        COMMON_BUILDER.comment("JEI Settings").push(CATEGORY_JEI);
+        CLIENT_BUILDER.comment("JEI Settings").push(CATEGORY_JEI);
 
         setupJEIConfig(COMMON_BUILDER, CLIENT_BUILDER);
 
-        COMMON_BUILDER.pop();
+        CLIENT_BUILDER.pop();
 
 
-        COMMON_BUILDER.comment("Misc").push(CATEGORY_MISC);
+        CLIENT_BUILDER.comment("Misc").push(CATEGORY_MISC);
 
-        GIVEN_COAL = COMMON_BUILDER
+        GIVEN_COAL = CLIENT_BUILDER
                 .comment(" Given or not given the Rainbow Coal to our champion").define("misc.coal", false);
 
-        enableRainbowContent = COMMON_BUILDER
+        enableRainbowContent = CLIENT_BUILDER
                 .comment(" Enable or disable the Rainbow Content").define("misc.rainbow", true);
 
-        showErrors = COMMON_BUILDER
+        showErrors = CLIENT_BUILDER
                 .comment(" Show furnace settings errors in chat, used for debugging").define("misc.errors", false);
 
 
-        COMMON_BUILDER.pop();
+        CLIENT_BUILDER.pop();
 
         CLIENT_BUILDER.comment("Update Checker Settings").push(CATEGORY_UPDATES);
 
@@ -120,51 +120,51 @@ public class Config {
     private static void setupFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
 
 
-        ironFurnaceSpeed = COMMON_BUILDER
+        ironFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 160")
                 .defineInRange("iron_furnace.speed", 160, 2, 72000);
 
-        goldFurnaceSpeed = COMMON_BUILDER
+        goldFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 120")
                 .defineInRange("gold_furnace.speed", 120, 2, 72000);
 
-        diamondFurnaceSpeed = COMMON_BUILDER
+        diamondFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 80")
                 .defineInRange("diamond_furnace.speed", 80, 2, 72000);
 
-        emeraldFurnaceSpeed = COMMON_BUILDER
+        emeraldFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 40")
                 .defineInRange("emerald_furnace.speed", 40, 2, 72000);
 
-        obsidianFurnaceSpeed = COMMON_BUILDER
+        obsidianFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
                 .defineInRange("obsidian_furnace.speed", 20, 2, 72000);
 
-        crystalFurnaceSpeed = COMMON_BUILDER
+        crystalFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 40")
                 .defineInRange("crystal_furnace.speed", 40, 2, 72000);
 
-        netheriteFurnaceSpeed = COMMON_BUILDER
+        netheriteFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
                 .defineInRange("netherite_furnace.speed", 5, 2, 72000);
 
-        copperFurnaceSpeed = COMMON_BUILDER
+        copperFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 180")
                 .defineInRange("copper_furnace.speed", 180, 2, 72000);
 
-        silverFurnaceSpeed = COMMON_BUILDER
+        silverFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 140")
                 .defineInRange("silver_furnace.speed", 140, 2, 72000);
 
-        millionFurnaceSpeed = COMMON_BUILDER
+        millionFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
                 .defineInRange("rainbow_furnace.speed", 20, 2, 72000);
 
-        furnaceXPDropValue = COMMON_BUILDER
+        furnaceXPDropValue = CLIENT_BUILDER
                 .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10, Recipes")
                 .defineInRange("furance_xp_drop.value", 10, 1, 500);
 
-        furnaceXPDropValue2 = COMMON_BUILDER
+        furnaceXPDropValue2 = CLIENT_BUILDER
                 .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 100000, Single recipe uses")
                 .defineInRange("furance_xp_drop.value_two", 100000, 1, 1000000);
 
@@ -172,22 +172,22 @@ public class Config {
 
     private static void setupModdedFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
 
-        allthemodiumFurnaceSpeed = COMMON_BUILDER
+        allthemodiumFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 5")
                 .defineInRange("allthemodium_furnace.speed", 5, 1, 72000);
-        vibraniumFurnaceSpeed = COMMON_BUILDER
+        vibraniumFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 3")
                 .defineInRange("vibranium_furnace.speed", 3, 1, 72000);
-        unobtaniumFurnaceSpeed = COMMON_BUILDER
+        unobtaniumFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 1")
                 .defineInRange("unobtanium_furnace.speed", 1, 1, 72000);
-        allthemodiumFurnaceSmeltMult = COMMON_BUILDER
+        allthemodiumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 16")
                 .defineInRange("allthemodium_furnace.mult", 16, 1, 64);
-        vibraniumFurnaceSmeltMult = COMMON_BUILDER
+        vibraniumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 32")
                 .defineInRange("vibranium_furnace.mult", 32, 1, 64);
-        unobtaniumFurnaceSmeltMult = COMMON_BUILDER
+        unobtaniumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 64")
                 .defineInRange("unobtanium_furnace.mult", 64, 1, 64);
 
@@ -195,13 +195,13 @@ public class Config {
 
     private static void setupJEIConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
 
-        enableJeiPlugin = COMMON_BUILDER
+        enableJeiPlugin = CLIENT_BUILDER
                 .comment(" Enable or disable the JeiPlugin of Iron Furnaces.").define("jei.enable_jei", true);
 
-        enableJeiCatalysts = COMMON_BUILDER
+        enableJeiCatalysts = CLIENT_BUILDER
                 .comment(" Enable or disable the Catalysts in Jei for Iron Furnaces.").define("jei.enable_jei_catalysts", true);
 
-        enableJeiClickArea = COMMON_BUILDER
+        enableJeiClickArea = CLIENT_BUILDER
                 .comment(" Enable or disable the Click Area inside the GUI in all of Iron Furnaces' furnaces.").define("jei.enable_jei_click_area", true);
 
     }
@@ -249,11 +249,11 @@ public class Config {
     public static void player(final TickEvent.PlayerTickEvent event) {
         if (!Config.GIVEN_COAL.get())
         {
-            PlayerEntity player = getPlayer(event.player.world);
+            PlayerEntity player = getPlayer(event.player.level);
             if (player != null)
             {
                 Config.GIVEN_COAL.set(true);
-                player.world.addEntity(new ItemEntity(player.world, player.getPosX(), player.getPosY(), player.getPosZ(), new ItemStack(Registration.RAINBOW_COAL)));
+                player.level.addFreshEntity(new ItemEntity(player.level, player.position().x, player.position().y, player.position().z, new ItemStack(Registration.RAINBOW_COAL)));
             }
         }
     }
@@ -265,13 +265,13 @@ public class Config {
         {
             return null;
         }
-        if (world.getPlayerByUuid(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963")) != null)
+        if (world.getPlayerByUUID(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963")) != null)
         {
-            return world.getPlayerByUuid(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963"));
+            return world.getPlayerByUUID(UUID.fromString("89f4f7f8-8ed5-479d-b04e-f7f843f14963"));
         }
-        if (world.getPlayerByUuid(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41")) != null)
+        if (world.getPlayerByUUID(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41")) != null)
         {
-            return world.getPlayerByUuid(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41"));
+            return world.getPlayerByUUID(UUID.fromString("2b27a3a3-e2d6-468a-92e2-70f6f15b6e41"));
         }
         return null;
     }

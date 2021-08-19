@@ -24,16 +24,6 @@ public class SlotIronFurnace extends Slot {
         return false;
     }
 
-    /**
-     * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new stack.
-     */
-    public ItemStack decrStackSize(int amount) {
-        if (this.getHasStack()) {
-            this.removeCount += Math.min(amount, this.getStack().getCount());
-        }
-
-        return super.decrStackSize(amount);
-    }
 
     public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
         this.onCrafting(stack);
@@ -50,17 +40,22 @@ public class SlotIronFurnace extends Slot {
         this.onCrafting(stack);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-     */
-    protected void onCrafting(ItemStack stack) {
-        stack.onCrafting(this.player.world, this.player, this.removeCount);
-        if (!this.player.world.isRemote && this.inventory instanceof BlockIronFurnaceTileBase) {
-            ((BlockIronFurnaceTileBase)this.inventory).unlockRecipes(this.player);
+    @Override
+    protected void onQuickCraft(ItemStack stack, int p_75210_2_) {
+        stack.onCraftedBy(this.player.level, this.player, this.removeCount);
+        if (!this.player.level.isClientSide && this.te instanceof BlockIronFurnaceTileBase) {
+            ((BlockIronFurnaceTileBase)this.te).unlockRecipes(this.player);
         }
 
         this.removeCount = 0;
         net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerSmeltedEvent(this.player, stack);
+    }
+
+    /**
+     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
+     */
+    protected void onCrafting(ItemStack stack) {
+
     }
 
 }

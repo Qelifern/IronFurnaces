@@ -24,9 +24,10 @@ public class ItemXmas extends Item {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas_right_click").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas2").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas_right_click").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas1").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".xmas2").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
     }
+
 }

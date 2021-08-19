@@ -22,9 +22,9 @@ public class ItemAugmentBlasting extends ItemAugment {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_blasting_pro").setStyle(Style.EMPTY.setFormatting((TextFormatting.GREEN))));
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_blasting_con").setStyle(Style.EMPTY.setFormatting(TextFormatting.DARK_RED)));
+    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_blasting_pro").setStyle(Style.EMPTY.applyFormat((TextFormatting.GREEN))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_blasting_con").setStyle(Style.EMPTY.applyFormat(TextFormatting.DARK_RED)));
     }
 }

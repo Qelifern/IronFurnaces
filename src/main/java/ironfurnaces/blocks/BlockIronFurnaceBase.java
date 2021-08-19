@@ -46,7 +46,7 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     public BlockIronFurnaceBase(Properties properties) {
         super(properties);
-        this.setDefaultState(this.getDefaultState().with(BlockStateProperties.LIT, false).with(TYPE, 0).with(JOVIAL, 0));
+        this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false).setValue(TYPE, 0).setValue(JOVIAL, 0));
     }
 
     @Nullable
@@ -62,57 +62,55 @@ public abstract class BlockIronFurnaceBase extends Block {
 
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-        return state.get(BlockStateProperties.LIT) ? 14 : 0;
+        return state.getValue(BlockStateProperties.LIT) ? 14 : 0;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-        return (BlockState) this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite());
+        return (BlockState) this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void setPlacedBy(World world, BlockPos pos, BlockState p_180633_3_, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
-            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
-            if (stack.hasDisplayName()) {
+            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
+            if (stack.hasCustomHoverName()) {
                 te.setCustomName(stack.getDisplayName());
             }
             te.placeConfig();
         }
     }
 
-
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
-        ItemStack stack = player.getHeldItem(handIn).copy();
-        if (world.isRemote) {
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
+        ItemStack stack = player.getItemInHand(handIn).copy();
+        if (world.isClientSide) {
             return ActionResultType.SUCCESS;
         } else {
-            if (player.getHeldItem(handIn).getItem() instanceof ItemAugment && !(player.isCrouching())) {
+            if (player.getItemInHand(handIn).getItem() instanceof ItemAugment && !(player.isCrouching())) {
                 return this.interactAugment(world, pos, player, handIn, stack);
-            } else if (player.getHeldItem(handIn).getItem() instanceof ItemSpooky && !(player.isCrouching())) {
+            } else if (player.getItemInHand(handIn).getItem() instanceof ItemSpooky && !(player.isCrouching())) {
                 return this.interactJovial(world, pos, player, handIn, 1);
-            } else if (player.getHeldItem(handIn).getItem() instanceof ItemXmas && !(player.isCrouching())) {
+            } else if (player.getItemInHand(handIn).getItem() instanceof ItemXmas && !(player.isCrouching())) {
                 return this.interactJovial(world, pos, player, handIn, 2);
-            } else if (player.getHeldItem(handIn).isEmpty() && player.isCrouching()) {
+            } else if (player.getItemInHand(handIn).isEmpty() && player.isCrouching()) {
                 return this.interactJovial(world, pos, player, handIn, 0);
-            } else if (player.getHeldItem(handIn).getItem() instanceof ItemFurnaceCopy && !(player.isCrouching())) {
+            } else if (player.getItemInHand(handIn).getItem() instanceof ItemFurnaceCopy && !(player.isCrouching())) {
                 return this.interactCopy(world, pos, player, handIn);
             } else {
                 this.interactWith(world, pos, player);
             }
             return ActionResultType.SUCCESS;
         }
-
     }
 
     private ActionResultType interactCopy(World world, BlockPos pos, PlayerEntity player, Hand handIn) {
-        int j = player.inventory.currentItem;
-        ItemStack stack = player.inventory.getStackInSlot(j);
+        int j = player.inventory.selected;
+        ItemStack stack = player.inventory.getItem(j);
         if (!(stack.getItem() instanceof ItemFurnaceCopy)) {
             return ActionResultType.SUCCESS;
         }
-        TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world.getBlockEntity(pos);
         if (!(te instanceof BlockIronFurnaceTileBase)) {
             return ActionResultType.SUCCESS;
         }
@@ -125,39 +123,39 @@ public abstract class BlockIronFurnaceBase extends Block {
         stack.getOrCreateTag().putIntArray("settings", settings);
 
         ((BlockIronFurnaceTileBase)te).onUpdateSent();
-        player.sendMessage(new StringTextComponent("Settings copied"), player.getUniqueID());
+        player.sendMessage(new StringTextComponent("Settings copied"), player.getUUID());
         return ActionResultType.SUCCESS;
     }
     private ActionResultType interactAugment(World world, BlockPos pos, PlayerEntity player, Hand handIn, ItemStack stack) {
-        if (!(player.getHeldItem(handIn).getItem() instanceof ItemAugment)) {
+        if (!(player.getItemInHand(handIn).getItem() instanceof ItemAugment)) {
             return ActionResultType.SUCCESS;
         }
-        TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world.getBlockEntity(pos);
         if (!(te instanceof BlockIronFurnaceTileBase)) {
             return ActionResultType.SUCCESS;
         }
-        if (!(((IInventory) te).getStackInSlot(3).isEmpty())) {
+        if (!(((IInventory) te).getItem(3).isEmpty())) {
             if (!player.isCreative()) {
-                InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), ((IInventory) te).getStackInSlot(3));
+                InventoryHelper.dropItemStack(world, pos.getX(), pos.getY() + 1, pos.getZ(), ((IInventory) te).getItem(3));
             }
         }
         ItemStack newStack = new ItemStack(stack.getItem(), 1);
         newStack.setTag(stack.getTag());
-        ((IInventory) te).setInventorySlotContents(3, newStack);
-        world.playSound(null, te.getPos(), SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+        ((IInventory) te).setItem(3, newStack);
+        world.playSound(null, te.getBlockPos(), SoundEvents.ANVIL_USE, SoundCategory.BLOCKS, 1.0F, 1.0F);
         if (!player.isCreative()) {
-            player.getHeldItem(handIn).shrink(1);
+            player.getItemInHand(handIn).shrink(1);
         }
         ((BlockIronFurnaceTileBase)te).onUpdateSent();
         return ActionResultType.SUCCESS;
     }
     private ActionResultType interactJovial(World world, BlockPos pos, PlayerEntity player, Hand handIn, int jovial) {
-        if (!(player.getHeldItem(handIn).getItem() instanceof ItemSpooky
-                || !(player.getHeldItem(handIn).getItem() instanceof ItemXmas)
-                || !(player.getHeldItem(handIn).isEmpty()))) {
+        if (!(player.getItemInHand(handIn).getItem() instanceof ItemSpooky
+                || !(player.getItemInHand(handIn).getItem() instanceof ItemXmas)
+                || !(player.getItemInHand(handIn).isEmpty()))) {
             return ActionResultType.SUCCESS;
         }
-        TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world.getBlockEntity(pos);
         if (!(te instanceof BlockIronFurnaceTileBase)) {
             return ActionResultType.SUCCESS;
         }
@@ -166,49 +164,53 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     private void interactWith(World world, BlockPos pos, PlayerEntity player) {
-        TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof INamedContainerProvider) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-            player.addStat(Stats.INTERACT_WITH_FURNACE);
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getBlockPos());
+            player.awardStat(Stats.INTERACT_WITH_FURNACE);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-        if (state.get(BlockStateProperties.LIT)) {
-            if (!(world.getTileEntity(pos) instanceof BlockIronFurnaceTileBase))
+        if (state.getValue(BlockStateProperties.LIT)) {
+            if (world.getBlockEntity(pos) == null)
             {
                 return;
             }
-            BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
-            if (tile.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get())
+            if (!(world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase))
+            {
+                return;
+            }
+            BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getBlockEntity(pos));
+            if (tile.getItem(3).getItem() == Registration.SMOKING_AUGMENT.get())
             {
                 double lvt_5_1_ = (double)pos.getX() + 0.5D;
                 double lvt_7_1_ = (double)pos.getY();
                 double lvt_9_1_ = (double)pos.getZ() + 0.5D;
                 if (rand.nextDouble() < 0.1D) {
-                    world.playSound(lvt_5_1_, lvt_7_1_, lvt_9_1_, SoundEvents.BLOCK_SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                    world.playLocalSound(lvt_5_1_, lvt_7_1_, lvt_9_1_, SoundEvents.SMOKER_SMOKE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                 }
 
                 world.addParticle(ParticleTypes.SMOKE, lvt_5_1_, lvt_7_1_ + 1.1D, lvt_9_1_, 0.0D, 0.0D, 0.0D);
 
             }
-            else if (tile.getStackInSlot(3).getItem() == Registration.BLASTING_AUGMENT.get())
+            else if (tile.getItem(3).getItem() == Registration.BLASTING_AUGMENT.get())
             {
                 double lvt_5_1_ = (double)pos.getX() + 0.5D;
                 double lvt_7_1_ = (double)pos.getY();
                 double lvt_9_1_ = (double)pos.getZ() + 0.5D;
                 if (rand.nextDouble() < 0.1D) {
-                    world.playSound(lvt_5_1_, lvt_7_1_, lvt_9_1_, SoundEvents.BLOCK_BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                    world.playLocalSound(lvt_5_1_, lvt_7_1_, lvt_9_1_, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
                 }
 
-                Direction lvt_11_1_ = (Direction)state.get(BlockStateProperties.HORIZONTAL_FACING);
+                Direction lvt_11_1_ = (Direction)state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 Direction.Axis lvt_12_1_ = lvt_11_1_.getAxis();
                 double lvt_13_1_ = 0.52D;
                 double lvt_15_1_ = rand.nextDouble() * 0.6D - 0.3D;
-                double lvt_17_1_ = lvt_12_1_ == Direction.Axis.X ? (double)lvt_11_1_.getXOffset() * 0.52D : lvt_15_1_;
+                double lvt_17_1_ = lvt_12_1_ == Direction.Axis.X ? (double)lvt_11_1_.getStepX() * 0.52D : lvt_15_1_;
                 double lvt_19_1_ = rand.nextDouble() * 9.0D / 16.0D;
-                double lvt_21_1_ = lvt_12_1_ == Direction.Axis.Z ? (double)lvt_11_1_.getZOffset() * 0.52D : lvt_15_1_;
+                double lvt_21_1_ = lvt_12_1_ == Direction.Axis.Z ? (double)lvt_11_1_.getStepZ() * 0.52D : lvt_15_1_;
                 world.addParticle(ParticleTypes.SMOKE, lvt_5_1_ + lvt_17_1_, lvt_7_1_ + lvt_19_1_, lvt_9_1_ + lvt_21_1_, 0.0D, 0.0D, 0.0D);
 
             }
@@ -218,16 +220,17 @@ public abstract class BlockIronFurnaceBase extends Block {
                 double d1 = (double) pos.getY();
                 double d2 = (double) pos.getZ() + 0.5D;
                 if (rand.nextDouble() < 0.1D) {
-                    world.playSound(d0, d1, d2, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+                    world.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+
                 }
 
-                Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 Direction.Axis direction$axis = direction.getAxis();
                 double d3 = 0.52D;
                 double d4 = rand.nextDouble() * 0.6D - 0.3D;
-                double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
+                double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : d4;
                 double d6 = rand.nextDouble() * 6.0D / 16.0D;
-                double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
+                double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52D : d4;
                 world.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
                 world.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0D, 0.0D, 0.0D);
 
@@ -236,15 +239,20 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     public void onReplaced(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+
+    }
+
+    @Override
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
         if (state.getBlock() != oldState.getBlock()) {
-            TileEntity te = world.getTileEntity(pos);
+            TileEntity te = world.getBlockEntity(pos);
             if (te instanceof BlockIronFurnaceTileBase) {
-                InventoryHelper.dropInventoryItems(world, pos, (BlockIronFurnaceTileBase) te);
-                ((BlockIronFurnaceTileBase)te).grantStoredRecipeExperience(world, Vector3d.copyCentered(pos));
-                world.updateComparatorOutputLevel(pos, this);
+                InventoryHelper.dropContents(world, pos, (BlockIronFurnaceTileBase) te);
+                ((BlockIronFurnaceTileBase)te).grantStoredRecipeExperience(world, Vector3d.atCenterOf(pos));
+                world.updateNeighbourForOutputSignal(pos, this);
             }
 
-            super.onReplaced(state, world, pos, oldState, p_196243_5_);
+            super.onRemove(state, world, pos, oldState, p_196243_5_);
         }
     }
 
@@ -253,7 +261,7 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
-        return Container.calcRedstone(world.getTileEntity(pos));
+        return Container.getRedstoneSignalFromContainer((IInventory) world.getBlockEntity(pos));
 
     }
 
@@ -262,15 +270,15 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     public BlockState rotate(BlockState p_185499_1_, Rotation p_185499_2_) {
-        return (BlockState)p_185499_1_.with(BlockStateProperties.HORIZONTAL_FACING, p_185499_2_.rotate((Direction)p_185499_1_.get(BlockStateProperties.HORIZONTAL_FACING)));
+        return (BlockState)p_185499_1_.setValue(BlockStateProperties.HORIZONTAL_FACING, p_185499_2_.rotate((Direction)p_185499_1_.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
     public BlockState mirror(BlockState p_185471_1_, Mirror p_185471_2_) {
-        return p_185471_1_.rotate(p_185471_2_.toRotation((Direction)p_185471_1_.get(BlockStateProperties.HORIZONTAL_FACING)));
+        return p_185471_1_.rotate(p_185471_2_.getRotation((Direction)p_185471_1_.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
     private int calculateOutput(World worldIn, BlockPos pos, BlockState state) {
-        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase)worldIn.getTileEntity(pos));
+        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase)worldIn.getBlockEntity(pos));
         int i = this.getComparatorInputOverride(state, worldIn, pos);
         if (tile != null)
         {
@@ -281,18 +289,18 @@ public abstract class BlockIronFurnaceBase extends Block {
     }
 
     @Override
-    public boolean canProvidePower(BlockState state) {
+    public boolean isSignalSource(BlockState p_149744_1_) {
         return true;
     }
 
     @Override
-    public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-        return getWeakPower(blockState, world, pos, side);
+    public int getSignal(BlockState p_180656_1_, IBlockReader p_180656_2_, BlockPos p_180656_3_, Direction p_180656_4_) {
+        return super.getDirectSignal(p_180656_1_, p_180656_2_, p_180656_3_, p_180656_4_);
     }
 
     @Override
-    public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
-        BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
+    public int getDirectSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction direction) {
+        BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase) world.getBlockEntity(pos));
         if (furnace != null)
         {
             int mode = furnace.furnaceSettings.get(8);
@@ -310,14 +318,15 @@ public abstract class BlockIronFurnaceBase extends Block {
             }
             else
             {
-                return calculateOutput(furnace.getWorld(), pos, blockState);
+                return calculateOutput(furnace.getLevel(), pos, blockState);
             }
         }
         return 0;
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.LIT, TYPE, JOVIAL);
     }
+
 }

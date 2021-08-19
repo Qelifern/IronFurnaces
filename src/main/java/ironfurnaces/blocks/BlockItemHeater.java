@@ -21,17 +21,18 @@ public class BlockItemHeater extends BlockItem {
         super(block, properties);
     }
 
+
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (stack.hasTag())
         {
-            tooltip.add(new StringTextComponent(StringHelper.displayEnergy(stack.getTag().getInt("Energy"), 1000000).get(0)).mergeStyle(TextFormatting.GOLD));
+            tooltip.add(new StringTextComponent(StringHelper.displayEnergy(stack.getTag().getInt("Energy"), 1000000).get(0)).withStyle(TextFormatting.GOLD));
         }
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
+            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block1").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
         }
         else
         {

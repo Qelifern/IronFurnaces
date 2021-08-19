@@ -14,6 +14,16 @@ public class ItemRainbowCoal extends Item {
     }
 
     @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        return ((double) stack.getDamageValue() / (double) 5120);
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return true;
+    }
+
+    @Override
     public int getBurnTime(ItemStack itemStack) {
         return 200;
     }
@@ -26,8 +36,8 @@ public class ItemRainbowCoal extends Item {
     @Override
     public ItemStack getContainerItem(ItemStack itemStack) {
         ItemStack stack = new ItemStack(this);
-        stack.setDamage(this.getDamage(itemStack) + 1);
-        if (stack.getDamage() >= 5120)
+        stack.setDamageValue(this.getDamage(itemStack) + 1);
+        if (stack.getDamageValue() >= 5120)
         {
             stack = ItemStack.EMPTY;
         }

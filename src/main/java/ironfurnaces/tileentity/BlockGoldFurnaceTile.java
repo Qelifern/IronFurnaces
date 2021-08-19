@@ -27,7 +27,7 @@ public class BlockGoldFurnaceTile extends BlockIronFurnaceTileBase {
 
     @Override
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockGoldFurnaceContainer(i, world, pos, playerInventory, playerEntity, this.fields);
+        return new BlockGoldFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
     }
 
 }

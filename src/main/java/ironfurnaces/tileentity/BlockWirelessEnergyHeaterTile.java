@@ -32,20 +32,20 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
         return new HeaterEnergyStorage(1000000, 1000000, 0) {
             @Override
             protected void onEnergyChanged() {
-                markDirty();
+                setChanged();
             }
         };
     }
 
     @Override
     public void tick() {
-        ItemStack stack = this.getStackInSlot(0);
+        ItemStack stack = this.getItem(0);
         if (!stack.isEmpty()) {
             CompoundNBT nbt = new CompoundNBT();
             stack.setTag(nbt);
-            nbt.putInt("X", this.pos.getX());
-            nbt.putInt("Y", this.pos.getY());
-            nbt.putInt("Z", this.pos.getZ());
+            nbt.putInt("X", this.worldPosition.getX());
+            nbt.putInt("Y", this.worldPosition.getY());
+            nbt.putInt("Z", this.worldPosition.getZ());
 
         }
 
@@ -68,20 +68,18 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-
-        compound.putInt("Energy", getEnergy());
-        super.write(compound);
-        return compound;
+    public void deserializeNBT(BlockState state, CompoundNBT nbt) {
+        this.energy.ifPresent(h -> {
+            ((HeaterEnergyStorage) h).setEnergy(nbt.getInt("Energy"));
+        });
+        super.deserializeNBT(state, nbt);
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-
-        this.energy.ifPresent(h -> {
-            ((HeaterEnergyStorage) h).setEnergy(compound.getInt("Energy"));
-        });
-        super.read(state, compound);
+    public CompoundNBT serializeNBT() {
+        CompoundNBT compound = super.serializeNBT();
+        compound.putInt("Energy", getEnergy());
+        return compound;
     }
 
     @Override
@@ -106,7 +104,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
 
     @Override
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockWirelessEnergyHeaterContainer(i, world, pos, playerInventory, playerEntity);
+        return new BlockWirelessEnergyHeaterContainer(i, level, worldPosition, playerInventory, playerEntity);
     }
 
     net.minecraftforge.common.util.LazyOptional<? extends net.minecraftforge.items.IItemHandler>[] handlers =
@@ -115,7 +113,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
         //world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
-        if (!this.removed && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (!this.isRemoved() && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             if (facing == Direction.UP)
                 return handlers[0].cast();
             else if (facing == Direction.DOWN)
@@ -123,17 +121,16 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
             else
                 return handlers[2].cast();
         }
-        if (!this.removed && capability == CapabilityEnergy.ENERGY) {
+        if (!this.isRemoved() && capability == CapabilityEnergy.ENERGY) {
             return energy.cast();
         }
         return super.getCapability(capability, facing);
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    public void setRemoved() {
         energy.invalidate();
+        super.setRemoved();
+
     }
-
-
 }

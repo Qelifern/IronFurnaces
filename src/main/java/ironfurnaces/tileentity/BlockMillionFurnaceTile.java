@@ -66,7 +66,7 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
             ItemStack itemstack = this.inventory.get(INPUT);
-            ItemStack itemstack1 = recipe.getRecipeOutput();
+            ItemStack itemstack1 = recipe.getResultItem();
             ItemStack itemstack2 = this.inventory.get(OUTPUT);
             int div = 64;
             int count = itemstack.getCount() > div ? (itemstack.getCount() - div) : itemstack.getCount();
@@ -77,8 +77,8 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
             } else if (itemstack2.getItem() == itemstack1.getItem()) {
                 itemstack2.grow(itemstack1.getCount() * smelt);
             }
-
-            if (!this.world.isRemote) {
+            this.checkXP(recipe);
+            if (!this.level.isClientSide) {
                 for (int i = 0; i < smelt; i++) {
                     this.setRecipeUsed(recipe);
                 }
@@ -104,7 +104,7 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
 
     @Override
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockMillionFurnaceContainer(i, world, pos, playerInventory, playerEntity, this.fields);
+        return new BlockMillionFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
     }
 
 

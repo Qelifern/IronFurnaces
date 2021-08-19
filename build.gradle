@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -17,7 +17,7 @@ version = "${project.ifversion}"
 group = 'ironfurnaces' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "ironfurnaces-${project.mcversion}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
@@ -25,7 +25,7 @@ minecraft {
     // stable_#            Stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: "${project.mappings}"
+    mappings channel: 'official', version: "1.16.5"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -122,9 +122,7 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
-    maven {
-        url = "http://minecraft.curseforge.com/api/maven/"
-    }
+
     maven {
         url =  "https://maven.latmod.com/"
     }
@@ -157,8 +155,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
 
     //Project MMO
-    compileOnly fg.deobf("curse.maven:project-mmo-353935:3384033")
-    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3384033")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3422345")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3422345")
 
     /**
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:6.0.263-alpha")

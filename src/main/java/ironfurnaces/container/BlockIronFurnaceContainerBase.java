@@ -41,21 +41,23 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
     public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
         super(containerType, windowId);
-        this.te = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
+        this.te = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
         this.recipeType = te.recipeType;
-        assertInventorySize(this.te, 4);
+
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
-        this.world = playerInventory.player.world;
+        this.world = playerInventory.player.level;
         this.fields = fields;
-        assertIntArraySize(this.fields, 5);
-        this.trackIntArray(this.fields);
+
+        this.addDataSlots(this.fields);
 
         this.addSlot(new Slot(te, 0, 56, 17));
         this.addSlot(new SlotIronFurnaceFuel(this.te, 1, 56, 53));
         this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
         this.addSlot(new SlotIronFurnaceAugment(te, 3, 26, 35));
         layoutPlayerInventorySlots(8, 84);
+        checkContainerSize(this.te, 4);
+        checkContainerDataCount(this.fields, 5);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -162,7 +164,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
     @OnlyIn(Dist.CLIENT)
     public BlockPos getPos() {
-        return this.te.getPos();
+        return this.te.getBlockPos();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -187,54 +189,47 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         return this.fields.get(0) * pixels / i;
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void updateProgressBar(int id, int data) {
-        super.updateProgressBar(id, data);
-        this.te.fields.set(id, data);
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (index == 2) {
-                if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
+                if (!this.moveItemStackTo(itemstack1, 4, 40, true)) {
                     return ItemStack.EMPTY;
                 }
 
-                slot.onSlotChange(itemstack1, itemstack);
+                slot.onQuickCraft(itemstack1, itemstack);
             } else if (index != 1 && index != 0 && index != 3) {
                 if (this.hasRecipe(itemstack1)) {
-                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                    if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (BlockIronFurnaceTileBase.isItemFuel(itemstack1)) {
-                    if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+                    if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (BlockIronFurnaceTileBase.isItemAugment(itemstack1)) {
-                    if (!this.mergeItemStack(itemstack1, 3, 4, false)) {
+                    if (!this.moveItemStackTo(itemstack1, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (index >= 4 && index < 31) {
-                    if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
+                    if (!this.moveItemStackTo(itemstack1, 31, 40, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
+                } else if (index >= 31 && index < 40 && !this.moveItemStackTo(itemstack1, 4, 31, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
+            } else if (!this.moveItemStackTo(itemstack1, 4, 40, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {
@@ -276,7 +271,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     }
 
     protected boolean hasRecipe(ItemStack stack) {
-        ItemStack augment = this.getInventory().get(3);
+        ItemStack augment = this.getItems().get(3);
         if (augment.getItem() instanceof ItemAugmentBlasting) {
             if (this.recipeType != IRecipeType.BLASTING) {
                 this.recipeType = IRecipeType.BLASTING;
@@ -290,6 +285,6 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
                 this.recipeType = IRecipeType.SMELTING;
             }
         }
-        return this.world.getRecipeManager().getRecipe((IRecipeType)this.recipeType, new Inventory(stack), this.world).isPresent();
+        return this.world.getRecipeManager().getRecipeFor((IRecipeType)this.recipeType, new Inventory(stack), this.world).isPresent();
     }
 }

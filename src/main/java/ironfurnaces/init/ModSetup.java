@@ -10,8 +10,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class ModSetup {
 
     public static final ItemGroup ITEM_GROUP = new ItemGroup(IronFurnaces.MOD_ID) {
+
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return new ItemStack(Registration.IRON_FURNACE.get());
         }
     };

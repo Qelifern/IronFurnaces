@@ -23,13 +23,13 @@ public class SlotIronFurnaceAugment extends Slot {
 
 
     @Override
-    public int getItemStackLimit(ItemStack stack) {
+    public int getMaxStackSize() {
         return 1;
     }
 
-
     @Override
-    public void onSlotChanged() {
+    public void setChanged() {
         te.onUpdateSent();
     }
+
 }

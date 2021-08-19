@@ -18,8 +18,9 @@ public class BlockObsidianFurnaceContainer extends BlockIronFurnaceContainerBase
         super(Registration.OBSIDIAN_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
     }
 
+
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.OBSIDIAN_FURNACE.get());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.OBSIDIAN_FURNACE.get());
     }
 }

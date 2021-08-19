@@ -6,8 +6,6 @@ import ironfurnaces.init.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BlockCrystalFurnaceTile extends BlockIronFurnaceTileBase {
@@ -27,7 +25,7 @@ public class BlockCrystalFurnaceTile extends BlockIronFurnaceTileBase {
 
     @Override
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockCrystalFurnaceContainer(i, world, pos, playerInventory, playerEntity, this.fields);
+        return new BlockCrystalFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
     }
 
 }

@@ -1,3 +1,11 @@
+2.7.0
++Changed RF cost to 4000RF per 1 item smelted instead of 2000RF per 0.5 items when using speed augment
++Fixed Rainbow Coal not displaying durability bar
++Fixed HUGE lag issues
++Moved the config to client only
++PMMO 3.63
++JEI 7.7.1.118
++Changed to Official Mappings 1.16.5
 2.6.9
 +Fixed Auto Input, now respects individual item stack sizes
 2.6.8

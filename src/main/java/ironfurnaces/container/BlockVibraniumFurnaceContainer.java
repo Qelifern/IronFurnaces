@@ -17,9 +17,9 @@ public class BlockVibraniumFurnaceContainer extends BlockIronFurnaceContainerBas
     public BlockVibraniumFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
         super(Registration.VIBRANIUM_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
     }
-
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.VIBRANIUM_FURNACE.get());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.VIBRANIUM_FURNACE.get());
     }
+
 }

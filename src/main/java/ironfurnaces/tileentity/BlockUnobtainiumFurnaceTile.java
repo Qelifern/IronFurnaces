@@ -9,9 +9,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nullable;
@@ -26,7 +24,7 @@ public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
             ItemStack itemstack = this.inventory.get(INPUT);
-            ItemStack itemstack1 = recipe.getRecipeOutput();
+            ItemStack itemstack1 = recipe.getResultItem();
             ItemStack itemstack2 = this.inventory.get(OUTPUT);
             int div = Config.unobtaniumFurnaceSmeltMult.get();
             int count = itemstack.getCount() > div ? (itemstack.getCount() - div) : itemstack.getCount();
@@ -38,7 +36,8 @@ public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
                 itemstack2.grow(itemstack1.getCount() * smelt);
             }
 
-            if (!this.world.isRemote) {
+            this.checkXP(recipe);
+            if (!this.level.isClientSide) {
                 for (int i = 0; i < smelt; i++)
                 {
                     this.setRecipeUsed(recipe);
@@ -65,7 +64,7 @@ public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
 
     @Override
     public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockUnobtainiumFurnaceContainer(i, world, pos, playerInventory, playerEntity, this.fields);
+        return new BlockUnobtainiumFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
     }
 
 }

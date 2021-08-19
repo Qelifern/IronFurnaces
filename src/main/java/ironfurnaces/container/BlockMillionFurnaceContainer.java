@@ -3,7 +3,6 @@ package ironfurnaces.container;
 import ironfurnaces.init.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
@@ -19,8 +18,9 @@ public class BlockMillionFurnaceContainer extends BlockIronFurnaceContainerBase 
         super(Registration.MILLION_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
     }
 
+
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.MILLION_FURNACE);
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.MILLION_FURNACE);
     }
 }

@@ -30,9 +30,9 @@ public class StringHelper {
         IFormattableTextComponent tooltip1 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_hold_shift");
         IFormattableTextComponent shift = new StringTextComponent("[Shift]");
         IFormattableTextComponent tooltip2 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_shift_more_options");
-        tooltip1.mergeStyle(TextFormatting.GRAY);
-        shift.mergeStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
-        tooltip2.mergeStyle(TextFormatting.GRAY);
+        tooltip1.withStyle(TextFormatting.GRAY);
+        shift.withStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
+        tooltip2.withStyle(TextFormatting.GRAY);
         list.add(tooltip1.append(shift).append(tooltip2));
         return list;
     }
@@ -42,9 +42,9 @@ public class StringHelper {
         IFormattableTextComponent tooltip1 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".hold");
         IFormattableTextComponent shift = new StringTextComponent("[Shift]");
         IFormattableTextComponent tooltip2 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".for_details");
-        tooltip1.mergeStyle(TextFormatting.GRAY);
-        shift.mergeStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
-        tooltip2.mergeStyle(TextFormatting.GRAY);
+        tooltip1.withStyle(TextFormatting.GRAY);
+        shift.withStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
+        tooltip2.withStyle(TextFormatting.GRAY);
         return tooltip1.append(shift).append(tooltip2);
     }
 

@@ -18,8 +18,9 @@ public class BlockNetheriteFurnaceContainer extends BlockIronFurnaceContainerBas
         super(Registration.NETHERITE_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
     }
 
+
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.NETHERITE_FURNACE.get());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.NETHERITE_FURNACE.get());
     }
 }

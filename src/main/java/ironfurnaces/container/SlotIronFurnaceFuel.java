@@ -21,7 +21,7 @@ public class SlotIronFurnaceFuel extends Slot {
     }
 
     public int getItemStackLimit(ItemStack stack) {
-        return isBucket(stack) ? 1 : super.getItemStackLimit(stack);
+        return isBucket(stack) ? 1 : super.getMaxStackSize(stack);
     }
 
     public static boolean isBucket(ItemStack stack) {

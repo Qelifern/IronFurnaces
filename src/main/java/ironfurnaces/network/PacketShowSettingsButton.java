@@ -40,10 +40,11 @@ public class PacketShowSettingsButton {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayerEntity player = ctx.get().getSender();
 			BlockPos pos = new BlockPos(x, y, z);
-			BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) player.getServerWorld().getTileEntity(pos);
-			if (player.world.isBlockLoaded(pos)) {
+			BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) player.getLevel().getBlockEntity(pos);
+			if (player.level.isLoaded(pos)) {
 				te.show_inventory_settings = set;
-				te.markDirty();
+				te.getLevel().markAndNotifyBlock(pos, player.getLevel().getChunkAt(pos), te.getLevel().getBlockState(pos).getBlock().defaultBlockState(), te.getLevel().getBlockState(pos), 2, 3);
+				te.setChanged();
 			}
 		});
 		ctx.get().setPacketHandled(true);

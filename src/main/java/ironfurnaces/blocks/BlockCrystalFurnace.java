@@ -5,6 +5,7 @@ import ironfurnaces.tileentity.BlockCrystalFurnaceTile;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -32,13 +33,13 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements IWaterL
 
     public BlockCrystalFurnace(Properties properties) {
         super(properties);
-        this.setDefaultState(this.getDefaultState().with(BlockStateProperties.LIT, false).with(TYPE, 0).with(JOVIAL, 0).with(WATERLOGGED, Boolean.valueOf(false)));
+        this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false).setValue(TYPE, 0).setValue(JOVIAL, 0).setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-        FluidState fluidState = ctx.getWorld().getFluidState(ctx.getPos());
-        return (BlockState) this.getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
+        FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
+        return (BlockState) this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidState.getType() == Fluids.WATER));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -47,22 +48,26 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements IWaterL
         double d1 = (double) pos.getY();
         double d2 = (double) pos.getZ() + 0.5D;
 
-        Direction direction = state.get(BlockStateProperties.HORIZONTAL_FACING);
+        Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         Direction.Axis direction$axis = direction.getAxis();
         double d3 = 0.52D;
         double d4 = rand.nextDouble() * 0.6D - 0.3D;
-        double d5 = direction$axis == Direction.Axis.X ? (double) direction.getXOffset() * 0.52D : d4;
+        double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * 0.52D : d4;
         double d6 = rand.nextDouble() * 6.0D / 16.0D;
-        double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getZOffset() * 0.52D : d4;
+        double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * 0.52D : d4;
         world.addParticle(ParticleTypes.PORTAL, d0 + d5, d1 + d6 - 0.5D, d2 + d7, 0.0D, 0.0D, 0.0D);
         world.addParticle(ParticleTypes.PORTAL, d0 + d5, d1 + d6 - 0.5D, d2 + d7, 0.0D, 0.0D, 0.0D);
 
-        if (!(world.getTileEntity(pos) instanceof BlockIronFurnaceTileBase))
+        if (world.getBlockEntity(pos) == null)
         {
             return;
         }
-        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getTileEntity(pos));
-        if (tile.getStackInSlot(3).getItem() == Registration.SMOKING_AUGMENT.get()) {
+        if (!(world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase))
+        {
+            return;
+        }
+        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getBlockEntity(pos));
+        if (tile.getItem(3).getItem() == Registration.SMOKING_AUGMENT.get()) {
             double lvt_5_1_ = (double) pos.getX() + 0.5D;
             double lvt_7_1_ = (double) pos.getY();
             double lvt_9_1_ = (double) pos.getZ() + 0.5D;
@@ -74,15 +79,15 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements IWaterL
     }
 
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getBlockTicks().scheduleTick(currentPos, Blocks.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
@@ -96,8 +101,9 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements IWaterL
         return new BlockCrystalFurnaceTile();
     }
 
+
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        super.fillStateContainer(builder.add(WATERLOGGED));
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(WATERLOGGED));
     }
 }

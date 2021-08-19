@@ -24,9 +24,9 @@ public class ItemSpooky extends Item {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky_right_click").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky1").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky2").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky_right_click").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky1").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".spooky2").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
     }
 }

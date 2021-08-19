@@ -18,26 +18,26 @@ public class ItemLinker extends Item {
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        World world = context.getWorld();
-        BlockPos pos = context.getPos();
-        ItemStack stack = context.getItem();
-        if (!world.isRemote) {
-            if (context.getPlayer().isSneaking()) {
-                BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getTileEntity(pos);
+    public ActionResultType useOn(ItemUseContext context) {
+        World world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        ItemStack stack = context.getItemInHand();
+        if (!world.isClientSide) {
+            if (context.getPlayer().isCrouching()) {
+                BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
                 if (tile != null) {
                     if (!(tile instanceof BlockMillionFurnaceTile)) {
                         stack.getOrCreateTag().putInt("X", pos.getX());
                         stack.getOrCreateTag().putInt("Y", pos.getY());
                         stack.getOrCreateTag().putInt("Z", pos.getZ());
-                        context.getPlayer().sendMessage(new StringTextComponent("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()), context.getPlayer().getUniqueID());
+                        context.getPlayer().sendMessage(new StringTextComponent("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()), context.getPlayer().getUUID());
                     } else {
                         if (stack.hasTag()) {
 
                             int x = stack.getTag().getInt("X");
                             int y = stack.getTag().getInt("Y");
                             int z = stack.getTag().getInt("Z");
-                            BlockIronFurnaceTileBase toAdd = ((BlockIronFurnaceTileBase) world.getTileEntity(new BlockPos(x, y, z)));
+                            BlockIronFurnaceTileBase toAdd = ((BlockIronFurnaceTileBase) world.getBlockEntity(new BlockPos(x, y, z)));
                             boolean flag = false;
                             List<BlockIronFurnaceTileBase> list = ((BlockMillionFurnaceTile) tile).furnaces;
                             if (list.size() <= 0)
@@ -56,7 +56,7 @@ public class ItemLinker extends Item {
 
                             if (flag)
                             {
-                                context.getPlayer().sendMessage(new StringTextComponent("Added: " + toAdd.getName().getString()), context.getPlayer().getUniqueID());
+                                context.getPlayer().sendMessage(new StringTextComponent("Added: " + toAdd.getName().getString()), context.getPlayer().getUUID());
                                 ((BlockMillionFurnaceTile) tile).furnaces.add(toAdd);
                             }
                         }
@@ -65,6 +65,6 @@ public class ItemLinker extends Item {
             }
         }
 
-        return super.onItemUse(context);
+        return super.useOn(context);
     }
 }

@@ -30,35 +30,35 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrix);
         super.render(matrix, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(matrix, mouseX, mouseY);
+        this.renderTooltip(matrix, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-        this.minecraft.fontRenderer.func_243248_b(matrix, this.playerInv.getDisplayName(), 7, this.ySize - 93, 4210752);
-        this.minecraft.fontRenderer.func_243248_b(matrix, name, this.xSize / 2 - this.minecraft.fontRenderer.getStringWidth(name.getString()) / 2, 6, 4210752);
+    protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+        this.minecraft.font.draw(matrix, this.playerInv.getDisplayName(), 7, this.getYSize() - 93, 4210752);
+        this.minecraft.font.draw(matrix, name, this.getXSize() / 2 - this.minecraft.font.width(name.getString()) / 2, 6, 4210752);
 
-        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
-        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
+        int actualMouseX = mouseX - ((this.width - this.getXSize()) / 2);
+        int actualMouseY = mouseY - ((this.height - this.getYSize()) / 2);
         if(actualMouseX >= 65 && actualMouseX <= 111 && actualMouseY >= 64 && actualMouseY <= 76) {
-            int energy = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergy();
-            int capacity = ((BlockWirelessEnergyHeaterContainer)this.container).getCapacity();
+            int energy = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergy();
+            int capacity = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getCapacity();
             this.renderTooltip(matrix, new StringTextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
         }
 
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(GUI);
-        int relX = (this.width - this.xSize) / 2;
-        int relY = (this.height - this.ySize) / 2;
-        this.blit(matrix, relX, relY, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(GUI);
+        int relX = (this.width - this.getXSize()) / 2;
+        int relY = (this.height - this.getYSize()) / 2;
+        this.blit(matrix, relX, relY, 0, 0, this.getXSize(), this.getYSize());
 
         int i;
-        i = ((BlockWirelessEnergyHeaterContainer)this.container).getEnergyScaled(46);
-        this.blit(matrix, guiLeft + 65, guiTop + 64, 176, 0, i + 1, 12);
+        i = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergyScaled(46);
+        this.blit(matrix, getGuiLeft() + 65, getGuiTop() + 64, 176, 0, i + 1, 12);
     }
 
 }

@@ -46,12 +46,12 @@ public class UpdateChecker {
             PlayerEntity player = Minecraft.getInstance().player;
             int id = 0;
             if(UpdateChecker.checkFailed){
-                player.sendMessage(ITextComponent.Serializer.getComponentFromJson(I18n.format(IronFurnaces.MOD_ID+".update.failed")), UUID.randomUUID());
+                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.failed")), UUID.randomUUID());
             }
             else if(UpdateChecker.needsUpdateNotify){
-                player.sendMessage(ITextComponent.Serializer.getComponentFromJson(I18n.format(IronFurnaces.MOD_ID+".update.speech")), UUID.randomUUID());
-                player.sendMessage(ITextComponent.Serializer.getComponentFromJson(I18n.format(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)), UUID.randomUUID());
-                player.sendMessage(ITextComponent.Serializer.getComponentFromJson(I18n.format(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)), UUID.randomUUID());
+                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.speech")), UUID.randomUUID());
+                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)), UUID.randomUUID());
+                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)), UUID.randomUUID());
             }
             if(threadFinished) MinecraftForge.EVENT_BUS.unregister(this);
         }

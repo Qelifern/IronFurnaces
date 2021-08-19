@@ -32,34 +32,26 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket(){
-        CompoundNBT nbtTag = new CompoundNBT();
-        this.write(nbtTag);
-        this.markDirty();
-        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        this.setChanged();
+        return new SUpdateTileEntityPacket(getBlockPos(), -1, serializeNBT());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
-        CompoundNBT tag = pkt.getNbtCompound();
-        this.read(world.getBlockState(pos), tag);
-        this.markDirty();
-        world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 2);
+        CompoundNBT tag = pkt.getTag();
+        this.deserializeNBT(level.getBlockState(worldPosition), tag);
+        this.setChanged();
+        level.markAndNotifyBlock(worldPosition, level.getChunkAt(worldPosition), level.getBlockState(worldPosition).getBlock().defaultBlockState(), level.getBlockState(worldPosition), 2, 3);
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT compound = new CompoundNBT();
 
-        this.write(compound);
-        return compound;
+
+        return this.serializeNBT();
     }
 
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return this.IisItemValidForSlot(index, stack);
-    }
 
     public void setCustomName(ITextComponent name) {
         this.name = name;
@@ -76,17 +68,17 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
-        return IcanExtractItem(index, stack, direction);
+    public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
+        return IisItemValidForSlot(i, itemStack);
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return this.isItemValidForSlot(index, itemStackIn);
+    public boolean canTakeItemThroughFace(int i, ItemStack itemStack, Direction direction) {
+        return IcanExtractItem(i, itemStack, direction);
     }
 
     @Override
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.inventory.size();
     }
 
@@ -101,73 +93,62 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     }
 
     @Override
-    public ItemStack getStackInSlot(int index) {
-        return this.inventory.get(index);
+    public ItemStack getItem(int slot) {
+        return this.inventory.get(slot);
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int count) {
-         return ItemStackHelper.getAndSplit(this.inventory, index, count);
+    public ItemStack removeItem(int i, int i1) {
+        return ItemStackHelper.removeItem(this.inventory, i, i1);
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.inventory, index);
+    public ItemStack removeItemNoUpdate(int i) {
+        return ItemStackHelper.takeItem(this.inventory, i);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setItem(int index, ItemStack stack) {
         ItemStack itemstack = this.inventory.get(index);
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(itemstack) && ItemStack.areItemStackTagsEqual(stack, itemstack);
+        boolean flag = !stack.isEmpty() && stack.sameItem(itemstack) && ItemStack.tagMatches(stack, itemstack);
         this.inventory.set(index, stack);
-        if (stack.getCount() > this.getInventoryStackLimit()) {
-            stack.setCount(this.getInventoryStackLimit());
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
         }
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 64;
+    public int getMaxStackSize() {
+        return ISidedInventory.super.getMaxStackSize();
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-        super.read(state, compound);
-        this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(compound, this.inventory);
-        if (compound.contains("CustomName", 8)) {
-            this.name = ITextComponent.Serializer.getComponentFromJson(compound.getString("CustomName"));
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
+        this.inventory = NonNullList.withSize(this.getMaxStackSize(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.inventory);
+        if (nbt.contains("CustomName", 8)) {
+            this.name = ITextComponent.Serializer.fromJson(nbt.getString("CustomName"));
         }
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
-        ItemStackHelper.saveAllItems(compound, this.inventory);
+    public CompoundNBT save(CompoundNBT nbt) {
+        super.save(nbt);
+        ItemStackHelper.saveAllItems(nbt, this.inventory);
         if (this.name != null) {
-            compound.putString("CustomName", ITextComponent.Serializer.toJson(this.name));
+            nbt.putString("CustomName", ITextComponent.Serializer.toJson(this.name));
         }
-        return compound;
+        return nbt;
     }
 
     @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-        if (this.world.getTileEntity(this.pos) != this) {
+    public boolean stillValid(PlayerEntity playerEntity) {
+        if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
         } else {
-            return !(player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) > 64.0D);
+            return !(playerEntity.distanceToSqr((double)this.worldPosition.getX() + 0.5D, (double)this.worldPosition.getY() + 0.5D, (double)this.worldPosition.getZ() + 0.5D) > 64.0D);
         }
-    }
-
-    @Override
-    public void openInventory(PlayerEntity player) { }
-
-    @Override
-    public void closeInventory(PlayerEntity player) { }
-
-    @Override
-    public void clear() {
-        this.inventory.clear();
     }
 
     @Override
@@ -190,5 +171,10 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         return IcreateMenu(i, playerInventory, playerEntity);
+    }
+
+    @Override
+    public void clearContent() {
+        this.inventory.clear();
     }
 }

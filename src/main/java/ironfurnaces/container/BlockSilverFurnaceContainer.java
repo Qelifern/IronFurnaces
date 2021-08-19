@@ -17,9 +17,9 @@ public class BlockSilverFurnaceContainer extends BlockIronFurnaceContainerBase {
     public BlockSilverFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
         super(Registration.SILVER_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
     }
-
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.SILVER_FURNACE.get());
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.SILVER_FURNACE.get());
     }
+
 }

@@ -29,12 +29,12 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
 
     public BlockWirelessEnergyHeaterContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(Registration.HEATER_CONTAINER.get(), windowId);
-        this.te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
+        this.te = (BlockWirelessEnergyHeaterTile) world.getBlockEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
-        this.world = playerInventory.player.world;
+        this.world = playerInventory.player.level;
 
-        this.trackInt(new IntReferenceHolder() {
+        this.addDataSlot(new IntReferenceHolder() {
             @Override
             public int get() {
                 return getEnergy();
@@ -70,20 +70,9 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
         return te.getCapability(CapabilityEnergy.ENERGY).map(h -> h.getMaxEnergyStored()).orElse(0);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void updateProgressBar(int id, int data) {
-        super.updateProgressBar(id, data);
-    }
-
-    @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(te.getWorld(), te.getPos()), playerEntity, Registration.HEATER.get());
-    }
-
-    @Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
+    public boolean stillValid(PlayerEntity playerIn) {
+        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.HEATER.get());
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
@@ -113,24 +102,24 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (index < 1) {
-                if (!this.mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true)) {
+                if (!this.moveItemStackTo(itemstack1, 1, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+            } else if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
         }
 

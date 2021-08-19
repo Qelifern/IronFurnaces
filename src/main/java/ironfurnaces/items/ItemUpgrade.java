@@ -40,21 +40,21 @@ public class ItemUpgrade extends Item {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".upgrade_right_click").setStyle(Style.EMPTY.setFormatting((TextFormatting.GRAY))));
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".upgrade_right_click").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext ctx) {
-        World world = ctx.getWorld();
-        BlockPos pos = ctx.getPos();
-        if (!world.isRemote) {
-            if ((ctx.getItem().getItem() instanceof ItemUpgradeIron || ctx.getItem().getItem() instanceof ItemUpgradeCopper) && ModList.get().isLoaded("fastfurnace"))
+    public ActionResultType useOn(ItemUseContext ctx) {
+        World world = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        if (!world.isClientSide) {
+            if ((ctx.getItemInHand().getItem() instanceof ItemUpgradeIron || ctx.getItemInHand().getItem() instanceof ItemUpgradeCopper) && ModList.get().isLoaded("fastfurnace"))
             {
-                ctx.getPlayer().sendMessage(new StringTextComponent("FastFurnace Mod is loaded, will not upgrade, drop the upgrade on the floor together with one cobblestone to get your materials back."), ctx.getPlayer().getUniqueID());
-                return super.onItemUse(ctx);
+                ctx.getPlayer().sendMessage(new StringTextComponent("FastFurnace Mod is loaded, will not upgrade, drop the upgrade on the floor together with one cobblestone to get your materials back."), ctx.getPlayer().getUUID());
+                return super.useOn(ctx);
             }
-            TileEntity te = world.getTileEntity(pos);
+            TileEntity te = world.getBlockEntity(pos);
             BlockItemUseContext ctx2 = new BlockItemUseContext(ctx);
             if (te instanceof FurnaceTileEntity || te instanceof BlockIronFurnaceTileBase) {
                 int cooktime = 0;
@@ -81,22 +81,22 @@ public class ItemUpgrade extends Item {
                 if (next == world.getBlockState(pos)) {
                     return ActionResultType.PASS;
                 }
-                ItemStack input = ((IInventory) te).getStackInSlot(0).copy();
-                ItemStack fuel  = ((IInventory) te).getStackInSlot(1).copy();
-                ItemStack output  = ((IInventory) te).getStackInSlot(2).copy();
+                ItemStack input = ((IInventory) te).getItem(0).copy();
+                ItemStack fuel  = ((IInventory) te).getItem(1).copy();
+                ItemStack output  = ((IInventory) te).getItem(2).copy();
                 ItemStack augment  = ItemStack.EMPTY;
                 if (te instanceof BlockIronFurnaceTileBase) {
-                    augment = ((IInventory) te).getStackInSlot(3).copy();
+                    augment = ((IInventory) te).getItem(3).copy();
                 }
-                world.removeTileEntity(te.getPos());
-                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-                world.setBlockState(pos, next, 3);
-                TileEntity newTe = world.getTileEntity(pos);
-                ((IInventory)newTe).setInventorySlotContents(0, input);
-                ((IInventory)newTe).setInventorySlotContents(1, fuel);
-                ((IInventory)newTe).setInventorySlotContents(2, output);
+                world.removeBlockEntity(te.getBlockPos());
+                world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                world.setBlock(pos, next, 3);
+                TileEntity newTe = world.getBlockEntity(pos);
+                ((IInventory)newTe).setItem(0, input);
+                ((IInventory)newTe).setItem(1, fuel);
+                ((IInventory)newTe).setItem(2, output);
                 if (newTe instanceof BlockIronFurnaceTileBase) {
-                    ((IInventory)newTe).setInventorySlotContents(3, augment);
+                    ((IInventory)newTe).setItem(3, augment);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(0, furnaceBurnTime);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(1, currentItemBurnTime);
                     ((BlockIronFurnaceTileBase)newTe).fields.set(2, cooktime);
@@ -106,13 +106,13 @@ public class ItemUpgrade extends Item {
                         ((BlockIronFurnaceTileBase)newTe).furnaceSettings.set(i, settings[i]);
                     }
                 }
-                world.notifyBlockUpdate(pos, world.getBlockState(pos).getBlock().getDefaultState(), world.getBlockState(pos), 3);
+                world.markAndNotifyBlock(pos, world.getChunkAt(pos), world.getBlockState(pos).getBlock().defaultBlockState(), world.getBlockState(pos),3,  3);
                 if (!ctx.getPlayer().isCreative()) {
-                    ctx.getItem().shrink(1);
+                    ctx.getItemInHand().shrink(1);
                 }
             }
         }
-        return super.onItemUse(ctx);
+        return super.useOn(ctx);
     }
 
     @Override
@@ -148,10 +148,10 @@ public class ItemUpgrade extends Item {
                 }
             }
         }
-        World world = entity.getEntityWorld();
-        if (!world.isRemote) {
-            List<ItemEntity> list = world.getEntitiesWithinAABB(EntityType.ITEM,
-                    new AxisAlignedBB(entity.getPosX() - 0.5, entity.getPosY() - 0.5, entity.getPosZ() - 0.5, entity.getPosX() + 0.5, entity.getPosY() + 0.5, entity.getPosZ() + 0.5),
+        World world = entity.level;
+        if (!world.isClientSide) {
+            List<ItemEntity> list = world.getEntities(EntityType.ITEM,
+                    new AxisAlignedBB(entity.position().x - 0.5, entity.position().y - 0.5, entity.position().z - 0.5, entity.position().x + 0.5, entity.position().y + 0.5, entity.position().z + 0.5),
                     new UpgradeItems());
 
             for (int i = 0; i < list.size(); i++) {
@@ -161,15 +161,15 @@ public class ItemUpgrade extends Item {
             }
             if (one) {
 
-                BlockPos pos = new BlockPos(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+                BlockPos pos = new BlockPos(entity.position().x, entity.position().y, entity.position().z);
                 for (int i = 0; i < list.size(); i++) {
                     list.get(i).remove();
                 }
                 LightningBoltEntity lightningboltentity = EntityType.LIGHTNING_BOLT.create(world);
-                lightningboltentity.moveForced(pos.getX(), pos.getY(), pos.getZ());
-                lightningboltentity.setEffectOnly(true);
-                world.addEntity(lightningboltentity);
-                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), materials));
+                lightningboltentity.moveTo(pos.getX(), pos.getY(), pos.getZ());
+                lightningboltentity.setVisualOnly(true);
+                world.addFreshEntity(lightningboltentity);
+                world.addFreshEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), materials));
 
                 one = false;
             }

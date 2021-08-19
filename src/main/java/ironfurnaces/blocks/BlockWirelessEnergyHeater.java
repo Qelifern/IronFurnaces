@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,7 @@ public class BlockWirelessEnergyHeater extends Block {
 
     public BlockWirelessEnergyHeater(Properties properties) {
         super(properties);
-        this.setDefaultState(this.getDefaultState());
+        this.registerDefaultState(this.defaultBlockState());
     }
 
     @Nullable
@@ -51,27 +52,26 @@ public class BlockWirelessEnergyHeater extends Block {
 
 
     @Override
-    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isRemote) {
-            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+        if (!world.isClientSide) {
+            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getBlockEntity(pos);
             ItemStack stack = new ItemStack(Registration.HEATER.get());
             if (te.hasCustomName()) {
-                stack.setDisplayName(te.getDisplayName());
+                stack.setHoverName(te.getDisplayName());
             }
             if (te.getEnergy() > 0) {
                 stack.getOrCreateTag().putInt("Energy", te.getEnergy());
             }
-            if (!player.isCreative()) InventoryHelper.spawnItemStack(world, te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), stack);
+            if (!player.isCreative()) InventoryHelper.dropItemStack(world, te.getBlockPos().getX(), te.getBlockPos().getY(), te.getBlockPos().getZ(), stack);
         }
-        super.onBlockHarvested(world, pos, state, player);
+        return true;
     }
 
-
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
+    public void setPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack) {
         if (entity != null) {
-            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getTileEntity(pos);
-            if (stack.hasDisplayName()) {
+            BlockWirelessEnergyHeaterTile te = (BlockWirelessEnergyHeaterTile) world.getBlockEntity(pos);
+            if (stack.hasCustomHoverName()) {
                 te.setCustomName(stack.getDisplayName());
             }
             if (stack.hasTag()) {
@@ -83,29 +83,30 @@ public class BlockWirelessEnergyHeater extends Block {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult p_225533_6_) {
-        if (!world.isRemote) {
+    public ActionResultType use(BlockState p_225533_1_, World world, BlockPos pos, PlayerEntity player, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
+        if (!world.isClientSide) {
             this.interactWith(world, pos, player);
         }
         return ActionResultType.SUCCESS;
     }
 
+
     private void interactWith(World world, BlockPos pos, PlayerEntity player) {
-        TileEntity tileEntity = world.getTileEntity(pos);
+        TileEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof INamedContainerProvider) {
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getBlockPos());
         }
     }
 
-    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
+    public void onRemove(BlockState state, World world, BlockPos pos, BlockState oldState, boolean p_196243_5_) {
         if (state.getBlock() != oldState.getBlock()) {
-            TileEntity te = world.getTileEntity(pos);
+            TileEntity te = world.getBlockEntity(pos);
             if (te instanceof BlockWirelessEnergyHeaterTile) {
-                InventoryHelper.dropInventoryItems(world, pos, (BlockWirelessEnergyHeaterTile) te);
-                world.updateComparatorOutputLevel(pos, this);
+                InventoryHelper.dropContents(world, pos, (BlockWirelessEnergyHeaterTile) te);
+                world.updateNeighbourForOutputSignal(pos, this);
             }
 
-            super.onReplaced(state, world, pos, oldState, p_196243_5_);
+            super.onRemove(state, world, pos, oldState, p_196243_5_);
         }
     }
 }
