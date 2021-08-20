@@ -128,13 +128,13 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     cachedAugment = this.getItem(3).getItem();
                 }
 
-                return speed;
+                return Math.max(1, speed);
 
 
             }
 
 
-        return totalCookTime;
+        return Math.max(1, totalCookTime);
 
     }
 
@@ -423,6 +423,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
 
     }
+
+
 
     private void autoIO() {
         for (Direction dir : Direction.values()) {

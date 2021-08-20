@@ -68,16 +68,17 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     }
 
     @Override
-    public void deserializeNBT(BlockState state, CompoundNBT nbt) {
+    public void load(BlockState state, CompoundNBT nbt) {
+        super.load(state, nbt);
         this.energy.ifPresent(h -> {
             ((HeaterEnergyStorage) h).setEnergy(nbt.getInt("Energy"));
         });
-        super.deserializeNBT(state, nbt);
+
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT compound = super.serializeNBT();
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
         compound.putInt("Energy", getEnergy());
         return compound;
     }

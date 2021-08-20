@@ -34,13 +34,13 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         this.setChanged();
-        return new SUpdateTileEntityPacket(getBlockPos(), -1, serializeNBT());
+        return new SUpdateTileEntityPacket(getBlockPos(), -1, getUpdateTag());
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
         CompoundNBT tag = pkt.getTag();
-        this.deserializeNBT(level.getBlockState(worldPosition), tag);
+        this.load(level.getBlockState(worldPosition), tag);
         this.setChanged();
         level.markAndNotifyBlock(worldPosition, level.getChunkAt(worldPosition), level.getBlockState(worldPosition).getBlock().defaultBlockState(), level.getBlockState(worldPosition), 2, 3);
     }
@@ -48,8 +48,8 @@ public abstract class TileEntityInventory extends TileEntity implements ITileInv
     @Override
     public CompoundNBT getUpdateTag() {
 
-
-        return this.serializeNBT();
+        CompoundNBT tag = new CompoundNBT();
+        return this.save(tag);
     }
 
 

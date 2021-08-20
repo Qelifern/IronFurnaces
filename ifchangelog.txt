@@ -1,3 +1,6 @@
+2.7.1
++Fixed NBT not working properly on tile entities
++Fixed furnaces having a cooktime below 1
 2.7.0
 +Changed RF cost to 4000RF per 1 item smelted instead of 2000RF per 0.5 items when using speed augment
 +Fixed Rainbow Coal not displaying durability bar
