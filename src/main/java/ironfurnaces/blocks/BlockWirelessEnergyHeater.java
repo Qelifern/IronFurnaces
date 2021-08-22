@@ -64,7 +64,7 @@ public class BlockWirelessEnergyHeater extends Block {
             }
             if (!player.isCreative()) InventoryHelper.dropItemStack(world, te.getBlockPos().getX(), te.getBlockPos().getY(), te.getBlockPos().getZ(), stack);
         }
-        return true;
+        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
     @Override

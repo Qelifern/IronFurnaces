@@ -1,3 +1,10 @@
+2.7.3
++Fixed furnaces not calling handleSmelted from PMMO
+(furnaces that can smelt more than 1 item at once still only calls handleSmelted once)
++PMMO 3.64
+2.7.2
++Fixed Wireless Heater not being able to be broken/removed whatsoever
++Fixed Crystal Furnace causing not rendering block-sides that are covered by it
 2.7.1
 +Fixed NBT not working properly on tile entities
 +Fixed furnaces having a cooktime below 1

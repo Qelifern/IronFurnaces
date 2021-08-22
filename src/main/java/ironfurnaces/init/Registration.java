@@ -10,6 +10,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -96,7 +97,13 @@ public class Registration {
         return new BlockObsidianFurnaceContainer(windowId, world, pos, inv, inv.player);
     }));
 
-    public static final RegistryObject<BlockCrystalFurnace> CRYSTAL_FURNACE = BLOCKS.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> new BlockCrystalFurnace(AbstractBlock.Properties.copy(Blocks.PRISMARINE).isViewBlocking(Registration::isntSolid)));
+    public static final RegistryObject<BlockCrystalFurnace> CRYSTAL_FURNACE = BLOCKS.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> new BlockCrystalFurnace(AbstractBlock.Properties.copy(Blocks.PRISMARINE).noOcclusion().isValidSpawn(Registration::isntSolid).isSuffocating(Registration::isntSolid).isViewBlocking(Registration::isntSolid)));
+
+    private static Boolean isntSolid(BlockState blockState, IBlockReader iBlockReader, BlockPos blockPos, EntityType<?> entityType) {
+
+        return (Boolean) false;
+    }
+
     public static final RegistryObject<Item> CRYSTAL_FURNACE_ITEM = ITEMS.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> new BlockItem(CRYSTAL_FURNACE.get(), new Item.Properties().tab(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<TileEntityType<BlockCrystalFurnaceTile>> CRYSTAL_FURNACE_TILE = TILES.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> TileEntityType.Builder.of(BlockCrystalFurnaceTile::new, CRYSTAL_FURNACE.get()).build(null));
 

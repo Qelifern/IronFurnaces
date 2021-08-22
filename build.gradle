@@ -155,8 +155,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.mcversion}:${project.jei_version}")
 
     //Project MMO
-    compileOnly fg.deobf("curse.maven:project-mmo-353935:3422345")
-    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3422345")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3434289")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3434289")
 
     /**
     compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:6.0.263-alpha")
