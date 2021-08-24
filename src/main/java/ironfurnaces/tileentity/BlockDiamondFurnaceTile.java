@@ -16,7 +16,7 @@ public class BlockDiamondFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+    public ForgeConfigSpec.IntValue getCookTimeConfig() {
         return Config.diamondFurnaceSpeed;
     }
 

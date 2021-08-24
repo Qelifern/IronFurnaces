@@ -6,8 +6,6 @@ import ironfurnaces.init.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BlockSilverFurnaceTile extends BlockIronFurnaceTileBase {
@@ -16,7 +14,7 @@ public class BlockSilverFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+    public ForgeConfigSpec.IntValue getCookTimeConfig() {
         return Config.silverFurnaceSpeed;
     }
 

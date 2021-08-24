@@ -77,7 +77,9 @@ public abstract class BlockIronFurnaceBase extends Block {
             if (stack.hasCustomHoverName()) {
                 te.setCustomName(stack.getDisplayName());
             }
+            te.totalCookTime = te.getCookTimeConfig().get();
             te.placeConfig();
+
         }
     }
 

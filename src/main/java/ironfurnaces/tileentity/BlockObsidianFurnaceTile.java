@@ -16,7 +16,7 @@ public class BlockObsidianFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+    public ForgeConfigSpec.IntValue getCookTimeConfig() {
         return Config.obsidianFurnaceSpeed;
     }
 

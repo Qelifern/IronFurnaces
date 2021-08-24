@@ -70,7 +70,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
      */
     private int furnaceBurnTime;
     public int cookTime;
-    private int totalCookTime = this.getCookTime(true);
+    public int totalCookTime = this.getCookTime(true);
     private Item cachedItem;
     private Item cachedAugment;
     private int recipesUsed;
@@ -172,7 +172,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return 0;
     }
 
-    protected ForgeConfigSpec.IntValue getCookTimeConfig() {
+    public ForgeConfigSpec.IntValue getCookTimeConfig() {
         return null;
     }
 

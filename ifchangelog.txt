@@ -1,3 +1,5 @@
+2.7.4
++Fixed furnaces having an initial totalCookTime of 1 when first placed
 2.7.3
 +Fixed furnaces not calling handleSmelted from PMMO
 (furnaces that can smelt more than 1 item at once still only calls handleSmelted once)
