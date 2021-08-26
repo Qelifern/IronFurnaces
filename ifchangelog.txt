@@ -1,3 +1,7 @@
+2.7.5
++More optimizing
++Caching of recipes
++Added logofile
 2.7.4
 +Fixed furnaces having an initial totalCookTime of 1 when first placed
 2.7.3

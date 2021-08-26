@@ -14,6 +14,8 @@ version="${file.jarVersion}" #mandatory
 
 displayName="Iron Furnaces" #mandatory
 
+logoFile="ironfurnaces_logo.png"
+
 displayURL="https://www.curseforge.com/minecraft/mc-mods/iron-furnaces/" #optional
 
 credits="Java, JetBrains, Minecraft, MinecraftForge, LexManos, mezz, Ellpeck, KingLemming" #optional

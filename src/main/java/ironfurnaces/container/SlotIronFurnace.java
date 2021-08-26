@@ -17,13 +17,10 @@ public class SlotIronFurnace extends Slot {
         this.te = te;
     }
 
-    /**
-     * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
-     */
-    public boolean isItemValid(ItemStack stack) {
+    @Override
+    public boolean mayPlace(ItemStack p_75214_1_) {
         return false;
     }
-
 
     public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
         this.onCrafting(stack);

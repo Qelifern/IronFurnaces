@@ -1,12 +1,9 @@
 package ironfurnaces.container;
 
 import ironfurnaces.IronFurnaces;
-import ironfurnaces.items.ItemAugmentBlasting;
-import ironfurnaces.items.ItemAugmentSmoking;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
@@ -51,7 +48,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
         this.addDataSlots(this.fields);
 
-        this.addSlot(new Slot(te, 0, 56, 17));
+        this.addSlot(new SlotIronFurnaceInput(te, 0, 56, 17));
         this.addSlot(new SlotIronFurnaceFuel(this.te, 1, 56, 53));
         this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
         this.addSlot(new SlotIronFurnaceAugment(te, 3, 26, 35));
@@ -203,7 +200,7 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index != 1 && index != 0 && index != 3) {
-                if (this.hasRecipe(itemstack1)) {
+                if (this.te.hasRecipe(itemstack1)) {
                     if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
@@ -268,23 +265,5 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         // Hotbar
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
-    }
-
-    protected boolean hasRecipe(ItemStack stack) {
-        ItemStack augment = this.getItems().get(3);
-        if (augment.getItem() instanceof ItemAugmentBlasting) {
-            if (this.recipeType != IRecipeType.BLASTING) {
-                this.recipeType = IRecipeType.BLASTING;
-            }
-        } else if (augment.getItem() instanceof ItemAugmentSmoking) {
-            if (this.recipeType != IRecipeType.SMOKING) {
-                this.recipeType = IRecipeType.SMOKING;
-            }
-        } else {
-            if (this.recipeType != IRecipeType.SMELTING) {
-                this.recipeType = IRecipeType.SMELTING;
-            }
-        }
-        return this.world.getRecipeManager().getRecipeFor((IRecipeType)this.recipeType, new Inventory(stack), this.world).isPresent();
     }
 }
