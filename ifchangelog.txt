@@ -1,3 +1,6 @@
+2.7.6
++Fixed Heater shift-clicking & being able to place anything in the heater slot
++More optimizing
 2.7.5
 +More optimizing
 +Caching of recipes
