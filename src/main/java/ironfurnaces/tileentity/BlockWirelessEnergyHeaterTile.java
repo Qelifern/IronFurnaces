@@ -46,7 +46,6 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
             nbt.putInt("X", this.worldPosition.getX());
             nbt.putInt("Y", this.worldPosition.getY());
             nbt.putInt("Z", this.worldPosition.getZ());
-
         }
 
     }

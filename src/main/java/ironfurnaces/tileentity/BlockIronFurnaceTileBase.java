@@ -97,14 +97,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     }
 
-    private int getFromCache(LRUCache<Item, Optional<AbstractCookingRecipe>> c, Item key) {
-        if (c.get(key) == null)
-        {
-            return 0;
-        }
-        return c.get(key).orElse(null) == null ? 0 : c.get(key).orElse(null).getCookingTime();
-    }
-
     public boolean hasRecipe(ItemStack stack) {
         return grabRecipe(stack).isPresent();
     }
@@ -117,6 +109,12 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return smoking_cache;
         }
         return cache;
+    }
+
+    private Optional<AbstractCookingRecipe> getRecipe(Item  item) {
+        return (item instanceof AirItem)
+                ? Optional.empty()
+                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((IRecipeType<AbstractCookingRecipe>) this.recipeType, this, this.level).orElse(null));
     }
 
     private Optional<AbstractCookingRecipe> grabRecipe() {
@@ -175,7 +173,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected int getSpeed() {
         int i = getCookTimeConfig().get();
-        int j = getFromCache(getCache(), getItem(INPUT).getItem());
+        int j = getCache().computeIfAbsent(getItem(INPUT).getItem(), this::getRecipe).map(AbstractCookingRecipe::getCookingTime).orElse(0);
         if (j == 0) {
             Optional<AbstractCookingRecipe> recipe = grabRecipe();
             j = !recipe.isPresent() ? -1 : recipe.orElse(null).getCookingTime();

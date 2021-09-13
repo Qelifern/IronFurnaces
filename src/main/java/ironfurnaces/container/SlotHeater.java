@@ -13,7 +13,9 @@ public class SlotHeater extends Slot {
         super(te, slotIndex, xPosition, yPosition);
     }
 
-    public boolean isItemValid(ItemStack stack) {
+
+
+    public boolean mayPlace(ItemStack stack) {
         return stack.getItem() instanceof ItemHeater;
     }
 

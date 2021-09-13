@@ -2,6 +2,7 @@ package ironfurnaces.container;
 
 import ironfurnaces.energy.HeaterEnergyStorage;
 import ironfurnaces.init.Registration;
+import ironfurnaces.items.ItemHeater;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -108,6 +109,10 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
+            if (!(itemstack.getItem() instanceof ItemHeater))
+            {
+                return ItemStack.EMPTY;
+            }
             if (index < 1) {
                 if (!this.moveItemStackTo(itemstack1, 1, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
