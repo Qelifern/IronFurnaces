@@ -1,3 +1,5 @@
+2.7.7
++Fixed Blasting Augment not switching to blasting recipes
 2.7.6
 +Fixed Heater shift-clicking & being able to place anything in the heater slot
 +More optimizing

@@ -102,6 +102,23 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     private LRUCache<Item, Optional<AbstractCookingRecipe>> getCache() {
+        ItemStack stack = this.getItem(3);
+        if (stack.getItem() instanceof ItemAugmentBlasting) {
+            if (this.recipeType != IRecipeType.BLASTING) {
+                this.recipeType = IRecipeType.BLASTING;
+            }
+        }
+        if (stack.getItem() instanceof ItemAugmentSmoking) {
+            if (this.recipeType != IRecipeType.SMOKING) {
+                this.recipeType = IRecipeType.SMOKING;
+            }
+        }
+        if (!(stack.getItem() instanceof ItemAugmentSmoking) && !(stack.getItem() instanceof ItemAugmentBlasting))
+        {
+            if (this.recipeType != IRecipeType.SMELTING) {
+                this.recipeType = IRecipeType.SMELTING;
+            }
+        }
         if (this.recipeType == IRecipeType.BLASTING) {
             return blasting_cache;
         }
@@ -290,16 +307,14 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             if (this.recipeType != IRecipeType.BLASTING) {
                 this.recipeType = IRecipeType.BLASTING;
             }
-        } else {
-            if (this.recipeType != IRecipeType.SMELTING) {
-                this.recipeType = IRecipeType.SMELTING;
-            }
         }
         if (stack.getItem() instanceof ItemAugmentSmoking) {
             if (this.recipeType != IRecipeType.SMOKING) {
                 this.recipeType = IRecipeType.SMOKING;
             }
-        } else {
+        }
+        if (!(stack.getItem() instanceof ItemAugmentSmoking) && !(stack.getItem() instanceof ItemAugmentBlasting))
+        {
             if (this.recipeType != IRecipeType.SMELTING) {
                 this.recipeType = IRecipeType.SMELTING;
             }

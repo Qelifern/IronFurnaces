@@ -25,7 +25,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "276";
+    public static final String VERSION = "277";
     public static final String MC_VERSION = "1.16.5";
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -34,7 +34,7 @@ public class IronFurnaces
 
     public IronFurnaces() {
 
-        Messages.registerMessages("ironfurnaces_network");
+        Messages.registerMessages(MOD_ID + "_network");
 
         MOD_EVENT_BUS = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -47,8 +47,8 @@ public class IronFurnaces
         MOD_EVENT_BUS.register(Registration.class);
         Registration.init();
 
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml"));
+        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + ".toml"));
 
 
         if (Config.checkUpdates.get()) {
