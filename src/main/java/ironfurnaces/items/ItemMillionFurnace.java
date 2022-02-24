@@ -54,7 +54,7 @@ public class ItemMillionFurnace extends BlockItem {
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
             Format decimal = new DecimalFormat();
-            tooltip.add(new TextComponent("Will generate " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " RF/tick if all other furnaces are smelting if they are connected with the Rainbow Linker").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("Will generate " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " RF/tick if all other furnaces are smelting and they are connected with the Rainbow Linker").withStyle(ChatFormatting.GRAY));
         }
         else
         {

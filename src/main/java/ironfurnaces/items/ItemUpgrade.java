@@ -55,13 +55,11 @@ public class ItemUpgrade extends Item {
                 int cooktime = 0;
                 int currentItemBurnTime = 0;
                 int furnaceBurnTime = 0;
-                int show = 0;
                 int[] settings = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                 if (te instanceof BlockIronFurnaceTileBase) {
                     furnaceBurnTime = ((BlockIronFurnaceTileBase) te).furnaceBurnTime;
                     currentItemBurnTime = ((BlockIronFurnaceTileBase) te).recipesUsed;
                     cooktime = ((BlockIronFurnaceTileBase) te).cookTime;
-                    show = ((BlockIronFurnaceTileBase) te).totalCookTime;
                     for (int i = 0; i < ((BlockIronFurnaceTileBase) te).furnaceSettings.size(); i++)
                     {
                         settings[i] = ((BlockIronFurnaceTileBase) te).furnaceSettings.get(i);
