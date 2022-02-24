@@ -1,6 +1,7 @@
 package ironfurnaces.util;
 
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
+
 
 public class DirectionUtil {
 

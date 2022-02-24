@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "ironfurnaces:copper_furnace",
+    "ironfurnaces:iron_furnace",
+    "ironfurnaces:silver_furnace",
+    "ironfurnaces:gold_furnace",
+    "ironfurnaces:diamond_furnace",
+    "ironfurnaces:emerald_furnace",
+    "ironfurnaces:crystal_furnace",
+    "ironfurnaces:obsidian_furnace",
+    "ironfurnaces:netherite_furnace",
+    "ironfurnaces:allthemodium_furnace",
+    "ironfurnaces:vibranium_furnace",
+    "ironfurnaces:unobtainium_furnace",
+    "ironfurnaces:million_furnace",
+    "ironfurnaces:heater"
+  ]
+}

@@ -4,76 +4,71 @@ import com.google.common.collect.Lists;
 import ironfurnaces.Config;
 import ironfurnaces.container.BlockMillionFurnaceContainer;
 import ironfurnaces.init.Registration;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
-    public BlockMillionFurnaceTile() {
-        super(Registration.MILLION_FURNACE_TILE.get());
+    public BlockMillionFurnaceTile(BlockPos pos, BlockState state) {
+        super(Registration.MILLION_FURNACE_TILE.get(), pos, state);
     }
 
     public List<BlockIronFurnaceTileBase> furnaces = Lists.newArrayList();
+    public List<BlockPos> furnaces_to_load = Lists.newArrayList();
 
     public boolean providing;
 
-
     @Override
-    public void tick() {
-
-        /**
-        boolean flag = true;
-        if (!world.isRemote) {
-
-            if (furnaces.size() >= 7) {
-                for (BlockIronFurnaceTileBase furnace : furnaces) {
-                    world.getChunkAt(furnace.getPos()).setLoaded(true);
-                    if (furnace.cookTime <= 0) {
-                        flag = false;
-                    }
-                }
-            }
-
-
+    public void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        CompoundTag furnaces = new CompoundTag();
+        for (int i = 0; i < this.furnaces.size(); i++)
+        {
+            CompoundTag tag2 = new CompoundTag();
+            tag2.putInt("X", this.furnaces.get(i).getBlockPos().getX());
+            tag2.putInt("Y", this.furnaces.get(i).getBlockPos().getY());
+            tag2.putInt("Z", this.furnaces.get(i).getBlockPos().getZ());
+            furnaces.put("Furnace" + i, tag2);
         }
-        if (flag) {
-            providing = true;
-            if (!world.isRemote) {
-                for (Direction dir : Direction.values()) {
-                    TileEntity tile = world.getTileEntity(pos.offset(dir));
-                    if (tile != null) {
-                        tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).ifPresent(h -> {
-                            h.receiveEnergy(10000, false);
-                        });
-                    }
-                }
-            }
-        }
-        **/
-        super.tick();
+        tag.put("Furnaces", furnaces);
+
     }
 
     @Override
-    protected void smeltItem(@Nullable IRecipe<?> recipe) {
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        CompoundTag furnaces = tag.getCompound("Furnaces");
+        for (int i = 0; i < furnaces.size(); i++)
+        {
+            CompoundTag furnace = furnaces.getCompound("Furnace" + i);
+            furnaces_to_load.add(new BlockPos(furnace.getInt("X"), furnace.getInt("Y"), furnace.getInt("Z")));
+        }
+    }
+
+    @Override
+    protected void smeltItem(@Nullable Recipe<?> recipe) {
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
-            ItemStack itemstack = this.inventory.get(INPUT);
+            ItemStack itemstack = this.getItem(INPUT);
             ItemStack itemstack1 = recipe.getResultItem();
-            ItemStack itemstack2 = this.inventory.get(OUTPUT);
+            ItemStack itemstack2 = this.getItem(OUTPUT);
             int div = 64;
             int count = itemstack.getCount() > div ? (itemstack.getCount() - div) : itemstack.getCount();
             int smelt = itemstack1.getCount() > 1 ? 1 : (!itemstack2.isEmpty() && (count + itemstack2.getCount()) > 64 ? (64 - itemstack2.getCount()) : count);
             smelt = smelt > div ? div : smelt;
             if (itemstack2.isEmpty()) {
-                this.inventory.set(OUTPUT, new ItemStack(itemstack1.copy().getItem(), smelt));
+                this.setItem(OUTPUT, new ItemStack(itemstack1.copy().getItem(), smelt));
             } else if (itemstack2.getItem() == itemstack1.getItem()) {
                 itemstack2.grow(itemstack1.getCount() * smelt);
             }
@@ -84,8 +79,8 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
                 }
             }
 
-            if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.inventory.get(FUEL).isEmpty() && this.inventory.get(FUEL).getItem() == Items.BUCKET) {
-                this.inventory.set(FUEL, new ItemStack(Items.WATER_BUCKET));
+            if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.getItem(FUEL).isEmpty() && this.getItem(FUEL).getItem() == Items.BUCKET) {
+                this.setItem(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
 
             itemstack.shrink(smelt);
@@ -103,8 +98,8 @@ public class BlockMillionFurnaceTile extends BlockIronFurnaceTileBase {
     }
 
     @Override
-    public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockMillionFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
+    public AbstractContainerMenu IcreateMenu(int i, Inventory playerInventory, Player playerEntity) {
+        return new BlockMillionFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity);
     }
 
 

@@ -3,12 +3,16 @@ package ironfurnaces.blocks;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.gui.BlockIronFurnaceScreenBase;
 import ironfurnaces.util.StringHelper;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -24,39 +28,35 @@ public class BlockItemHeater extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTag())
-        {
-            tooltip.add(new StringTextComponent(StringHelper.displayEnergy(stack.getTag().getInt("Energy"), 1000000).get(0)).withStyle(TextFormatting.GOLD));
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        if (stack.hasTag()) {
+            tooltip.add(new TextComponent(StringHelper.displayEnergy(stack.getTag().getInt("Energy"), 1000000).get(0)).withStyle(ChatFormatting.GOLD));
         }
-        if (BlockIronFurnaceScreenBase.isShiftKeyDown())
-        {
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
-            tooltip.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block1").setStyle(Style.EMPTY.applyFormat((TextFormatting.GRAY))));
-        }
-        else
-        {
+        if (BlockIronFurnaceScreenBase.isShiftKeyDown()) {
+            tooltip.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block").setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+            tooltip.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".heater_block1").setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+        } else {
             tooltip.add(StringHelper.getShiftInfoText());
         }
     }
 
     @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack stack) {
         return stack.hasTag();
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
+    public int getBarWidth(ItemStack stack) {
         if (stack.hasTag())
         {
             int energy = stack.getTag().getInt("Energy");
-            return ((double)1 - (double) energy / (double) 1000000);
+            return (int) ((int)13 * ((double) energy / (double) 1000000));
         }
         return 0;
     }
 
     @Override
-    public int getRGBDurabilityForDisplay(ItemStack stack) {
+    public int getBarColor(ItemStack p_150901_) {
         return 0xFF800600;
     }
 }

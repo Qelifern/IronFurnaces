@@ -2,9 +2,9 @@ package ironfurnaces.update;
 
 import ironfurnaces.IronFurnaces;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +25,7 @@ public class UpdateChecker {
 
 
     public static final String DOWNLOAD_LINK = "https://www.curseforge.com/minecraft/mc-mods/iron-furnaces";
-    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/IronFurnaces/" + IronFurnaces.MC_VERSION + "/ifchangelog.txt";
+    public static final String CHANGELOG_LINK = "https://raw.githubusercontent.com/Qelifern/118IronFurnaces/" + IronFurnaces.MC_VERSION + "/ifchangelog.txt";
     public static boolean checkFailed;
     public static boolean needsUpdateNotify;
     public static int updateVersionInt;
@@ -43,15 +43,15 @@ public class UpdateChecker {
     @SubscribeEvent(receiveCanceled = true)
     public void onTick(TickEvent.ClientTickEvent event) {
         if(Minecraft.getInstance().player != null){
-            PlayerEntity player = Minecraft.getInstance().player;
+            Player player = Minecraft.getInstance().player;
             int id = 0;
             if(UpdateChecker.checkFailed){
-                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.failed")), UUID.randomUUID());
+                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.failed")), UUID.randomUUID());
             }
             else if(UpdateChecker.needsUpdateNotify){
-                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.speech")), UUID.randomUUID());
-                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)), UUID.randomUUID());
-                player.sendMessage(ITextComponent.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)), UUID.randomUUID());
+                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.speech")), UUID.randomUUID());
+                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)), UUID.randomUUID());
+                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)), UUID.randomUUID());
             }
             if(threadFinished) MinecraftForge.EVENT_BUS.unregister(this);
         }

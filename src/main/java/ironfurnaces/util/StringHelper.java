@@ -2,7 +2,11 @@ package ironfurnaces.util;
 
 import com.google.common.collect.Lists;
 import ironfurnaces.IronFurnaces;
-import net.minecraft.util.text.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,28 +27,28 @@ public class StringHelper {
         return text;
     }
 
-    public static List<ITextComponent> getShiftInfoGui()
+    public static List<Component> getShiftInfoGui()
     {
-        List<ITextComponent> list = Lists.newArrayList();
-        list.add(new TranslationTextComponent("tooltip.ironfurnaces.gui_close"));
-        IFormattableTextComponent tooltip1 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_hold_shift");
-        IFormattableTextComponent shift = new StringTextComponent("[Shift]");
-        IFormattableTextComponent tooltip2 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_shift_more_options");
-        tooltip1.withStyle(TextFormatting.GRAY);
-        shift.withStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
-        tooltip2.withStyle(TextFormatting.GRAY);
+        List<Component> list = Lists.newArrayList();
+        list.add(new TranslatableComponent("tooltip.ironfurnaces.gui_close"));
+        MutableComponent tooltip1 = new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_hold_shift");
+        MutableComponent shift = new TextComponent("[Shift]");
+        MutableComponent tooltip2 = new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_shift_more_options");
+        tooltip1.withStyle(ChatFormatting.GRAY);
+        shift.withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
+        tooltip2.withStyle(ChatFormatting.GRAY);
         list.add(tooltip1.append(shift).append(tooltip2));
         return list;
     }
 
-    public static ITextComponent getShiftInfoText()
+    public static Component getShiftInfoText()
     {
-        IFormattableTextComponent tooltip1 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".hold");
-        IFormattableTextComponent shift = new StringTextComponent("[Shift]");
-        IFormattableTextComponent tooltip2 = new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".for_details");
-        tooltip1.withStyle(TextFormatting.GRAY);
-        shift.withStyle(TextFormatting.GOLD, TextFormatting.ITALIC);
-        tooltip2.withStyle(TextFormatting.GRAY);
+        MutableComponent tooltip1 = new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".hold");
+        MutableComponent shift = new TextComponent("[Shift]");
+        MutableComponent tooltip2 = new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".for_details");
+        tooltip1.withStyle(ChatFormatting.GRAY);
+        shift.withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
+        tooltip2.withStyle(ChatFormatting.GRAY);
         return tooltip1.append(shift).append(tooltip2);
     }
 

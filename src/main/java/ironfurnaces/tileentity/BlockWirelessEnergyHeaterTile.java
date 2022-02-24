@@ -1,35 +1,36 @@
 package ironfurnaces.tileentity;
 
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
-import ironfurnaces.energy.HeaterEnergyStorage;
+import ironfurnaces.energy.HeaterEnergyStorage2;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemHeater;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
 
-public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implements ITickableTileEntity {
+public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
 
 
-    public BlockWirelessEnergyHeaterTile() {
-        super(Registration.HEATER_TILE.get(), 1);
+    public BlockWirelessEnergyHeaterTile(BlockPos pos, BlockState state) {
+        super(Registration.HEATER_TILE.get(), pos, state, 1);
     }
 
-    private HeaterEnergyStorage energyStorage = createEnergy();
+    private HeaterEnergyStorage2 energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
 
-    private HeaterEnergyStorage createEnergy() {
-        return new HeaterEnergyStorage(1000000, 1000000, 0) {
+    private HeaterEnergyStorage2 createEnergy() {
+        return new HeaterEnergyStorage2(1000000, 1000000, 0) {
             @Override
             protected void onEnergyChanged() {
                 setChanged();
@@ -37,15 +38,15 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
         };
     }
 
-    @Override
-    public void tick() {
-        ItemStack stack = this.getItem(0);
+
+    public static void tick(Level level, BlockPos worldPosition, BlockState blockState, BlockWirelessEnergyHeaterTile e) {
+        ItemStack stack = e.getItem(0);
         if (!stack.isEmpty()) {
-            CompoundNBT nbt = new CompoundNBT();
+            CompoundTag nbt = new CompoundTag();
             stack.setTag(nbt);
-            nbt.putInt("X", this.worldPosition.getX());
-            nbt.putInt("Y", this.worldPosition.getY());
-            nbt.putInt("Z", this.worldPosition.getZ());
+            nbt.putInt("X", e.worldPosition.getX());
+            nbt.putInt("Y", e.worldPosition.getY());
+            nbt.putInt("Z", e.worldPosition.getZ());
         }
 
     }
@@ -61,25 +62,24 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     public void removeEnergy(int energy) {
         this.energy.ifPresent(h -> {
             if (h.getEnergyStored() >= energy) {
-                ((HeaterEnergyStorage) h).setEnergy(h.getEnergyStored() - energy);
+                ((HeaterEnergyStorage2) h).setEnergy(h.getEnergyStored() - energy);
             }
         });
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
-        super.load(state, nbt);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.energy.ifPresent(h -> {
-            ((HeaterEnergyStorage) h).setEnergy(nbt.getInt("Energy"));
+            ((HeaterEnergyStorage2) h).setEnergy(nbt.getInt("Energy"));
         });
 
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        super.save(compound);
-        compound.putInt("Energy", getEnergy());
-        return compound;
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        nbt.putInt("Energy", getEnergy());
     }
 
     @Override
@@ -103,7 +103,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory implement
     }
 
     @Override
-    public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+    public AbstractContainerMenu IcreateMenu(int i, Inventory playerInventory, Player playerEntity) {
         return new BlockWirelessEnergyHeaterContainer(i, level, worldPosition, playerInventory, playerEntity);
     }
 

@@ -1,40 +1,43 @@
 package ironfurnaces.container;
 
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
 
 public class SlotIronFurnace extends Slot {
 
-    private final PlayerEntity player;
+    private final Player player;
     private int removeCount;
     private BlockIronFurnaceTileBase te;
 
-    public SlotIronFurnace(PlayerEntity player, BlockIronFurnaceTileBase te, int slotIndex, int xPosition, int yPosition) {
+    public SlotIronFurnace(Player player, BlockIronFurnaceTileBase te, int slotIndex, int xPosition, int yPosition) {
         super(te, slotIndex, xPosition, yPosition);
         this.player = player;
         this.te = te;
     }
 
+    /**
+     * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
+     */
     @Override
-    public boolean mayPlace(ItemStack p_75214_1_) {
+    public boolean mayPlace(ItemStack p_40231_) {
         return false;
     }
 
-    public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
-        this.onCrafting(stack);
+    public void onTake(Player thePlayer, ItemStack stack) {
+        this.checkTakeAchievements(stack);
         super.onTake(thePlayer, stack);
-        return stack;
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
-     * internal count then calls onCrafting(item).
-     */
-    protected void onCrafting(ItemStack stack, int amount) {
-        this.removeCount += amount;
-        this.onCrafting(stack);
+    public ItemStack remove(int p_39548_) {
+        if (this.hasItem()) {
+            this.removeCount += Math.min(p_39548_, this.getItem().getCount());
+        }
+
+        return super.remove(p_39548_);
     }
 
     @Override
@@ -45,14 +48,16 @@ public class SlotIronFurnace extends Slot {
         }
 
         this.removeCount = 0;
-        net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerSmeltedEvent(this.player, stack);
     }
 
-    /**
-     * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
-     */
-    protected void onCrafting(ItemStack stack) {
+    protected void checkTakeAchievements(ItemStack p_39558_) {
+        p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
+        if (this.player instanceof ServerPlayer && this.container instanceof BlockIronFurnaceTileBase) {
+            ((BlockIronFurnaceTileBase)this.container).unlockRecipes((ServerPlayer)this.player);
+        }
 
+        this.removeCount = 0;
+        net.minecraftforge.event.ForgeEventFactory.firePlayerSmeltedEvent(this.player, p_39558_);
     }
 
 }

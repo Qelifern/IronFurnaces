@@ -1,7 +1,4 @@
-
-
 package ironfurnaces.jei;
-
 
 import ironfurnaces.Config;
 import ironfurnaces.IronFurnaces;
@@ -13,8 +10,8 @@ import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
 
 @JeiPlugin

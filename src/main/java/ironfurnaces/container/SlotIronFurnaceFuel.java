@@ -1,9 +1,9 @@
 package ironfurnaces.container;
 
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class SlotIronFurnaceFuel extends Slot {
     BlockIronFurnaceTileBase te;
@@ -13,6 +13,9 @@ public class SlotIronFurnaceFuel extends Slot {
         this.te = te;
     }
 
+    /**
+     * Check if the stack is allowed to be placed in this slot, used for armor slots as well as furnace fuel.
+     */
     @Override
     public boolean mayPlace(ItemStack stack) {
         return BlockIronFurnaceTileBase.isItemFuel(stack) || isBucket(stack);

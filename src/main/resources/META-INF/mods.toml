@@ -1,6 +1,6 @@
 modLoader="javafml" #mandatory
 
-loaderVersion="[36,)" #mandatory
+loaderVersion="${loader_version_range}" #mandatory
 
 license="GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007" #mandatory
 
@@ -29,37 +29,19 @@ IronFurnaces is a mod that adds various tiers of metal furnaces that will smelt 
 [[dependencies.ironfurnaces]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[36,)" #mandatory
+    versionRange="${forge_version_range}" #mandatory
     ordering="NONE"
     side="BOTH"
 # Here's another dependency
 [[dependencies.ironfurnaces]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.5, 1.17.1]"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.ironfurnaces]]
    modId="jei"
    mandatory=false
-   versionRange="[7,)"
+   versionRange="${jei_version_range}"
    ordering="NONE"
    side="BOTH"
-[[dependencies.ironfurnaces]]
-   modId="ftbguilibrary"
-   mandatory=false
-   versionRange="[1,)"
-   ordering="NONE"
-   side="BOTH"
-[[dependencies.ironfurnaces]]
-  modId="allthemodium"
-  mandatory=false
-  versionRange="[1.1,)"
-  ordering="NONE"
-  side="BOTH"
-[[dependencies.ironfurnaces]]
-    modId="pmmo"
-    mandatory=false
-    versionRange="[1.16.5-3,)"
-    ordering="NONE"
-    side="BOTH"

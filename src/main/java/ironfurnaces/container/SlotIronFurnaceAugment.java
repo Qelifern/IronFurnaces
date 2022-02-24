@@ -2,8 +2,8 @@ package ironfurnaces.container;
 
 import ironfurnaces.items.ItemAugment;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotIronFurnaceAugment extends Slot {
 
@@ -13,7 +13,6 @@ public class SlotIronFurnaceAugment extends Slot {
         super(te, slotIndex, xPosition, yPosition);
         this.te = te;
     }
-
 
     @Override
     public boolean mayPlace(ItemStack stack) {

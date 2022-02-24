@@ -1,26 +1,19 @@
 package ironfurnaces.container;
 
 import ironfurnaces.init.Registration;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.level.Level;
 
 public class BlockNetheriteFurnaceContainer extends BlockIronFurnaceContainerBase {
 
-    public BlockNetheriteFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(Registration.NETHERITE_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
-    }
-
-    public BlockNetheriteFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
-        super(Registration.NETHERITE_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player, fields);
+    public BlockNetheriteFurnaceContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
+        super(Registration.SILVER_FURNACE_CONTAINER.get(), windowId, world, pos, playerInventory, player);
     }
 
 
-    @Override
-    public boolean stillValid(PlayerEntity playerIn) {
-        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.NETHERITE_FURNACE.get());
-    }
+
+
 }

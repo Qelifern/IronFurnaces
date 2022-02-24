@@ -1,18 +1,17 @@
 package ironfurnaces.container;
 
-import ironfurnaces.energy.HeaterEnergyStorage;
+import ironfurnaces.energy.HeaterEnergyStorage2;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemHeater;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.IntReferenceHolder;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -20,22 +19,24 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class BlockWirelessEnergyHeaterContainer extends Container {
+
+
+public class BlockWirelessEnergyHeaterContainer extends AbstractContainerMenu {
 
 
     protected BlockWirelessEnergyHeaterTile te;
-    protected PlayerEntity playerEntity;
+    protected Player playerEntity;
     protected IItemHandler playerInventory;
-    protected final World world;
+    protected final Level world;
 
-    public BlockWirelessEnergyHeaterContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
+    public BlockWirelessEnergyHeaterContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(Registration.HEATER_CONTAINER.get(), windowId);
         this.te = (BlockWirelessEnergyHeaterTile) world.getBlockEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         this.world = playerInventory.player.level;
 
-        this.addDataSlot(new IntReferenceHolder() {
+        this.addDataSlot(new DataSlot() {
             @Override
             public int get() {
                 return getEnergy();
@@ -64,16 +65,11 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
     }
 
     public void setEnergy(int energy) {
-        te.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> ((HeaterEnergyStorage)h).setEnergy(energy));
+        te.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> ((HeaterEnergyStorage2)h).setEnergy(energy));
     }
 
     public int getCapacity() {
         return te.getCapability(CapabilityEnergy.ENERGY).map(h -> h.getMaxEnergyStored()).orElse(0);
-    }
-
-    @Override
-    public boolean stillValid(PlayerEntity playerIn) {
-        return stillValid(IWorldPosCallable.create(te.getLevel(), te.getBlockPos()), playerEntity, Registration.HEATER.get());
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
@@ -103,7 +99,7 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
@@ -129,6 +125,11 @@ public class BlockWirelessEnergyHeaterContainer extends Container {
         }
 
         return itemstack;
+    }
+
+    @Override
+    public boolean stillValid(Player p_38874_) {
+        return this.te.stillValid(p_38874_);
     }
 
 }

@@ -1,9 +1,13 @@
 package ironfurnaces.items;
 
 import ironfurnaces.IronFurnaces;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantment;
+
+import javax.annotation.Nullable;
 
 public class ItemRainbowCoal extends Item {
 
@@ -14,17 +18,23 @@ public class ItemRainbowCoal extends Item {
     }
 
     @Override
-    public double getDurabilityForDisplay(ItemStack stack) {
-        return ((double) stack.getDamageValue() / (double) 5120);
-    }
-
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) {
+    public boolean isBarVisible(ItemStack p_150899_) {
         return true;
     }
 
     @Override
-    public int getBurnTime(ItemStack itemStack) {
+    public int getBarWidth(ItemStack stack) {
+        return (int) ((int)13 * (1 - (double) stack.getDamageValue() / (double) 5120));
+    }
+
+    @Override
+    public int getBarColor(ItemStack p_150901_) {
+        float f = Math.max(0.0F, ((float)5120 - (float)p_150901_.getDamageValue()) / (float)5120);
+        return Mth.hsvToRgb(f / 3.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
         return 200;
     }
 

@@ -1,4 +1,3 @@
-
 package ironfurnaces.tileentity;
 
 import java.util.LinkedHashMap;
@@ -23,5 +22,4 @@ public class LRUCache<K, V> extends LinkedHashMap<K, V> {
     {
         return new LRUCache<K, V>(size);
     }
-
 }

@@ -2,8 +2,8 @@ package ironfurnaces.container;
 
 import ironfurnaces.items.ItemHeater;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class SlotHeater extends Slot {
 
@@ -13,8 +13,7 @@ public class SlotHeater extends Slot {
         super(te, slotIndex, xPosition, yPosition);
     }
 
-
-
+    @Override
     public boolean mayPlace(ItemStack stack) {
         return stack.getItem() instanceof ItemHeater;
     }

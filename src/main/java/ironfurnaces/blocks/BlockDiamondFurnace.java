@@ -2,16 +2,12 @@ package ironfurnaces.blocks;
 
 import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockDiamondFurnaceTile;
-import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
@@ -23,14 +19,15 @@ public class BlockDiamondFurnace extends BlockIronFurnaceBase {
         super(properties);
     }
 
+    @Nullable
     @Override
-    public int getHarvestLevel(BlockState state) {
-        return 2;
+    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+        return new BlockDiamondFurnaceTile(p_153215_, p_153216_);
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new BlockDiamondFurnaceTile();
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createFurnaceTicker(level, type, Registration.DIAMOND_FURNACE_TILE.get());
     }
 }

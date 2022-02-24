@@ -1,8 +1,9 @@
 package ironfurnaces.gui;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockIronFurnaceContainerBase;
 import ironfurnaces.network.Messages;
@@ -10,15 +11,14 @@ import ironfurnaces.network.PacketSettingsButton;
 import ironfurnaces.network.PacketShowSettingsButton;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -26,25 +26,25 @@ import org.lwjgl.glfw.GLFW;
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceContainerBase> extends ContainerScreen<T> {
+public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceContainerBase> extends AbstractContainerScreen<T> {
 
     public ResourceLocation GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" + "textures/gui/furnace.png");
     public static final ResourceLocation WIDGETS = new ResourceLocation(IronFurnaces.MOD_ID + ":" + "textures/gui/widgets.png");
-    PlayerInventory playerInv;
-    ITextComponent name;
+    Inventory playerInv;
+    Component name;
 
 
     public boolean add_button;
     public boolean sub_button;
 
-    public BlockIronFurnaceScreenBase(T t, PlayerInventory inv, ITextComponent name) {
+    public BlockIronFurnaceScreenBase(T t, Inventory inv, Component name) {
         super(t, inv, name);
         playerInv = inv;
         this.name = name;
     }
 
     @Override
-    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack matrix, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrix);
         super.render(matrix, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrix, mouseX, mouseY);
@@ -57,95 +57,99 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
 
     @Override
-    protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+    protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
         //drawString(Minecraft.getInstance().fontRenderer, "Energy: " + getMenu().getEnergy(), 10, 10, 0xffffff);
-        this.minecraft.font.draw(matrix, this.playerInv.getDisplayName(), 7, this.getYSize() - 93, 4210752);
+
         this.minecraft.font.draw(matrix, name, 7 + this.getXSize() / 2 - this.minecraft.font.width(name.getString()) / 2, 6, 4210752);
+        this.minecraft.font.draw(matrix, this.playerInv.getDisplayName(), 7, this.getYSize() - 93, 4210752);
 
         if (this.getMenu().showInventoryButtons() && this.getMenu().getRedstoneMode() == 4) {
             int comSub = this.getMenu().getComSub();
             int i = comSub > 9 ? 28 : 31;
-            this.minecraft.font.draw(matrix, new StringTextComponent("" + comSub), i - 42, 90, 4210752);
+            this.minecraft.font.draw(matrix, new TextComponent("" + comSub), i - 42, 90, 4210752);
         }
         int actualMouseX = mouseX - ((this.width - this.getXSize()) / 2);
         int actualMouseY = mouseY - ((this.height - this.getYSize()) / 2);
 
         this.addTooltips(matrix, actualMouseX, actualMouseY);
-
+        if ((actualMouseX >= 26 && actualMouseX <= 42 && actualMouseY >= 35 && actualMouseY <= 51) && !getMenu().getSlot(3).hasItem())
+        {
+            this.renderTooltip(matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".augment_slot"), actualMouseX, actualMouseY);
+        }
     }
 
-    private void addTooltips(MatrixStack matrix, int mouseX, int mouseY) {
+    private void addTooltips(PoseStack matrix, int mouseX, int mouseY) {
 
         if (!getMenu().showInventoryButtons()) {
             if (mouseX >= -20 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
-                this.renderTooltip(matrix, new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open"), mouseX, mouseY);
+                this.renderTooltip(matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open"), mouseX, mouseY);
             }
         } else {
             if (mouseX >= -13 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
                 this.renderComponentTooltip(matrix, StringHelper.getShiftInfoGui(), mouseX, mouseY);
             } else if (mouseX >= -47 && mouseX <= -34 && mouseY >= 12 && mouseY <= 25) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_input"));
-                list.add(new StringTextComponent("" + this.getMenu().getAutoInput()));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_input"));
+                list.add(new TextComponent("" + this.getMenu().getAutoInput()));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -29 && mouseX <= -16 && mouseY >= 12 && mouseY <= 25) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_output"));
-                list.add(new StringTextComponent("" + this.getMenu().getAutoOutput()));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_output"));
+                list.add(new TextComponent("" + this.getMenu().getAutoOutput()));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -32 && mouseX <= -23 && mouseY >= 31 && mouseY <= 40) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_top"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_top"));
                 list.add(this.getMenu().getTooltip(1));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -32 && mouseX <= -23 && mouseY >= 55 && mouseY <= 64) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_bottom"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_bottom"));
                 list.add(this.getMenu().getTooltip(0));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -32 && mouseX <= -23 && mouseY >= 43 && mouseY <= 52) {
-                List<ITextComponent> list = Lists.newArrayList();
+                List<Component> list = Lists.newArrayList();
                 if (isShiftKeyDown()) {
-                    list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_reset"));
+                    list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_reset"));
                 } else {
-                    list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_front"));
+                    list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_front"));
                     list.add(this.getMenu().getTooltip(this.getMenu().getIndexFront()));
                 }
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -44 && mouseX <= -35 && mouseY >= 43 && mouseY <= 52) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_left"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_left"));
                 list.add(this.getMenu().getTooltip(this.getMenu().getIndexLeft()));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -20 && mouseX <= -11 && mouseY >= 43 && mouseY <= 52) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_right"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_right"));
                 list.add(this.getMenu().getTooltip(this.getMenu().getIndexRight()));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -20 && mouseX <= -11 && mouseY >= 55 && mouseY <= 64) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_back"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_back"));
                 list.add(this.getMenu().getTooltip(this.getMenu().getIndexBack()));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -47 && mouseX <= -34 && mouseY >= 70 && mouseY <= 83) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_ignored"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_ignored"));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -31 && mouseX <= -18 && mouseY >= 70 && mouseY <= 83) {
-                List<ITextComponent> list = Lists.newArrayList();
+                List<Component> list = Lists.newArrayList();
                 if (isShiftKeyDown()) {
-                    list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_low"));
+                    list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_low"));
                 } else {
-                    list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_high"));
+                    list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_high"));
                 }
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -15 && mouseX <= -2 && mouseY >= 70 && mouseY <= 83) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator"));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             } else if (mouseX >= -47 && mouseX <= -34 && mouseY >= 86 && mouseY <= 99) {
-                List<ITextComponent> list = Lists.newArrayList();
-                list.add(new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator_sub"));
+                List<Component> list = Lists.newArrayList();
+                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator_sub"));
                 this.renderComponentTooltip(matrix, list, mouseX, mouseY);
             }
 
@@ -153,9 +157,9 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     @Override
-    protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(GUI);
+    protected void renderBg(PoseStack matrix, float partialTicks, int mouseX, int mouseY) {
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, GUI);
         int relX = (this.width - this.getXSize()) / 2;
         int relY = (this.height - this.getYSize()) / 2;
         this.blit(matrix, relX, relY, 0, 0, this.getXSize(), this.getYSize());
@@ -168,7 +172,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         i = ((BlockIronFurnaceContainerBase) this.getMenu()).getCookScaled(24);
         this.blit(matrix, getGuiLeft() + 79, getGuiTop() + 34, 176, 14, i + 1, 16);
 
-        this.minecraft.getTextureManager().bind(WIDGETS);
+        RenderSystem.setShaderTexture(0, WIDGETS);
         int actualMouseX = mouseX - ((this.width - this.getXSize()) / 2);
         int actualMouseY = mouseY - ((this.height - this.getYSize()) / 2);
 
@@ -178,7 +182,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
 
-    private void addRedstoneButtons(MatrixStack matrix, int mouseX, int mouseY) {
+    private void addRedstoneButtons(PoseStack matrix, int mouseX, int mouseY) {
         if (this.getMenu().showInventoryButtons()) {
             this.blitRedstone(matrix);
             if (this.getMenu().getRedstoneMode() == 4) {
@@ -215,7 +219,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         }
     }
 
-    private void addInventoryButtons(MatrixStack matrix, int mouseX, int mouseY) {
+    private void addInventoryButtons(PoseStack matrix, int mouseX, int mouseY) {
         if (!getMenu().showInventoryButtons()) {
             this.blit(matrix, getGuiLeft() - 20, getGuiTop() + 4, 0, 28, 23, 26);
         } else if (getMenu().showInventoryButtons()) {
@@ -232,7 +236,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     }
 
-    private void blitRedstone(MatrixStack matrix) {
+    private void blitRedstone(PoseStack matrix) {
         boolean flag = isShiftKeyDown();
         if (flag) {
             this.blit(matrix, getGuiLeft() - 31, getGuiTop() + 70, 84, 189, 14, 14);
@@ -252,7 +256,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     }
 
-    private void blitIO(MatrixStack matrix) {
+    private void blitIO(PoseStack matrix) {
         int[] settings = new int[]{0, 0, 0, 0, 0, 0};
         int setting = this.getMenu().getSettingTop();
         if (setting == 1) {
@@ -368,19 +372,19 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
             } else if (mouseX >= -47 && mouseX <= -34 && mouseY >= 12 && mouseY <= 25) {
                 if (!this.getMenu().getAutoInput()) {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 6, 1));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
                 } else {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 6, 0));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
                 }
 
             } else if (mouseX >= -29 && mouseX <= -16 && mouseY >= 12 && mouseY <= 25) {
                 if (!this.getMenu().getAutoOutput()) {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 7, 1));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
                 } else {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 7, 0));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
                 }
             } else if (mouseX >= -32 && mouseX <= -23 && mouseY >= 31 && mouseY <= 40) {
                 if (flag) {
@@ -402,7 +406,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 3, 0));
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 4, 0));
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 5, 0));
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.8F, 0.3F));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.8F, 0.3F));
                 } else {
                     if (flag) {
                         sendToServerInverted(this.getMenu().getSettingFront(), this.getMenu().getIndexFront());
@@ -433,7 +437,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     private void sendToServer(int setting, int index) {
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
         if (setting <= 0) {
             Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), index, 1));
         } else if (setting == 1) {
@@ -448,7 +452,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     private void sendToServerInverted(int setting, int index) {
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.3F, 0.3F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.3F, 0.3F));
         if (setting <= 0) {
             Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), index, 4));
         } else if (setting == 1) {
@@ -463,47 +467,49 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     public void mouseClickedRedstoneButtons(double mouseX, double mouseY) {
-        if (mouseX >= -31 && mouseX <= -18 && mouseY >= 86 && mouseY <= 99) {
-            if (this.sub_button && isShiftKeyDown()) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 9, this.getMenu().getComSub() - 1));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.3F, 0.3F));
+        if (getMenu().showInventoryButtons()) {
+            if (mouseX >= -31 && mouseX <= -18 && mouseY >= 86 && mouseY <= 99) {
+                if (this.sub_button && isShiftKeyDown()) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 9, this.getMenu().getComSub() - 1));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.3F, 0.3F));
+                }
             }
-        }
-        if (mouseX >= -31 && mouseX <= -18 && mouseY >= 86 && mouseY <= 99) {
-            if (this.add_button && !isShiftKeyDown()) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 9, this.getMenu().getComSub() + 1));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+            if (mouseX >= -31 && mouseX <= -18 && mouseY >= 86 && mouseY <= 99) {
+                if (this.add_button && !isShiftKeyDown()) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 9, this.getMenu().getComSub() + 1));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
             }
-        }
-        if (mouseX >= -47 && mouseX <= -34 && mouseY >= 70 && mouseY <= 83) {
-            if (this.getMenu().getRedstoneMode() != 0) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 0));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+            if (mouseX >= -47 && mouseX <= -34 && mouseY >= 70 && mouseY <= 83) {
+                if (this.getMenu().getRedstoneMode() != 0) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 0));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
             }
-        }
 
-        if (mouseX >= -31 && mouseX <= -18 && mouseY >= 70 && mouseY <= 83) {
-            if (this.getMenu().getRedstoneMode() != 1 && !isShiftKeyDown()) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 1));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+            if (mouseX >= -31 && mouseX <= -18 && mouseY >= 70 && mouseY <= 83) {
+                if (this.getMenu().getRedstoneMode() != 1 && !isShiftKeyDown()) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 1));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
+                if (this.getMenu().getRedstoneMode() != 2 && isShiftKeyDown()) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 2));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
             }
-            if (this.getMenu().getRedstoneMode() != 2 && isShiftKeyDown()) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 2));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
-            }
-        }
 
-        if (mouseX >= -15 && mouseX <= -2 && mouseY >= 70 && mouseY <= 83) {
-            if (this.getMenu().getRedstoneMode() != 3) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 3));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+            if (mouseX >= -15 && mouseX <= -2 && mouseY >= 70 && mouseY <= 83) {
+                if (this.getMenu().getRedstoneMode() != 3) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 3));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
             }
-        }
 
-        if (mouseX >= -47 && mouseX <= -34 && mouseY >= 86 && mouseY <= 99) {
-            if (this.getMenu().getRedstoneMode() != 4) {
-                Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 4));
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+            if (mouseX >= -47 && mouseX <= -34 && mouseY >= 86 && mouseY <= 99) {
+                if (this.getMenu().getRedstoneMode() != 4) {
+                    Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 8, 4));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0.6F, 0.3F));
+                }
             }
         }
     }
@@ -513,13 +519,13 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     public static boolean isKeyDown(int glfw) {
-        InputMappings.Input key = InputMappings.Type.KEYSYM.getOrCreate(glfw);
+        InputConstants.Key key = InputConstants.Type.KEYSYM.getOrCreate(glfw);
         int keyCode = key.getValue();
-        if (keyCode != InputMappings.UNKNOWN.getValue()) {
+        if (keyCode != InputConstants.UNKNOWN.getValue()) {
             long windowHandle = Minecraft.getInstance().getWindow().getWindow();
             try {
-                if (key.getType() == InputMappings.Type.KEYSYM) {
-                    return InputMappings.isKeyDown(windowHandle, keyCode);
+                if (key.getType() == InputConstants.Type.KEYSYM) {
+                    return InputConstants.isKeyDown(windowHandle, keyCode);
                 } /**else if (key.getType() == InputMappings.Type.MOUSE) {
                  return GLFW.glfwGetMouseButton(windowHandle, keyCode) == GLFW.GLFW_PRESS;
                  }**/

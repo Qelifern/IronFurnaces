@@ -3,35 +3,37 @@ package ironfurnaces.tileentity;
 import ironfurnaces.Config;
 import ironfurnaces.container.BlockUnobtainiumFurnaceContainer;
 import ironfurnaces.init.Registration;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import javax.annotation.Nullable;
 
 public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
-    public BlockUnobtainiumFurnaceTile() {
-        super(Registration.UNOBTAINIUM_FURNACE_TILE.get());
+    public BlockUnobtainiumFurnaceTile(BlockPos pos, BlockState state) {
+        super(Registration.UNOBTAINIUM_FURNACE_TILE.get(), pos, state);
     }
 
     @Override
-    protected void smeltItem(@Nullable IRecipe<?> recipe) {
+    protected void smeltItem(@Nullable Recipe<?> recipe) {
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
-            ItemStack itemstack = this.inventory.get(INPUT);
+            ItemStack itemstack = this.getItem(INPUT);
             ItemStack itemstack1 = recipe.getResultItem();
-            ItemStack itemstack2 = this.inventory.get(OUTPUT);
+            ItemStack itemstack2 = this.getItem(OUTPUT);
             int div = Config.unobtaniumFurnaceSmeltMult.get();
             int count = itemstack.getCount() > div ? (itemstack.getCount() - div) : itemstack.getCount();
             int smelt = itemstack1.getCount() > 1 ? 1 : (!itemstack2.isEmpty() && (count + itemstack2.getCount()) > 64 ? (64 - itemstack2.getCount()) : count);
             smelt = smelt > div ? div : smelt;
             if (itemstack2.isEmpty()) {
-                this.inventory.set(OUTPUT, new ItemStack(itemstack1.copy().getItem(), smelt));
+                this.setItem(OUTPUT, new ItemStack(itemstack1.copy().getItem(), smelt));
             } else if (itemstack2.getItem() == itemstack1.getItem()) {
                 itemstack2.grow(itemstack1.getCount() * smelt);
             }
@@ -44,8 +46,8 @@ public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
                 }
             }
 
-            if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.inventory.get(FUEL).isEmpty() && this.inventory.get(FUEL).getItem() == Items.BUCKET) {
-                this.inventory.set(FUEL, new ItemStack(Items.WATER_BUCKET));
+            if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.getItem(FUEL).isEmpty() && this.getItem(FUEL).getItem() == Items.BUCKET) {
+                this.setItem(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
 
             itemstack.shrink(smelt);
@@ -62,9 +64,11 @@ public class BlockUnobtainiumFurnaceTile extends BlockIronFurnaceTileBase {
         return "container.ironfurnaces.unobtainium_furnace";
     }
 
+
+
     @Override
-    public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockUnobtainiumFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
+    public AbstractContainerMenu IcreateMenu(int i, Inventory playerInventory, Player playerEntity) {
+        return new BlockUnobtainiumFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity);
     }
 
 }

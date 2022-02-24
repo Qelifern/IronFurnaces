@@ -3,16 +3,16 @@ package ironfurnaces.tileentity;
 import ironfurnaces.Config;
 import ironfurnaces.container.BlockNetheriteFurnaceContainer;
 import ironfurnaces.init.Registration;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BlockNetheriteFurnaceTile extends BlockIronFurnaceTileBase {
-    public BlockNetheriteFurnaceTile() {
-        super(Registration.NETHERITE_FURNACE_TILE.get());
+    public BlockNetheriteFurnaceTile(BlockPos pos, BlockState state) {
+        super(Registration.NETHERITE_FURNACE_TILE.get(), pos, state);
     }
 
     @Override
@@ -25,9 +25,11 @@ public class BlockNetheriteFurnaceTile extends BlockIronFurnaceTileBase {
         return "container.ironfurnaces.netherite_furnace";
     }
 
+
+
     @Override
-    public Container IcreateMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new BlockNetheriteFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity, this.fields);
+    public AbstractContainerMenu IcreateMenu(int i, Inventory playerInventory, Player playerEntity) {
+        return new BlockNetheriteFurnaceContainer(i, level, worldPosition, playerInventory, playerEntity);
     }
 
 }

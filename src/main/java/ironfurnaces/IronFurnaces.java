@@ -5,8 +5,8 @@ import ironfurnaces.init.ModSetup;
 import ironfurnaces.init.Registration;
 import ironfurnaces.network.Messages;
 import ironfurnaces.update.UpdateChecker;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,8 +25,9 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "277";
-    public static final String MC_VERSION = "1.16.5";
+    public static final String VERSION = "314";
+    public static final String MC_VERSION = "1.18.1";
+    public static final String GITHUB_BRANCH = "main";
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -47,8 +48,8 @@ public class IronFurnaces
         MOD_EVENT_BUS.register(Registration.class);
         Registration.init();
 
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + "-client.toml"));
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve(MOD_ID + ".toml"));
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
+        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-common.toml"));
 
 
         if (Config.checkUpdates.get()) {

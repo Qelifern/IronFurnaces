@@ -1,7 +1,7 @@
 package ironfurnaces.items;
 
 import ironfurnaces.init.Registration;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Blocks;
 
 public class ItemUpgradeCopper extends ItemUpgrade {
 

@@ -1,9 +1,13 @@
 package ironfurnaces.blocks;
 
+import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockAllthemodiumFurnaceTile;
-import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
@@ -15,14 +19,15 @@ public class BlockAllthemodiumFurnace extends BlockIronFurnaceBase {
         super(properties);
     }
 
+    @Nullable
     @Override
-    public int getHarvestLevel(BlockState state) {
-        return 1;
+    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+        return new BlockAllthemodiumFurnaceTile(p_153215_, p_153216_);
     }
 
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new BlockAllthemodiumFurnaceTile();
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createFurnaceTicker(level, type, Registration.ALLTHEMODIUM_FURNACE_TILE.get());
     }
 }

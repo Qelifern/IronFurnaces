@@ -2,9 +2,9 @@ package ironfurnaces.gui;
 
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockAllthemodiumFurnaceContainer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockAllthemodiumFurnaceScreen extends BlockIronFurnaceScreenBase<BlockAllthemodiumFurnaceContainer> {
 
 
-    public BlockAllthemodiumFurnaceScreen(BlockAllthemodiumFurnaceContainer container, PlayerInventory inv, ITextComponent name) {
+    public BlockAllthemodiumFurnaceScreen(BlockAllthemodiumFurnaceContainer container, Inventory inv, Component name) {
         super(container, inv, name);
         this.GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" +"textures/gui/furnace_allthemodium.png");
     }

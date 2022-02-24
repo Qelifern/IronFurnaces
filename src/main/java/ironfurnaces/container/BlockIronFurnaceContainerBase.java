@@ -2,20 +2,19 @@ package ironfurnaces.container;
 
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.IItemHandler;
@@ -23,20 +22,15 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 
-public abstract class BlockIronFurnaceContainerBase extends Container {
+public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMenu {
 
     protected BlockIronFurnaceTileBase te;
-    protected IIntArray fields;
-    protected PlayerEntity playerEntity;
+    protected Player playerEntity;
     protected IItemHandler playerInventory;
-    protected final World world;
-    private IRecipeType<? extends AbstractCookingRecipe> recipeType;
+    protected final Level world;
+    private RecipeType<? extends AbstractCookingRecipe> recipeType;
 
-    public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        this(containerType, windowId, world, pos, playerInventory, player, new IntArray(5));
-    }
-
-    public BlockIronFurnaceContainerBase(ContainerType<?> containerType, int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player, IIntArray fields) {
+    public BlockIronFurnaceContainerBase(MenuType<?> containerType, int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(containerType, windowId);
         this.te = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
         this.recipeType = te.recipeType;
@@ -44,22 +38,74 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         this.world = playerInventory.player.level;
-        this.fields = fields;
 
-        this.addDataSlots(this.fields);
+        addDataSlots();
 
-        this.addSlot(new SlotIronFurnaceInput(te, 0, 56, 17));
+        this.addSlot(new Slot(te, 0, 56, 17));
         this.addSlot(new SlotIronFurnaceFuel(this.te, 1, 56, 53));
         this.addSlot(new SlotIronFurnace(playerEntity, te, 2, 116, 35));
         this.addSlot(new SlotIronFurnaceAugment(te, 3, 26, 35));
         layoutPlayerInventorySlots(8, 84);
         checkContainerSize(this.te, 4);
-        checkContainerDataCount(this.fields, 5);
     }
+
+    public void addDataSlots()
+    {
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return te.furnaceBurnTime;
+            }
+
+            @Override
+            public void set(int value) {
+                te.furnaceBurnTime = value;
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return te.recipesUsed;
+            }
+
+            @Override
+            public void set(int value) {
+                te.recipesUsed = value;
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return te.cookTime;
+            }
+
+            @Override
+            public void set(int value) {
+                te.cookTime = value;
+            }
+        });
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {
+                return te.totalCookTime;
+            }
+
+            @Override
+            public void set(int value) {
+                te.totalCookTime = value;
+            }
+        });
+    }
+
+    public boolean stillValid(Player player) {
+        return this.te.stillValid(player);
+    }
+
+
 
     @OnlyIn(Dist.CLIENT)
     public boolean showInventoryButtons() {
-        return this.te.fields.get(4) == 1;
+        return this.te.owner.getPersistentData().getInt("ShowFurnaceSettings") == 1;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -83,19 +129,19 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public ITextComponent getTooltip(int index) {
+    public Component getTooltip(int index) {
         switch (te.furnaceSettings.get(index))
         {
             case 1:
-                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input");
+                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input");
             case 2:
-                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_output");
+                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_output");
             case 3:
-                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input_output");
+                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input_output");
             case 4:
-                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_fuel");
+                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_fuel");
             default:
-                return new TranslationTextComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_none");
+                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_none");
         }
     }
 
@@ -171,23 +217,23 @@ public abstract class BlockIronFurnaceContainerBase extends Container {
 
     @OnlyIn(Dist.CLIENT)
     public int getCookScaled(int pixels) {
-        int i = this.fields.get(2);
-        int j = this.fields.get(3);
+        int i = this.te.cookTime;
+        int j = this.te.totalCookTime;
         return j != 0 && i != 0 ? i * pixels / j : 0;
     }
 
     @OnlyIn(Dist.CLIENT)
     public int getBurnLeftScaled(int pixels) {
-        int i = this.fields.get(1);
+        int i = this.te.recipesUsed;
         if (i == 0) {
             i = 200;
         }
 
-        return this.fields.get(0) * pixels / i;
+        return this.te.furnaceBurnTime * pixels / i;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {

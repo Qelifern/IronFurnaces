@@ -1,8 +1,8 @@
 package ironfurnaces.util;
 
-import net.minecraft.item.Item;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
 
 import java.util.Collection;
 
@@ -11,7 +11,7 @@ public class ItemTagsIronFurnaces {
     //Credit: Elrol_Arrowsend
     public static Item getOreDict(String oreDic) {
         ResourceLocation tag = new ResourceLocation("forge", oreDic);
-        ITag<Item> t = net.minecraft.tags.ItemTags.getAllTags().getTag(tag);
+        Tag<Item> t = net.minecraft.tags.ItemTags.getAllTags().getTag(tag);
         if (t == null) {
             return null;
         }
