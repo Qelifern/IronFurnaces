@@ -13,9 +13,13 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.RecipeHolder;
@@ -50,7 +54,8 @@ import java.util.Optional;
 import java.util.Random;
 
 public abstract class BlockIronFurnaceTileBase extends TileEntityInventory implements RecipeHolder, StackedContentsCompatible {
-    public Player owner;
+
+    public static final EntityDataAccessor<Float> SHOW_CONFIG = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.FLOAT);
 
     public final int[] provides = new int[Direction.values().length];
     protected final int[] lastProvides = new int[this.provides.length];
@@ -58,8 +63,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public static final int INPUT = 0;
     public static final int FUEL = 1;
     public static final int OUTPUT = 2;
-
-    protected AbstractCookingRecipe curRecipe;
 
     protected Random rand = new Random();
 
@@ -658,6 +661,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     //CLIENT SYNC
+
     public int getSettingBottom() {
         return this.furnaceSettings.get(0);
     }

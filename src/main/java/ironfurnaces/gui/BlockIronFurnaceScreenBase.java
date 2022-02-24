@@ -8,7 +8,7 @@ import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.BlockIronFurnaceContainerBase;
 import ironfurnaces.network.Messages;
 import ironfurnaces.network.PacketSettingsButton;
-import ironfurnaces.network.PacketShowSettingsButton;
+import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -56,6 +56,11 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
 
+    private boolean showInventoryButtons()
+    {
+        return this.minecraft.player.getEntityData().get(BlockIronFurnaceTileBase.SHOW_CONFIG) > 0;
+    }
+
     @Override
     protected void renderLabels(PoseStack matrix, int mouseX, int mouseY) {
         //drawString(Minecraft.getInstance().fontRenderer, "Energy: " + getMenu().getEnergy(), 10, 10, 0xffffff);
@@ -63,7 +68,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         this.minecraft.font.draw(matrix, name, 7 + this.getXSize() / 2 - this.minecraft.font.width(name.getString()) / 2, 6, 4210752);
         this.minecraft.font.draw(matrix, this.playerInv.getDisplayName(), 7, this.getYSize() - 93, 4210752);
 
-        if (this.getMenu().showInventoryButtons() && this.getMenu().getRedstoneMode() == 4) {
+        if (showInventoryButtons() && this.getMenu().getRedstoneMode() == 4) {
             int comSub = this.getMenu().getComSub();
             int i = comSub > 9 ? 28 : 31;
             this.minecraft.font.draw(matrix, new TextComponent("" + comSub), i - 42, 90, 4210752);
@@ -80,7 +85,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     private void addTooltips(PoseStack matrix, int mouseX, int mouseY) {
 
-        if (!getMenu().showInventoryButtons()) {
+        if (!showInventoryButtons()) {
             if (mouseX >= -20 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
                 this.renderTooltip(matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open"), mouseX, mouseY);
             }
@@ -183,7 +188,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
 
     private void addRedstoneButtons(PoseStack matrix, int mouseX, int mouseY) {
-        if (this.getMenu().showInventoryButtons()) {
+        if (showInventoryButtons()) {
             this.blitRedstone(matrix);
             if (this.getMenu().getRedstoneMode() == 4) {
                 int comSub = getMenu().getComSub();
@@ -220,9 +225,9 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     private void addInventoryButtons(PoseStack matrix, int mouseX, int mouseY) {
-        if (!getMenu().showInventoryButtons()) {
+        if (!showInventoryButtons()) {
             this.blit(matrix, getGuiLeft() - 20, getGuiTop() + 4, 0, 28, 23, 26);
-        } else if (getMenu().showInventoryButtons()) {
+        } else if (showInventoryButtons()) {
             this.blit(matrix, getGuiLeft() - 56, getGuiTop() + 4, 0, 54, 59, 107);
             if (mouseX >= -47 && mouseX <= -34 && mouseY >= 12 && mouseY <= 25 || this.getMenu().getAutoInput()) {
                 this.blit(matrix, getGuiLeft() - 47, getGuiTop() + 12, 0, 189, 14, 14);
@@ -362,13 +367,13 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     public void mouseClickedInventoryButtons(int button, double mouseX, double mouseY) {
         boolean flag = button == GLFW.GLFW_MOUSE_BUTTON_2;
-        if (!getMenu().showInventoryButtons()) {
+        if (!showInventoryButtons()) {
             if (mouseX >= -20 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
-                Messages.INSTANCE.sendToServer(new PacketShowSettingsButton(this.getMenu().getPos(), 1));
+                this.minecraft.player.getEntityData().set(BlockIronFurnaceTileBase.SHOW_CONFIG, 1F);
             }
         } else {
             if (mouseX >= -13 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
-                Messages.INSTANCE.sendToServer(new PacketShowSettingsButton(this.getMenu().getPos(), 0));
+                this.minecraft.player.getEntityData().set(BlockIronFurnaceTileBase.SHOW_CONFIG, 0F);
             } else if (mouseX >= -47 && mouseX <= -34 && mouseY >= 12 && mouseY <= 25) {
                 if (!this.getMenu().getAutoInput()) {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 6, 1));
@@ -467,7 +472,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     }
 
     public void mouseClickedRedstoneButtons(double mouseX, double mouseY) {
-        if (getMenu().showInventoryButtons()) {
+        if (showInventoryButtons()) {
             if (mouseX >= -31 && mouseX <= -18 && mouseY >= 86 && mouseY <= 99) {
                 if (this.sub_button && isShiftKeyDown()) {
                     Messages.INSTANCE.sendToServer(new PacketSettingsButton(this.getMenu().getPos(), 9, this.getMenu().getComSub() - 1));

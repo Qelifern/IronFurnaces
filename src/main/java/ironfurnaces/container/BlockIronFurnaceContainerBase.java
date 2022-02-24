@@ -102,12 +102,6 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
     }
 
 
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean showInventoryButtons() {
-        return this.te.owner.getPersistentData().getInt("ShowFurnaceSettings") == 1;
-    }
-
     @OnlyIn(Dist.CLIENT)
     public int getRedstoneMode() {
         return this.te.getRedstoneSetting();

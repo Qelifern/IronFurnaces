@@ -1,8 +1,12 @@
 package ironfurnaces.init;
 
 import ironfurnaces.IronFurnaces;
+import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -19,6 +23,16 @@ public class ModSetup {
 
     public static void init(final FMLCommonSetupEvent event) {
 
+    }
+
+
+    @SubscribeEvent
+    public void playerEvent(EntityEvent.EntityConstructing e)
+    {
+        if (e.getEntity() instanceof Player)
+        {
+            e.getEntity().getEntityData().define(BlockIronFurnaceTileBase.SHOW_CONFIG, 0F);
+        }
     }
 
 

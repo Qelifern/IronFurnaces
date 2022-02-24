@@ -25,9 +25,9 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "314";
+    public static final String VERSION = "315";
     public static final String MC_VERSION = "1.18.1";
-    public static final String GITHUB_BRANCH = "main";
+    public static final String GITHUB_BRANCH = "1.18.1";
 
     public static final Logger LOGGER = LogManager.getLogger();
 

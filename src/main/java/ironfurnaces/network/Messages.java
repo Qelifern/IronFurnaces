@@ -23,10 +23,6 @@ public class Messages {
                 PacketSettingsButton::new,
                 PacketSettingsButton::handle);
 
-        INSTANCE.registerMessage(nextID(), PacketShowSettingsButton.class,
-                PacketShowSettingsButton::toBytes,
-                PacketShowSettingsButton::new,
-                PacketShowSettingsButton::handle);
 
 
         // Client side

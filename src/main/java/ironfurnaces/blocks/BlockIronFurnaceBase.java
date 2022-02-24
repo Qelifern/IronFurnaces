@@ -79,10 +79,6 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
             }
             te.totalCookTime = te.getCookTimeConfig().get();
             te.placeConfig();
-            if (entity instanceof Player)
-            {
-                te.owner = (Player) entity;
-            }
         }
     }
 
@@ -254,7 +250,10 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
                 if (!(furnace instanceof BlockMillionFurnaceTile) && furnace.linkedPos != new BlockPos(0, 0, 0))
                 {
                     BlockMillionFurnaceTile tile = (BlockMillionFurnaceTile)world.getBlockEntity(furnace.linkedPos);
-                    tile.furnaces = new ArrayList<BlockIronFurnaceTileBase>();
+                    if (tile != null)
+                    {
+                        tile.furnaces = new ArrayList<BlockIronFurnaceTileBase>();
+                    }
 
                 }
 

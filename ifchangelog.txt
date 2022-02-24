@@ -1,3 +1,6 @@
+3.1.5
++Added Rainbow Generation
++Open/Close config is now bound to the player, opening/closing one config in one furnace menu will open/close all configs in every furnace
 3.1.4
 +Readded PMMO functions
 +Fixed Augment slot tooltip showing through item tooltips
