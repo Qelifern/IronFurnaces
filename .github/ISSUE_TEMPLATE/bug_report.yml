@@ -43,6 +43,6 @@ body:
     id: crash-report
     attributes:
       label: Crash Report
-      description: Paste a link to the crash report, if present
+      description: Paste a link to the crash report, if present (GitHub Gists are preferred)
     validations:
       required: false
