@@ -13,7 +13,7 @@ body:
       placeholder: "Ex: 36.1.0"
     validations:
       required: false
-    - type: input
+  - type: input
     id: fabric-version
     attributes:
       label: Forge Version
