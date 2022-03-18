@@ -9,6 +9,6 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Describe your suggested feature or change, and how it should be implemented. Describe what improvements and benefits this may add to the project
+      label: Describe your suggested feature or change.
     validations:
       required: true
