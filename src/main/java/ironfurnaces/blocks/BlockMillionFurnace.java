@@ -1,6 +1,5 @@
 package ironfurnaces.blocks;
 
-import ironfurnaces.IronFurnaces;
 import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
 import ironfurnaces.tileentity.BlockMillionFurnaceTile;
@@ -19,7 +18,6 @@ public class BlockMillionFurnace extends BlockIronFurnaceBase {
 
     public BlockMillionFurnace(Properties properties) {
         super(properties);
-        setRegistryName(IronFurnaces.MOD_ID, MILLION_FURNACE);
     }
     public BlockEntity newBlockEntity(BlockPos p_153277_, BlockState p_153278_) {
         return new BlockMillionFurnaceTile(p_153277_, p_153278_);

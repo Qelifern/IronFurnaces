@@ -1,6 +1,5 @@
 package ironfurnaces.items;
 
-import ironfurnaces.IronFurnaces;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +13,6 @@ public class ItemRainbowCoal extends Item {
     public ItemRainbowCoal(Properties properties)
     {
         super(properties);
-        setRegistryName(IronFurnaces.MOD_ID, "rainbow_coal");
     }
 
     @Override

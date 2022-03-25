@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ironfurnaces.init.Registration;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -278,11 +279,11 @@ public class Config {
             return;
         }
         if (!event.player.getLevel().isClientSide) {
-            if (!((ServerPlayer) event.player).getAdvancements().getOrStartProgress(event.player.getServer().getAdvancements().getAdvancement(Registration.COAL)).isDone()) {
+            if (!((ServerPlayer) event.player).getAdvancements().getOrStartProgress(event.player.getServer().getAdvancements().getAdvancement(new ResourceLocation(IronFurnaces.MOD_ID, "root"))).isDone()) {
             Player player = getPlayer(event.player.getLevel());
             if (player != null && player == event.player) {
-                    event.player.level.addFreshEntity(new ItemEntity(event.player.level, event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL)));
-                    event.player.awardStat(Registration.COAL);
+                    event.player.level.addFreshEntity(new ItemEntity(event.player.level, event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL.get())));
+                    event.player.awardStat(new ResourceLocation(IronFurnaces.MOD_ID, "root"));
                 }
             }
         }

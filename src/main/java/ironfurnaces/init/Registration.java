@@ -1,17 +1,12 @@
 package ironfurnaces.init;
 
 import ironfurnaces.Config;
-import ironfurnaces.IronFurnaces;
 import ironfurnaces.blocks.*;
 import ironfurnaces.container.*;
 import ironfurnaces.items.*;
 import ironfurnaces.tileentity.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.StatType;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -23,7 +18,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -38,6 +32,8 @@ public class Registration {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
+    private static final DeferredRegister<Item> RAINBOW_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    private static final DeferredRegister<Block> RAINBOW_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
     private static final DeferredRegister<StatType<?>> CUSTOM = DeferredRegister.create(ForgeRegistries.STAT_TYPES, MOD_ID);
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
@@ -47,6 +43,12 @@ public class Registration {
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+        if (Config.enableRainbowContent.get())
+        {
+            RAINBOW_ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+            RAINBOW_BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        }
         //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
@@ -200,6 +202,7 @@ public class Registration {
         return new BlockUnobtainiumFurnaceContainer(windowId, world, pos, inv, inv.player);
     }));
 
+
     public static final RegistryObject<ItemUpgradeAllthemodium> ALLTHEMODIUM_UPGRADE = ITEMS.register("upgrade_allthemodium", () -> new ItemUpgradeAllthemodium(ModList.get().isLoaded("allthemodium") ? new Item.Properties().tab(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<ItemUpgradeVibranium> VIBRANIUM_UPGRADE = ITEMS.register("upgrade_vibranium", () -> new ItemUpgradeVibranium(ModList.get().isLoaded("allthemodium") ? new Item.Properties().tab(ModSetup.ITEM_GROUP) : new Item.Properties()));
     public static final RegistryObject<ItemUpgradeUnobtainium> UNOBTAINIUM_UPGRADE = ITEMS.register("upgrade_unobtainium", () -> new ItemUpgradeUnobtainium(ModList.get().isLoaded("allthemodium") ? new Item.Properties().tab(ModSetup.ITEM_GROUP) : new Item.Properties()));
@@ -233,42 +236,15 @@ public class Registration {
 
     public static final RegistryObject<ItemLinker> ITEM_LINKER = ITEMS.register("item_linker", () -> new ItemLinker(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
 
-    public static final BlockMillionFurnace MILLION_FURNACE = new BlockMillionFurnace(Block.Properties.copy(Blocks.IRON_BLOCK));
-    public static final Item MILLION_FURNACE_ITEM = new ItemMillionFurnace(MILLION_FURNACE, new Item.Properties().tab(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, BlockMillionFurnace.MILLION_FURNACE);
-
-    public static final Item RAINBOW_CORE = new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_core");
-    public static final Item RAINBOW_PLATING = new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)).setRegistryName(IronFurnaces.MOD_ID, "rainbow_plating");
-    public static final ItemRainbowCoal RAINBOW_COAL = new ItemRainbowCoal(new Item.Properties().tab(ModSetup.ITEM_GROUP));
+    public static final RegistryObject<Item> RAINBOW_CORE = ITEMS.register("rainbow_core", () -> new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item> RAINBOW_PLATING = ITEMS.register("rainbow_plating", () -> new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)));
+    public static final RegistryObject<ItemRainbowCoal> RAINBOW_COAL = ITEMS.register("rainbow_coal", () -> new ItemRainbowCoal(new Item.Properties().tab(ModSetup.ITEM_GROUP)));
 
 
-    public static final ResourceLocation COAL = makeCustomStat("root", StatFormatter.DEFAULT);
+    public static final RegistryObject<BlockMillionFurnace> MILLION_FURNACE = BLOCKS.register(BlockMillionFurnace.MILLION_FURNACE, () -> new BlockMillionFurnace(Block.Properties.copy(Blocks.IRON_BLOCK)));
+    public static final RegistryObject<Item> MILLION_FURNACE_ITEM = ITEMS.register(BlockMillionFurnace.MILLION_FURNACE, () -> new ItemMillionFurnace(MILLION_FURNACE.get(), new Item.Properties().tab(ModSetup.ITEM_GROUP)));
 
-    private static ResourceLocation makeCustomStat(String p_13008_, StatFormatter p_13009_) {
-        ResourceLocation resourcelocation = new ResourceLocation("ironfurnaces", p_13008_);
-        Registry.register(Registry.CUSTOM_STAT, p_13008_, resourcelocation);
-        Stats.CUSTOM.get(resourcelocation, p_13009_);
-        return resourcelocation;
-    }
-
-
-    public static void registerBlocks(RegistryEvent.Register<Block> event)
-    {
-        if (Config.enableRainbowContent.get())
-        {
-            event.getRegistry().registerAll(MILLION_FURNACE);
-        }
-    }
-
-
-    public static void registerItems(RegistryEvent.Register<Item> event)
-    {
-        if (Config.enableRainbowContent.get())
-        {
-            event.getRegistry().registerAll(MILLION_FURNACE_ITEM, RAINBOW_CORE, RAINBOW_PLATING, RAINBOW_COAL);
-        }
-    }
-
-    public static final RegistryObject<BlockEntityType<BlockMillionFurnaceTile>> MILLION_FURNACE_TILE = TILES.register(BlockMillionFurnace.MILLION_FURNACE, () -> BlockEntityType.Builder.of(BlockMillionFurnaceTile::new, MILLION_FURNACE).build(null));
+    public static final RegistryObject<BlockEntityType<BlockMillionFurnaceTile>> MILLION_FURNACE_TILE = TILES.register(BlockMillionFurnace.MILLION_FURNACE, () -> BlockEntityType.Builder.of(BlockMillionFurnaceTile::new, MILLION_FURNACE.get()).build(null));
 
     public static final RegistryObject<MenuType<BlockMillionFurnaceContainer>> MILLION_FURNACE_CONTAINER = CONTAINERS.register(BlockMillionFurnace.MILLION_FURNACE, () -> IForgeMenuType.create((windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();

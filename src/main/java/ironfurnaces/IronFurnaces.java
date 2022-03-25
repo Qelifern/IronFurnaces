@@ -5,11 +5,7 @@ import ironfurnaces.init.ModSetup;
 import ironfurnaces.init.Registration;
 import ironfurnaces.network.Messages;
 import ironfurnaces.update.UpdateChecker;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -25,9 +21,9 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "315";
-    public static final String MC_VERSION = "1.18.1";
-    public static final String GITHUB_BRANCH = "1.18.1";
+    public static final String VERSION = "320";
+    public static final String MC_VERSION = "1.18.2";
+    public static final String GITHUB_BRANCH = "1.18.2";
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -59,15 +55,4 @@ public class IronFurnaces
         }
     }
 
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event)
-    {
-        Registration.registerBlocks(event);
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event)
-    {
-        Registration.registerItems(event);
-    }
 }

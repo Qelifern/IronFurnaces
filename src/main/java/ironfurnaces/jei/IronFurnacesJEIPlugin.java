@@ -41,7 +41,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 
 			if (Config.enableRainbowContent.get()) {
-				registry.addRecipeCatalyst(new ItemStack(Registration.MILLION_FURNACE), VanillaRecipeCategoryUid.FURNACE);
+				registry.addRecipeCatalyst(new ItemStack(Registration.MILLION_FURNACE.get()), VanillaRecipeCategoryUid.FURNACE);
 			}
 
 			registry.addRecipeCatalyst(new ItemStack(Registration.IRON_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
@@ -55,7 +55,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			registry.addRecipeCatalyst(new ItemStack(Registration.SILVER_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 
 			if (Config.enableRainbowContent.get()) {
-				registry.addRecipeCatalyst(new ItemStack(Registration.MILLION_FURNACE), VanillaRecipeCategoryUid.FUEL);
+				registry.addRecipeCatalyst(new ItemStack(Registration.MILLION_FURNACE.get()), VanillaRecipeCategoryUid.FUEL);
 			}
 
 			registry.addRecipeCatalyst(new ItemStack(Registration.BLASTING_AUGMENT.get()), VanillaRecipeCategoryUid.BLASTING);

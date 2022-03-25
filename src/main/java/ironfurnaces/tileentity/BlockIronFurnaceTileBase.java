@@ -2,7 +2,6 @@ package ironfurnaces.tileentity;
 
 import com.google.common.collect.Lists;
 import com.mojang.math.Vector3d;
-import harmonised.pmmo.events.FurnaceHandler;
 import ironfurnaces.Config;
 import ironfurnaces.blocks.BlockIronFurnaceBase;
 import ironfurnaces.init.Registration;
@@ -806,10 +805,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.setItem(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
             if (ModList.get().isLoaded("pmmo")) {
-                FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 0);
+                //FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 0);
                 if (recipe instanceof SmokingRecipe)
                 {
-                  FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 1);
+                  //FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 1);
                 }
             }
             itemstack.shrink(1);
