@@ -1,11 +1,11 @@
 package ironfurnaces.init;
 
-import ironfurnaces.Config;
 import ironfurnaces.blocks.*;
 import ironfurnaces.container.*;
 import ironfurnaces.items.*;
 import ironfurnaces.tileentity.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -22,6 +22,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 import static ironfurnaces.IronFurnaces.MOD_ID;
@@ -32,8 +33,6 @@ public class Registration {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
-    private static final DeferredRegister<Item> RAINBOW_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
-    private static final DeferredRegister<Block> RAINBOW_BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
     private static final DeferredRegister<StatType<?>> CUSTOM = DeferredRegister.create(ForgeRegistries.STAT_TYPES, MOD_ID);
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
@@ -44,11 +43,6 @@ public class Registration {
         TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
-        if (Config.enableRainbowContent.get())
-        {
-            RAINBOW_ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-            RAINBOW_BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        }
         //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
@@ -234,7 +228,7 @@ public class Registration {
 
     public static final RegistryObject<ItemFurnaceCopy> ITEM_COPY = ITEMS.register("item_copy", () -> new ItemFurnaceCopy(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
 
-    public static final RegistryObject<ItemLinker> ITEM_LINKER = ITEMS.register("item_linker", () -> new ItemLinker(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
+    public static final RegistryObject<ItemLinker> ITEM_LINKER = ITEMS.register("item_linker", () -> new ItemLinker(new Item.Properties().stacksTo(1).tab(ModSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> RAINBOW_CORE = ITEMS.register("rainbow_core", () -> new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> RAINBOW_PLATING = ITEMS.register("rainbow_plating", () -> new Item(new Item.Properties().tab(ModSetup.ITEM_GROUP)));
@@ -251,5 +245,8 @@ public class Registration {
         Level world = inv.player.getCommandSenderWorld();
         return new BlockMillionFurnaceContainer(windowId, world, pos, inv, inv.player);
     }));
+
+
+
 
 }

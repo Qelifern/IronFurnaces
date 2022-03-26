@@ -15,5 +15,10 @@
   },
   "result": {
     "item": "ironfurnaces:item_linker"
-  }
+  },
+  "conditions": [
+    {
+      "type": "ironfurnaces:rainbow"
+    }
+  ]
 }

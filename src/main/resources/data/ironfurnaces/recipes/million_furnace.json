@@ -15,5 +15,10 @@
   },
   "result": {
     "item": "ironfurnaces:million_furnace"
-  }
+  },
+  "conditions": [
+    {
+      "type": "ironfurnaces:rainbow"
+    }
+  ]
 }

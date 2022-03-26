@@ -23,5 +23,10 @@
   "result": {
     "item": "ironfurnaces:rainbow_plating",
     "count": 8
-  }
+  },
+  "conditions": [
+    {
+      "type": "ironfurnaces:rainbow"
+    }
+  ]
 }

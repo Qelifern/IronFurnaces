@@ -2,9 +2,11 @@ package ironfurnaces.init;
 
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import ironfurnaces.util.RainbowEnabledCondition;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +24,7 @@ public class ModSetup {
     };
 
     public static void init(final FMLCommonSetupEvent event) {
-
+        CraftingHelper.register(RainbowEnabledCondition.Serializer.INSTANCE);
     }
 
 

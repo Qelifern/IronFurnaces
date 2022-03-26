@@ -33,5 +33,10 @@
   },
   "result": {
     "item": "ironfurnaces:rainbow_core"
-  }
+  },
+  "conditions": [
+    {
+      "type": "ironfurnaces:rainbow"
+    }
+  ]
 }
