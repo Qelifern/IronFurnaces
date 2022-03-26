@@ -21,7 +21,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "320";
+    public static final String VERSION = "321";
     public static final String MC_VERSION = "1.18.2";
     public static final String GITHUB_BRANCH = "1.18.2";
 
@@ -44,8 +44,8 @@ public class IronFurnaces
         MOD_EVENT_BUS.register(Registration.class);
         Registration.init();
 
-        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
-        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-common.toml"));
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));
+        Config.loadConfig(Config.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces.toml"));
 
 
         if (Config.checkUpdates.get()) {

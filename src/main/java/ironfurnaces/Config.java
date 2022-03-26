@@ -299,7 +299,7 @@ public class Config {
             return null;
         }
         try {
-            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/118IronFurnaces/" + IronFurnaces.GITHUB_BRANCH + "/update/uuids.json");
+            URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/" + IronFurnaces.GITHUB_BRANCH + "/update/uuids.json");
             JsonParser jp = new JsonParser();
             JsonElement root = jp.parse(new InputStreamReader(newestURL.openStream()));
             JsonObject rootobj = root.getAsJsonObject();

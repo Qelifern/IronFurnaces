@@ -1,3 +1,6 @@
+3.2.1
++Fixed Config creating 3 files
++Fixed UUIDS not reading from the correct github URL
 3.2.0
 +Fixed wrong URL in update checker
 +Added Rainbow Generation
