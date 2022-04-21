@@ -1,0 +1,48 @@
+name: Bug Report
+description: Create a bug report to help us improve
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill in the following template to report your issue.
+  - type: input
+    id: forge-version
+    attributes:
+      label: Forge Version
+      placeholder: "Ex: 36.1.0"
+    validations:
+      required: false
+  - type: input
+    id: fabric-version
+    attributes:
+      label: Fabric Version
+      placeholder: "Ex: 0.10.2"
+    validations:
+      required: false
+  - type: input
+    id: mod-version
+    attributes:
+      label: "Iron Furnaces Version"
+      description: "'Latest' is not a valid answer, write an exact version number"
+    validations:
+      required: true
+ 
+  - type: markdown
+    attributes:
+      value: "## Issue Description"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your issue
+    validations:
+      required: true
+  
+  - type: input
+    id: crash-report
+    attributes:
+      label: Crash Report
+      description: Paste a link to the crash report, if present (GitHub Gists are preferred)
+    validations:
+      required: false
