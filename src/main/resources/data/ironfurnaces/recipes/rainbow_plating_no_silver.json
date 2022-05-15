@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ironfurnaces:iron_furnace"
+    },
+    {
+      "item": "ironfurnaces:gold_furnace"
+    },
+    {
+      "item": "ironfurnaces:diamond_furnace"
+    },
+    {
+      "item": "ironfurnaces:emerald_furnace"
+    },
+    {
+      "item": "ironfurnaces:obsidian_furnace"
+    },
+    {
+      "item": "ironfurnaces:crystal_furnace"
+    },
+    {
+      "item": "ironfurnaces:copper_furnace"
+    }
+  ],
+  "result": {
+    "item": "ironfurnaces:rainbow_plating",
+    "count": 8
+  },
+  "conditions": [
+    {
+      "type": "ironfurnaces:rainbow"
+    },
+    {
+      "type": "forge:tag_empty",
+      "tag": "forge:ingots/silver"
+    }
+  ]
+}

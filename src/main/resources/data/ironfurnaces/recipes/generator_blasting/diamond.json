@@ -1,0 +1,5 @@
+﻿{
+  "type": "ironfurnaces:generator_blasting",
+  "energy": 500000,
+  "item": "minecraft:diamond"
+}

@@ -1,7 +1,19 @@
+3.3.0
++Thank you for 10 million downloads
++Refactoring and code cleanup
++Revamped some textures
++Fixed furnaces not using the correct container
++Fixed client <-> server syncing issues when syncing values greater than 32 767
++Fixed absorption hearts being added when opening and closing GUI
++Added Generator Augment
++Added Factory Augment
++Changed Rainbow Generation to only work when furnaces are generating power instead of smelting items
++Readded PMMO functions
 3.2.1
 +Fixed Config creating 3 files
 +Fixed UUIDS not reading from the correct github URL
 3.2.0
++Changed Rainbow recipes not loading instead of blocks/items not loading when turning of the rainbow content
 +Fixed wrong URL in update checker
 +Added Rainbow Generation
 +Open/Close config is now bound to the player, opening/closing one config in one furnace menu will open/close all configs in every furnace

@@ -135,8 +135,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${project.minecraft_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
 
     //Project MMO
-    //compileOnly fg.deobf("curse.maven:project-mmo-353935:3648019")
-    //runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3648019")
+    compileOnly fg.deobf("curse.maven:project-mmo-353935:3740688")
+    runtimeOnly fg.deobf("curse.maven:project-mmo-353935:3740688")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency

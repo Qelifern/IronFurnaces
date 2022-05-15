@@ -1,6 +1,6 @@
 package ironfurnaces.items;
 
-import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
+import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

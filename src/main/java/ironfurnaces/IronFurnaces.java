@@ -21,7 +21,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "321";
+    public static final String VERSION = "330";
     public static final String MC_VERSION = "1.18.2";
     public static final String GITHUB_BRANCH = "1.18.2";
 
@@ -42,6 +42,7 @@ public class IronFurnaces
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
 
         MOD_EVENT_BUS.register(Registration.class);
+
         Registration.init();
 
         Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("ironfurnaces-client.toml"));

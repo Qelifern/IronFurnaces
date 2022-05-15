@@ -6,7 +6,7 @@ public class ItemTagsIronFurnaces {
     /**
     public static Item getOreDict(String oreDic) {
         ResourceLocation tag = new ResourceLocation("forge", oreDic);
-        Tag<Item> t = net.minecraft.tags.ItemTags.getAllTags().getTag(tag);
+        Tag<Item> t = net.minecraft.tags.ItemTags.().getTag(tag);
         if (t == null) {
             return null;
         }

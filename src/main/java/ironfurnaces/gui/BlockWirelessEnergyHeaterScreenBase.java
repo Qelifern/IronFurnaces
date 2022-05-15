@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWirelessEnergyHeaterContainer> extends AbstractContainerScreen<T> {
 
     public ResourceLocation GUI = new ResourceLocation(IronFurnaces.MOD_ID + ":" + "textures/gui/heater.png");
@@ -40,9 +39,9 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
 
         int actualMouseX = mouseX - ((this.width - this.getXSize()) / 2);
         int actualMouseY = mouseY - ((this.height - this.getYSize()) / 2);
-        if(actualMouseX >= 65 && actualMouseX <= 111 && actualMouseY >= 64 && actualMouseY <= 76) {
+        if(actualMouseX >= 68 && actualMouseX <= 108 && actualMouseY >= 64 && actualMouseY <= 76) {
             int energy = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergy();
-            int capacity = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getCapacity();
+            int capacity = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getMaxEnergy();
             this.renderTooltip(matrix, new TextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
         }
 
@@ -57,8 +56,9 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
         this.blit(matrix, relX, relY, 0, 0, this.getXSize(), this.getYSize());
 
         int i;
-        i = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergyScaled(46);
-        this.blit(matrix, getGuiLeft() + 65, getGuiTop() + 64, 176, 0, i + 1, 12);
+        i = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergyScaled(42);
+        this.blit(matrix, getGuiLeft() + 67, getGuiTop() + 63, 176, 0, i + 1, 14);
+
     }
 
 }

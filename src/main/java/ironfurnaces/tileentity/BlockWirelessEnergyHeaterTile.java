@@ -1,7 +1,7 @@
 package ironfurnaces.tileentity;
 
 import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
-import ironfurnaces.energy.HeaterEnergyStorage2;
+import ironfurnaces.energy.FEnergyStorage;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemHeater;
 import net.minecraft.core.BlockPos;
@@ -26,11 +26,10 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
         super(Registration.HEATER_TILE.get(), pos, state, 1);
     }
 
-    private HeaterEnergyStorage2 energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(this::createEnergy);
 
-    private HeaterEnergyStorage2 createEnergy() {
-        return new HeaterEnergyStorage2(1000000, 1000000, 0) {
+    private FEnergyStorage createEnergy() {
+        return new FEnergyStorage(1000000, 1000000, 0) {
             @Override
             protected void onEnergyChanged() {
                 setChanged();
@@ -59,11 +58,21 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
         return this.getCapability(CapabilityEnergy.ENERGY).map(h -> h.getMaxEnergyStored()).orElse(0);
     }
 
+    public void setEnergy(int energy) {
+        this.energy.ifPresent(h -> {
+            ((FEnergyStorage) h).setEnergy(energy);
+        });
+    }
+
+    public void setMaxEnergy(int energy) {
+        this.energy.ifPresent(h -> {
+            ((FEnergyStorage) h).setCapacity(energy);
+        });
+    }
+
     public void removeEnergy(int energy) {
         this.energy.ifPresent(h -> {
-            if (h.getEnergyStored() >= energy) {
-                ((HeaterEnergyStorage2) h).setEnergy(h.getEnergyStored() - energy);
-            }
+            ((FEnergyStorage) h).setEnergy(h.getEnergyStored() - energy);
         });
     }
 
@@ -71,7 +80,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.energy.ifPresent(h -> {
-            ((HeaterEnergyStorage2) h).setEnergy(nbt.getInt("Energy"));
+            ((FEnergyStorage) h).setEnergy(nbt.getInt("Energy"));
         });
 
     }

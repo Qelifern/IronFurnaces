@@ -1,7 +1,7 @@
 package ironfurnaces.items;
 
 import ironfurnaces.IronFurnaces;
-import ironfurnaces.gui.BlockIronFurnaceScreenBase;
+import ironfurnaces.gui.furnaces.BlockIronFurnaceScreenBase;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

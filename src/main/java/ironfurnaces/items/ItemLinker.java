@@ -1,9 +1,9 @@
 package ironfurnaces.items;
 
 import ironfurnaces.Config;
-import ironfurnaces.gui.BlockIronFurnaceScreenBase;
-import ironfurnaces.tileentity.BlockIronFurnaceTileBase;
-import ironfurnaces.tileentity.BlockMillionFurnaceTile;
+import ironfurnaces.gui.furnaces.BlockIronFurnaceScreenBase;
+import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
+import ironfurnaces.tileentity.furnaces.BlockMillionFurnaceTile;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -46,7 +46,6 @@ public class ItemLinker extends Item {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         ItemStack stack = context.getItemInHand();
-        if (!world.isClientSide) {
             if (context.getPlayer().isCrouching()) {
                 BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
                 if (tile != null) {
@@ -89,7 +88,7 @@ public class ItemLinker extends Item {
                             }
                         }
                     }
-                }
+
             }
         }
 

@@ -18,6 +18,12 @@
     },
     {
       "item": "ironfurnaces:crystal_furnace"
+    },
+    {
+      "item": "ironfurnaces:copper_furnace"
+    },
+    {
+      "item": "ironfurnaces:silver_furnace"
     }
   ],
   "result": {
@@ -27,6 +33,13 @@
   "conditions": [
     {
       "type": "ironfurnaces:rainbow"
+    },
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/silver"
+      }
     }
   ]
 }

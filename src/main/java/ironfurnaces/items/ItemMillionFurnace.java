@@ -2,7 +2,7 @@ package ironfurnaces.items;
 
 import com.google.common.collect.Lists;
 import ironfurnaces.Config;
-import ironfurnaces.gui.BlockIronFurnaceScreenBase;
+import ironfurnaces.gui.furnaces.BlockIronFurnaceScreenBase;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -54,7 +54,9 @@ public class ItemMillionFurnace extends BlockItem {
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
             Format decimal = new DecimalFormat();
-            tooltip.add(new TextComponent("Will generate " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " RF/tick if all other furnaces are smelting and they are connected with the Rainbow Linker").withStyle(ChatFormatting.GRAY));
+            String part1 = new TranslatableComponent("tooltip.ironfurnaces.rainbow_gen1").getString();
+            String part2 = new TranslatableComponent("tooltip.ironfurnaces.rainbow_gen2").getString();
+            tooltip.add(new TextComponent(part1 + " " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " " + part2).withStyle(ChatFormatting.GRAY));
         }
         else
         {

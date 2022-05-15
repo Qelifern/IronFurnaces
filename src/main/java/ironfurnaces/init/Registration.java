@@ -1,16 +1,35 @@
 package ironfurnaces.init;
 
-import ironfurnaces.blocks.*;
-import ironfurnaces.container.*;
+import ironfurnaces.IronFurnaces;
+import ironfurnaces.blocks.BlockWirelessEnergyHeater;
+import ironfurnaces.blocks.furnaces.*;
+import ironfurnaces.blocks.furnaces.other.BlockAllthemodiumFurnace;
+import ironfurnaces.blocks.furnaces.other.BlockUnobtainiumFurnace;
+import ironfurnaces.blocks.furnaces.other.BlockVibraniumFurnace;
+import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
+import ironfurnaces.container.furnaces.*;
+import ironfurnaces.container.furnaces.other.BlockAllthemodiumFurnaceContainer;
+import ironfurnaces.container.furnaces.other.BlockUnobtainiumFurnaceContainer;
+import ironfurnaces.container.furnaces.other.BlockVibraniumFurnaceContainer;
 import ironfurnaces.items.*;
-import ironfurnaces.tileentity.*;
+import ironfurnaces.items.augments.*;
+import ironfurnaces.items.upgrades.*;
+import ironfurnaces.recipes.GeneratorRecipe;
+import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
+import ironfurnaces.tileentity.furnaces.*;
+import ironfurnaces.tileentity.furnaces.other.BlockAllthemodiumFurnaceTile;
+import ironfurnaces.tileentity.furnaces.other.BlockUnobtainiumFurnaceTile;
+import ironfurnaces.tileentity.furnaces.other.BlockVibraniumFurnaceTile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.StatType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -18,34 +37,59 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 import static ironfurnaces.IronFurnaces.MOD_ID;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Registration {
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
-    private static final DeferredRegister<StatType<?>> CUSTOM = DeferredRegister.create(ForgeRegistries.STAT_TYPES, MOD_ID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
+
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
 
     public static void init() {
-        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        BLOCKS.register(modEventBus);
+        ITEMS.register(modEventBus);
+        TILES.register(modEventBus);
+        CONTAINERS.register(modEventBus);
+        RECIPE_SERIALIZERS.register(modEventBus);
         //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
+
+    private static <T extends Recipe<?>> RecipeType<T> registerType(ResourceLocation name) {
+        return Registry.register(Registry.RECIPE_TYPE, name, new RecipeType<T>() {
+            @Override
+            public String toString() {
+                return name.toString();
+            }
+        });
+    }
+
+    public static final ResourceLocation GENERATOR_ID = new ResourceLocation(IronFurnaces.MOD_ID, "generator_blasting");
+
+    public static final class RecipeTypes {
+        public static RecipeType<GeneratorRecipe> GENERATOR;
+
+        public static void init()
+        {
+            GENERATOR = registerType(GENERATOR_ID);
+        }
+    }
+    public static RegistryObject<RecipeSerializer<GeneratorRecipe>> GENERATOR = RECIPE_SERIALIZERS.register("generator_blasting", GeneratorRecipe.Serializer::new);
 
 
     public static final RegistryObject<BlockIronFurnace> IRON_FURNACE = BLOCKS.register(BlockIronFurnace.IRON_FURNACE, () -> new BlockIronFurnace(Block.Properties.copy(Blocks.IRON_BLOCK)));
@@ -220,6 +264,8 @@ public class Registration {
 
     public static final RegistryObject<ItemAugmentBlasting> BLASTING_AUGMENT = ITEMS.register("augment_blasting", () -> new ItemAugmentBlasting(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
     public static final RegistryObject<ItemAugmentSmoking> SMOKING_AUGMENT = ITEMS.register("augment_smoking", () -> new ItemAugmentSmoking(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
+    public static final RegistryObject<ItemAugmentFactory> FACTORY_AUGMENT = ITEMS.register("augment_factory", () -> new ItemAugmentFactory(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
+    public static final RegistryObject<ItemAugmentGenerator> GENERATOR_AUGMENT = ITEMS.register("augment_generator", () -> new ItemAugmentGenerator(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
     public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", () -> new ItemAugmentSpeed(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", () -> new ItemAugmentFuel(new Item.Properties().tab(ModSetup.ITEM_GROUP).stacksTo(1)));
 
@@ -245,6 +291,8 @@ public class Registration {
         Level world = inv.player.getCommandSenderWorld();
         return new BlockMillionFurnaceContainer(windowId, world, pos, inv, inv.player);
     }));
+
+
 
 
 

@@ -27,6 +27,15 @@ public class StringHelper {
         return text;
     }
 
+    public static List<String> displayEnergy(int energy) {
+        List<String> text = new ArrayList<String>();
+        NumberFormat format = DecimalFormat.getNumberInstance();
+        String i = format.format(energy);
+        i = i.replaceAll("\u00A0", ",");
+        text.add(i + " RF");
+        return text;
+    }
+
     public static List<Component> getShiftInfoGui()
     {
         List<Component> list = Lists.newArrayList();

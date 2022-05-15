@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ironfurnaces.init.Registration;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -56,8 +57,39 @@ public class Config {
     public static ForgeConfigSpec.IntValue copperFurnaceSpeed;
     public static ForgeConfigSpec.IntValue silverFurnaceSpeed;
     public static ForgeConfigSpec.IntValue millionFurnaceSpeed;
-    public static ForgeConfigSpec.IntValue  millionFurnacePower;
-    public static ForgeConfigSpec.IntValue  millionFurnacePowerToGenerate;
+    public static ForgeConfigSpec.IntValue millionFurnacePower;
+    public static ForgeConfigSpec.IntValue millionFurnacePowerToGenerate;
+
+
+    public static ForgeConfigSpec.IntValue ironFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue goldFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue diamondFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue emeraldFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue obsidianFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue crystalFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue netheriteFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue copperFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue silverFurnaceGeneration;
+    public static ForgeConfigSpec.IntValue millionFurnaceGeneration;
+
+
+    public static ForgeConfigSpec.IntValue furnaceEnergyCapacityTier0;
+    public static ForgeConfigSpec.IntValue furnaceEnergyCapacityTier1;
+    public static ForgeConfigSpec.IntValue furnaceEnergyCapacityTier2;
+
+    public static ForgeConfigSpec.IntValue ironFurnaceTier;
+    public static ForgeConfigSpec.IntValue goldFurnaceTier;
+    public static ForgeConfigSpec.IntValue diamondFurnaceTier;
+    public static ForgeConfigSpec.IntValue emeraldFurnaceTier;
+    public static ForgeConfigSpec.IntValue obsidianFurnaceTier;
+    public static ForgeConfigSpec.IntValue crystalFurnaceTier;
+    public static ForgeConfigSpec.IntValue netheriteFurnaceTier;
+    public static ForgeConfigSpec.IntValue copperFurnaceTier;
+    public static ForgeConfigSpec.IntValue silverFurnaceTier;
+    public static ForgeConfigSpec.IntValue millionFurnaceTier;
+
+
+
     public static ForgeConfigSpec.BooleanValue enableJeiPlugin;
     public static ForgeConfigSpec.BooleanValue enableJeiCatalysts;
     public static ForgeConfigSpec.BooleanValue enableJeiClickArea;
@@ -73,11 +105,19 @@ public class Config {
 
     //ALLTHEMODS
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
-    public static ForgeConfigSpec.IntValue unobtaniumFurnaceSpeed;
+    public static ForgeConfigSpec.IntValue unobtainiumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue allthemodiumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSmeltMult;
-    public static ForgeConfigSpec.IntValue unobtaniumFurnaceSmeltMult;
+    public static ForgeConfigSpec.IntValue unobtainiumFurnaceSmeltMult;
     public static ForgeConfigSpec.IntValue allthemodiumFurnaceSmeltMult;
+
+    public static ForgeConfigSpec.IntValue allthemodiumGeneration;
+    public static ForgeConfigSpec.IntValue vibraniumGeneration;
+    public static ForgeConfigSpec.IntValue unobtainiumGeneration;
+
+    public static ForgeConfigSpec.IntValue allthemodiumFurnaceTier;
+    public static ForgeConfigSpec.IntValue vibraniumFurnaceTier;
+    public static ForgeConfigSpec.IntValue unobtainiumFurnaceTier;
 
 
     static {
@@ -90,6 +130,7 @@ public class Config {
         CLIENT_BUILDER.comment("Furnace Settings").push(CATEGORY_FURNACE);
 
         setupFurnacesConfig(COMMON_BUILDER, CLIENT_BUILDER);
+        setupGenerationConfig(COMMON_BUILDER, CLIENT_BUILDER);
 
         CLIENT_BUILDER.pop();
 
@@ -128,7 +169,94 @@ public class Config {
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
 
+    private static void setupGenerationConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+        ironFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 20")
+                .defineInRange("iron_furnace.generation", 20, 1, 100000);
+        goldFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 80")
+                .defineInRange("gold_furnace.generation", 80, 1, 100000);
+        diamondFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 120")
+                .defineInRange("diamond_furnace.generation", 120, 1, 100000);
+        emeraldFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 160")
+                .defineInRange("emerald_furnace.generation", 160, 1, 100000);
+        obsidianFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 250")
+                .defineInRange("obsidian_furnace.generation", 250, 1, 100000);
+        crystalFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 180")
+                .defineInRange("crystal_furnace.generation", 180, 1, 100000);
+        netheriteFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 400")
+                .defineInRange("netherite_furnace.generation", 400, 1, 100000);
+        millionFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 1000")
+                .defineInRange("rainbow_furnace.generation", 1000, 1, 100000);
+        copperFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 20")
+                .defineInRange("copper_furnace.generation", 20, 1, 100000);
+        silverFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 50")
+                .defineInRange("silver_furnace.generation", 50, 1, 100000);
+
+    }
+
     private static void setupFurnacesConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+
+
+        furnaceEnergyCapacityTier0 = CLIENT_BUILDER
+                .comment(" How much energy can be stored in tier 0 furnaces.\n Default: 80 000")
+                .defineInRange("energy.tier_0", 80000, 4000, Integer.MAX_VALUE);
+
+        furnaceEnergyCapacityTier1 = CLIENT_BUILDER
+                .comment(" How much energy can be stored in tier 1 furnaces.\n Default: 200 000")
+                .defineInRange("energy.tier_1", 200000, 4000, Integer.MAX_VALUE);
+
+        furnaceEnergyCapacityTier2 = CLIENT_BUILDER
+                .comment(" How much energy can be stored in tier 2 furnaces.\n Default: 1 000 000")
+                .defineInRange("energy.tier_2", 1000000, 4000, Integer.MAX_VALUE);
+
+        ironFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 0")
+                .defineInRange("iron_furnace.tier", 0, 0, 2);
+
+        copperFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 0")
+                .defineInRange("copper_furnace.tier", 0, 0, 2);
+
+        goldFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 1")
+                .defineInRange("gold_furnace.tier", 1, 0, 2);
+
+        diamondFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 1")
+                .defineInRange("diamond_furnace.tier", 1, 0, 2);
+
+        emeraldFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 1")
+                .defineInRange("emerald_furnace.tier", 1, 0, 2);
+
+        silverFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 1")
+                .defineInRange("silver_furnace.tier", 1, 0, 2);
+
+        crystalFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("crystal_furnace.tier", 2, 0, 2);
+
+        obsidianFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("obsidian_furnace.tier", 2, 0, 2);
+
+        netheriteFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("netherite_furnace.tier", 2, 0, 2);
+
+        millionFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("million_furnace.tier", 2, 0, 2);
 
         cache_capacity = CLIENT_BUILDER
                 .comment(" The capacity of the recipe cache, higher values use more memory.\n Default: 10")
@@ -175,12 +303,12 @@ public class Config {
                 .defineInRange("rainbow_furnace.speed", 20, 2, 72000);
 
         millionFurnacePowerToGenerate = CLIENT_BUILDER
-                .comment(" How many furnaces that needs to be linked in order for the Rainbow Furnace to generate power.\n Default: 7")
+                .comment(" How much power the Rainbow Furnace will generate.\n Default: 10000")
                 .defineInRange("rainbow_furnace.power_to_generate", 10000, 1, 100000000);
 
         millionFurnacePower = CLIENT_BUILDER
-                .comment(" How many furnaces that needs to be linked in order for the Rainbow Furnace to generate power.\n Default: 7")
-                .defineInRange("rainbow_furnace.power", 7, 1, 100);
+                .comment(" How many furnaces that need to be linked in order for the Rainbow Furnace to generate power.\n Default: 9")
+                .defineInRange("rainbow_furnace.power", 9, 1, 100);
 
 
 
@@ -202,18 +330,39 @@ public class Config {
         vibraniumFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 3")
                 .defineInRange("vibranium_furnace.speed", 3, 1, 72000);
-        unobtaniumFurnaceSpeed = CLIENT_BUILDER
+        unobtainiumFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 1")
-                .defineInRange("unobtanium_furnace.speed", 1, 1, 72000);
+                .defineInRange("unobtainium_furnace.speed", 1, 1, 72000);
         allthemodiumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 16")
                 .defineInRange("allthemodium_furnace.mult", 16, 1, 64);
         vibraniumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 32")
                 .defineInRange("vibranium_furnace.mult", 32, 1, 64);
-        unobtaniumFurnaceSmeltMult = CLIENT_BUILDER
+        unobtainiumFurnaceSmeltMult = CLIENT_BUILDER
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 64")
-                .defineInRange("unobtanium_furnace.mult", 64, 1, 64);
+                .defineInRange("unobtainium_furnace.mult", 64, 1, 64);
+        allthemodiumGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 1000")
+                .defineInRange("allthemodium_furnace.generation", 1000, 1, 100000);
+        vibraniumGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 1500")
+                .defineInRange("vibranium_furnace.generation", 1500, 1, 100000);
+        unobtainiumGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 2000")
+                .defineInRange("unobtainium_furnace.generation", 2000, 1, 100000);
+
+        allthemodiumFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("allthemodium_furnace.tier", 2, 0, 2);
+
+        vibraniumFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("vibranium_furnace.tier", 2, 0, 2);
+
+        unobtainiumFurnaceTier = CLIENT_BUILDER
+                .comment(" What tier this furnace should be.\n Default: 2")
+                .defineInRange("unobtainium_furnace.tier", 2, 0, 2);
 
     }
 
@@ -279,13 +428,24 @@ public class Config {
             return;
         }
         if (!event.player.getLevel().isClientSide) {
-            if (!((ServerPlayer) event.player).getAdvancements().getOrStartProgress(event.player.getServer().getAdvancements().getAdvancement(new ResourceLocation(IronFurnaces.MOD_ID, "root"))).isDone()) {
-            Player player = getPlayer(event.player.getLevel());
-            if (player != null && player == event.player) {
-                    event.player.level.addFreshEntity(new ItemEntity(event.player.level, event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL.get())));
-                    event.player.awardStat(new ResourceLocation(IronFurnaces.MOD_ID, "root"));
+            if (event.player.getServer().getAdvancements() != null)
+            {
+                Advancement adv = event.player.getServer().getAdvancements().getAdvancement(new ResourceLocation(IronFurnaces.MOD_ID, "coal"));
+                if (adv != null)
+                {
+                    if (!((ServerPlayer) event.player).getAdvancements().getOrStartProgress(adv).isDone()) {
+                        Player player = getPlayer(event.player.getLevel());
+                        if (player != null && player == event.player) {
+                            event.player.level.addFreshEntity(new ItemEntity(event.player.level, event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL.get())));
+
+                        }
+                    }
                 }
             }
+
+
+
+
         }
         run = false;
 

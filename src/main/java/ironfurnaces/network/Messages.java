@@ -2,6 +2,7 @@ package ironfurnaces.network;
 
 import ironfurnaces.IronFurnaces;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -22,6 +23,12 @@ public class Messages {
                 PacketSettingsButton::toBytes,
                 PacketSettingsButton::new,
                 PacketSettingsButton::handle);
+
+        INSTANCE.registerMessage(nextID(), PacketShowConfigButton.class,
+                PacketShowConfigButton::toBytes,
+                PacketShowConfigButton::new,
+                PacketShowConfigButton::handle);
+
 
 
 

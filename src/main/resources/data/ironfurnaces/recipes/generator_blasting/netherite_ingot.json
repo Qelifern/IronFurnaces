@@ -1,0 +1,5 @@
+﻿{
+  "type": "ironfurnaces:generator_blasting",
+  "energy": 750000,
+  "item": "minecraft:netherite_ingot"
+}
