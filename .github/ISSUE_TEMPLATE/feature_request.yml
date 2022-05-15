@@ -1,0 +1,14 @@
+name: Feature Request
+description: Suggest an idea
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill in the following template to report your issue.
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your suggested feature or change
+    validations:
+      required: true
