@@ -3,7 +3,7 @@ package ironfurnaces.util.gui;
 import com.mojang.blaze3d.vertex.PoseStack;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 
 public class FurnaceGuiEnergy {
 
@@ -59,7 +59,7 @@ public class FurnaceGuiEnergy {
     {
         if (condition)
             if (hovering(mouseX, mouseY))
-                screen.renderTooltip(matrix, new TextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), mouseX, mouseY);
+                screen.renderTooltip(matrix, Component.literal(StringHelper.displayEnergy(energy, capacity).get(0)), mouseX, mouseY);
     }
 
 

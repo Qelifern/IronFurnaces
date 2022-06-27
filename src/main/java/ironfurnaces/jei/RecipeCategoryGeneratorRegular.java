@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.init.Registration;
-import ironfurnaces.recipes.GeneratorRecipe;
 import ironfurnaces.recipes.SimpleGeneratorRecipe;
 import ironfurnaces.util.StringHelper;
 import mezz.jei.api.constants.VanillaTypes;
@@ -18,8 +17,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -59,7 +56,7 @@ public class RecipeCategoryGeneratorRegular implements IRecipeCategory<SimpleGen
 
     @Override
     public Component getTitle() {
-        return new TranslatableComponent(IronFurnaces.MOD_ID + ".jei_category_regular");
+        return Component.translatable(IronFurnaces.MOD_ID + ".jei_category_regular");
     }
 
     @Override
@@ -89,7 +86,7 @@ public class RecipeCategoryGeneratorRegular implements IRecipeCategory<SimpleGen
         List<Component> list = Lists.newArrayList();
         if (mouseX >= 55 && mouseX <= 68 && mouseY >= 1 && mouseY <= 42)
         {
-            list.add(new TextComponent(StringHelper.displayEnergy(recipe.getEnergy()).get(0)));
+            list.add(Component.literal(StringHelper.displayEnergy(recipe.getEnergy()).get(0)));
         }
         return list;
     }

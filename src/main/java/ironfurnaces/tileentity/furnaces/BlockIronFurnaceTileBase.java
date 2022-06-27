@@ -1117,9 +1117,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     if (this.getItem(OUTPUT).isEmpty()) {
                                         continue;
                                     }
-                                    if (tile.getBlockState().getBlock().getRegistryName().toString().contains("storagedrawers:")) {
-                                        continue;
-                                    }
                                     for (int i = 0; i < other.getSlots(); i++) {
                                         ItemStack stack = extractItemInternal(OUTPUT, this.getItem(OUTPUT).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
@@ -1192,7 +1189,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         if (this.getAutoInput() != 0 || this.getAutoOutput() != 0) {
                             if (this.getAutoInput() == 1) {
                                 if (furnaceSettings.get(dir.ordinal()) == 1 || furnaceSettings.get(dir.ordinal()) == 3) {
-                                    for (int j = 0; j < FACTORY_INPUT.length; j++)
+                                    int start = getTier() == 0 ? 2 : getTier() == 1 ? 1 : 0;
+                                    int size = getTier() == 0 ? 4 : getTier() == 1 ? 5 : 6;
+
+                                    for (int j = start; j < size; j++)
                                     {
                                         if (this.getItem(FACTORY_INPUT[j]).getCount() >= this.getItem(FACTORY_INPUT[j]).getMaxStackSize()) {
                                             continue;
@@ -1213,14 +1213,14 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                             if (this.getAutoOutput() == 1) {
 
                                 if (furnaceSettings.get(dir.ordinal()) == 2 || furnaceSettings.get(dir.ordinal()) == 3) {
-                                    for (int j = 0; j < FACTORY_INPUT.length; j++)
+                                    int start = getTier() == 0 ? 2 : getTier() == 1 ? 1 : 0;
+                                    int size = getTier() == 0 ? 4 : getTier() == 1 ? 5 : 6;
+                                    for (int j = start; j < size; j++)
                                     {
                                         if (this.getItem(FACTORY_INPUT[j] + 6).isEmpty()) {
                                             continue;
                                         }
-                                        if (tile.getBlockState().getBlock().getRegistryName().toString().contains("storagedrawers:")) {
-                                            continue;
-                                        }
+
                                         for (int i = 0; i < other.getSlots(); i++) {
                                             ItemStack stack = extractItemInternal(FACTORY_INPUT[j] + 6, this.getItem(FACTORY_INPUT[j] + 6).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
                                             if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {

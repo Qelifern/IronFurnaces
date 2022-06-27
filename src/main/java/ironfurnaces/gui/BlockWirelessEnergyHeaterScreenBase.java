@@ -7,11 +7,8 @@ import ironfurnaces.container.BlockWirelessEnergyHeaterContainer;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWirelessEnergyHeaterContainer> extends AbstractContainerScreen<T> {
 
@@ -42,7 +39,7 @@ public abstract class BlockWirelessEnergyHeaterScreenBase<T extends BlockWireles
         if(actualMouseX >= 68 && actualMouseX <= 108 && actualMouseY >= 64 && actualMouseY <= 76) {
             int energy = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getEnergy();
             int capacity = ((BlockWirelessEnergyHeaterContainer)this.getMenu()).getMaxEnergy();
-            this.renderTooltip(matrix, new TextComponent(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
+            this.renderTooltip(matrix, Component.literal(StringHelper.displayEnergy(energy, capacity).get(0)), actualMouseX, actualMouseY);
         }
 
     }

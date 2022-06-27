@@ -8,7 +8,6 @@ import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,8 +31,8 @@ public class ItemLinker extends Item {
 
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
-            tooltip.add(new TextComponent("Sneak & right-click on a furnace to save it").withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TextComponent("Sneak & right-click on your Rainbow Furnace to add the saved furnace and/or show how many furnaces are still missing").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.literal("Sneak & right-click on a furnace to save it").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.literal("Sneak & right-click on your Rainbow Furnace to add the saved furnace and/or show how many furnaces are still missing").withStyle(ChatFormatting.GRAY));
         }
         else
         {
@@ -53,12 +52,12 @@ public class ItemLinker extends Item {
                         stack.getOrCreateTag().putInt("X", pos.getX());
                         stack.getOrCreateTag().putInt("Y", pos.getY());
                         stack.getOrCreateTag().putInt("Z", pos.getZ());
-                        context.getPlayer().sendMessage(new TextComponent("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()), context.getPlayer().getUUID());
+                        context.getPlayer().displayClientMessage(Component.literal("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()), true);
                     } else {
                         List<BlockIronFurnaceTileBase> list = ((BlockMillionFurnaceTile) tile).furnaces;
 
                         int str = Config.millionFurnacePower.get() - list.size();
-                        context.getPlayer().sendMessage(new TextComponent("Missing: "  + str), context.getPlayer().getUUID());
+                        context.getPlayer().displayClientMessage(Component.literal("Missing: "  + str), true);
 
 
 
@@ -82,7 +81,7 @@ public class ItemLinker extends Item {
 
                             if (flag)
                             {
-                                context.getPlayer().sendMessage(new TextComponent("Added: " + toAdd.getName().getString()), context.getPlayer().getUUID());
+                                context.getPlayer().displayClientMessage(Component.literal("Added: " + toAdd.getName().getString()), true);
                                 ((BlockMillionFurnaceTile) tile).furnaces.add(toAdd);
                                 toAdd.linkedPos = tile.getBlockPos();
                             }

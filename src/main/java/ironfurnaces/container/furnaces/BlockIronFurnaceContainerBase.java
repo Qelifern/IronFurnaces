@@ -9,7 +9,6 @@ import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import ironfurnaces.util.container.FactoryDataSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -475,15 +474,15 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
         switch (te.furnaceSettings.get(index))
         {
             case 1:
-                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input");
+                return Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_input");
             case 2:
-                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_output");
+                return Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_output");
             case 3:
-                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_input_output");
+                return Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_input_output");
             case 4:
-                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_fuel");
+                return Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_fuel");
             default:
-                return new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_none");
+                return Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_none");
         }
     }
 

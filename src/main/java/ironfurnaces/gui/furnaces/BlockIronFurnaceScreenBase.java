@@ -18,7 +18,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
@@ -141,66 +140,66 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
 
     private void addTooltips(PoseStack matrix, int mouseX, int mouseY) {
 
-        augmentButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open_augments"), mouseX, mouseY, !getMenu().getAugmentGUI());
-        augmentButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open_furnace"), mouseX, mouseY, getMenu().getAugmentGUI());
+        augmentButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_open_augments"), mouseX, mouseY, !getMenu().getAugmentGUI());
+        augmentButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_open_furnace"), mouseX, mouseY, getMenu().getAugmentGUI());
         energyBar.renderTooltip(this, matrix, mouseX, mouseY, getMenu().getEnergy(), getMenu().getMaxEnergy(), getMenu().getIsGenerator() && !getMenu().getAugmentGUI());
         energyBar.changePos(9, 7, getMenu().getIsFactory() && !getMenu().getAugmentGUI());
         energyBar.renderTooltip(this, matrix, mouseX, mouseY, getMenu().getEnergy(), getMenu().getMaxEnergy(), getMenu().getIsFactory() && !getMenu().getAugmentGUI());
-        List<Component> tl = Lists.newArrayList(new TextComponent("Auto Split"), new TextComponent("ON"));
+        List<Component> tl = Lists.newArrayList(Component.literal("Auto Split"), Component.literal("ON"));
         autoSplitButton.renderComponentTooltip(this, matrix, tl, mouseX, mouseY, getMenu().isAutoSplit() && getMenu().getIsFactory() && !getMenu().getAugmentGUI());
-        tl = Lists.newArrayList(new TextComponent("Auto Split"), new TextComponent("OFF"));
+        tl = Lists.newArrayList(Component.literal("Auto Split"), Component.literal("OFF"));
         autoSplitButton.renderComponentTooltip(this, matrix, tl, mouseX, mouseY, !getMenu().isAutoSplit() && getMenu().getIsFactory() && !getMenu().getAugmentGUI());
 
 
         if (!showInventoryButtons()) {
             if (mouseX >= -20 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
-                this.renderTooltip(matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_open"), mouseX, mouseY);
+                this.renderTooltip(matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_open"), mouseX, mouseY);
             }
         } else {
             if (mouseX >= -13 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
                 this.renderComponentTooltip(matrix, StringHelper.getShiftInfoGui(), mouseX, mouseY);
             }
             List<Component> list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_input"));
-            list.add(new TextComponent("" + (getMenu().getAutoInput() ? "ON" : "OFF")));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_input"));
+            list.add(Component.literal("" + (getMenu().getAutoInput() ? "ON" : "OFF")));
             autoInputButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_output"));
-            list.add(new TextComponent("" + (getMenu().getAutoOutput() ? "ON" : "OFF")));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_auto_output"));
+            list.add(Component.literal("" + (getMenu().getAutoOutput() ? "ON" : "OFF")));
             autoOutputButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_top"));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_top"));
             list.add(this.getMenu().getTooltip(Direction.UP.ordinal()));
             topButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_bottom"));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_bottom"));
             list.add(this.getMenu().getTooltip(Direction.DOWN.ordinal()));
             bottomButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
             if (isShiftKeyDown()) {
-                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_reset"));
+                list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_reset"));
             } else {
-                list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_front"));
+                list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_front"));
                 list.add(this.getMenu().getTooltip(getMenu().getIndexFront()));
             }
             frontButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_back"));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_back"));
             list.add(this.getMenu().getTooltip(getMenu().getIndexBack()));
             backButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_left"));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_left"));
             list.add(this.getMenu().getTooltip(getMenu().getIndexLeft()));
             leftButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
             list = Lists.newArrayList();
-            list.add(new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_right"));
+            list.add(Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_right"));
             list.add(this.getMenu().getTooltip(getMenu().getIndexRight()));
             rightButton.renderComponentTooltip(this, matrix, list, mouseX, mouseY, true);
-            redstoneIgnoredButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_ignored"), mouseX, mouseY, true);
-            redstoneLowButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_low"), mouseX, mouseY, isShiftKeyDown());
-            redstoneHighButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_high"), mouseX, mouseY, !isShiftKeyDown());
-            comparatorButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator"), mouseX, mouseY, true);
-            comparatorSubButton.renderTooltip(this, matrix, new TranslatableComponent("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator_sub"), mouseX, mouseY, true);
+            redstoneIgnoredButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_ignored"), mouseX, mouseY, true);
+            redstoneLowButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_low"), mouseX, mouseY, isShiftKeyDown());
+            redstoneHighButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_high"), mouseX, mouseY, !isShiftKeyDown());
+            comparatorButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator"), mouseX, mouseY, true);
+            comparatorSubButton.renderTooltip(this, matrix, Component.translatable("tooltip." + IronFurnaces.MOD_ID + ".gui_redstone_comparator_sub"), mouseX, mouseY, true);
         }
     }
 

@@ -6,8 +6,7 @@ import ironfurnaces.gui.furnaces.BlockIronFurnaceScreenBase;
 import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -37,12 +36,12 @@ public class ItemMillionFurnace extends BlockItem {
             timer++;
             if (timer % 20 == 0) {
                 timer = 0;
-                String name = new TranslatableComponent("block.ironfurnaces.million_furnace").getString();
-                ArrayList<TextComponent> names = Lists.newArrayList();
+                String name = Component.translatable("block.ironfurnaces.million_furnace").getString();
+                ArrayList<Component> names = Lists.newArrayList();
                 for (int i = 0; i < name.length(); i++) {
-                    names.add((TextComponent) new TextComponent("" + name.charAt(i)).withStyle(ChatFormatting.getById(getIDRandom(rand.nextInt(6)))));
+                    names.add((Component) Component.literal("" + name.charAt(i)).withStyle(ChatFormatting.getById(getIDRandom(rand.nextInt(6)))));
                 }
-                TextComponent component = new TextComponent("");
+                MutableComponent component = Component.literal("");
                 for (int i = 0; i < names.size(); i++) {
                     component.append(names.get(i));
                 }
@@ -54,9 +53,9 @@ public class ItemMillionFurnace extends BlockItem {
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
             Format decimal = new DecimalFormat();
-            String part1 = new TranslatableComponent("tooltip.ironfurnaces.rainbow_gen1").getString();
-            String part2 = new TranslatableComponent("tooltip.ironfurnaces.rainbow_gen2").getString();
-            tooltip.add(new TextComponent(part1 + " " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " " + part2).withStyle(ChatFormatting.GRAY));
+            String part1 = Component.translatable("tooltip.ironfurnaces.rainbow_gen1").getString();
+            String part2 = Component.translatable("tooltip.ironfurnaces.rainbow_gen2").getString();
+            tooltip.add(Component.literal(part1 + " " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " " + part2).withStyle(ChatFormatting.GRAY));
         }
         else
         {

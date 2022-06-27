@@ -94,7 +94,7 @@ public class GeneratorRecipe implements Recipe<Container> {
         return Registration.RecipeTypes.GENERATOR;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<GeneratorRecipe> {
+    public static class Serializer extends IForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<GeneratorRecipe> {
         @Override
         public GeneratorRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             int energy = GsonHelper.getAsInt(json, "energy", 10000);

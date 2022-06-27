@@ -6,8 +6,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -70,7 +68,7 @@ public abstract class TileEntityInventory extends BlockEntity implements ITileIn
 
     @Override
     public Component getName() {
-        return (this.name != null ? this.name : new TranslatableComponent(IgetName()));
+        return (this.name != null ? this.name : Component.translatable(IgetName()));
     }
 
     @Override
@@ -142,7 +140,7 @@ public abstract class TileEntityInventory extends BlockEntity implements ITileIn
         this.inventory = NonNullList.withSize(this.getMaxStackSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(nbt, this.inventory);
         if (nbt.contains("CustomName", 8)) {
-            this.name = TextComponent.Serializer.fromJson(nbt.getString("CustomName"));
+            this.name = Component.Serializer.fromJson(nbt.getString("CustomName"));
         }
     }
 
@@ -159,7 +157,7 @@ public abstract class TileEntityInventory extends BlockEntity implements ITileIn
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         if (this.name != null) {
-            nbt.putString("CustomName", TextComponent.Serializer.toJson(this.name));
+            nbt.putString("CustomName", Component.Serializer.toJson(this.name));
         }
         ContainerHelper.saveAllItems(nbt, this.inventory);
     }

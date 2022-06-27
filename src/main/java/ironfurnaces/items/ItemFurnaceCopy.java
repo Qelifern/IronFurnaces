@@ -5,7 +5,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,20 +31,20 @@ public class ItemFurnaceCopy extends Item {
         if (stack.hasTag()) {
             if (stack.getTag().getIntArray("settings").length >= 10)
             {
-                tooltip.add(new TextComponent("Down: " + stack.getTag().getIntArray("settings")[0]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("Up: " + stack.getTag().getIntArray("settings")[1]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("North: " + stack.getTag().getIntArray("settings")[2]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("South: " + stack.getTag().getIntArray("settings")[3]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("West: " + stack.getTag().getIntArray("settings")[4]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("East: " + stack.getTag().getIntArray("settings")[5]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("Auto Input: " + stack.getTag().getIntArray("settings")[6]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("Auto Output: " + stack.getTag().getIntArray("settings")[7]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("Redstone Mode: " + stack.getTag().getIntArray("settings")[8]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
-                tooltip.add(new TextComponent("Redstone Value: " + stack.getTag().getIntArray("settings")[9]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Down: " + stack.getTag().getIntArray("settings")[0]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Up: " + stack.getTag().getIntArray("settings")[1]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("North: " + stack.getTag().getIntArray("settings")[2]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("South: " + stack.getTag().getIntArray("settings")[3]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("West: " + stack.getTag().getIntArray("settings")[4]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("East: " + stack.getTag().getIntArray("settings")[5]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Auto Input: " + stack.getTag().getIntArray("settings")[6]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Auto Output: " + stack.getTag().getIntArray("settings")[7]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Redstone Mode: " + stack.getTag().getIntArray("settings")[8]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
+                tooltip.add(Component.literal("Redstone Value: " + stack.getTag().getIntArray("settings")[9]).setStyle(Style.EMPTY.applyFormat((ChatFormatting.GRAY))));
             }
         }
-        tooltip.add(new TextComponent("Right-click to copy settings").withStyle(ChatFormatting.GRAY));
-        tooltip.add(new TextComponent("Sneak & right-click to apply settings").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("Right-click to copy settings").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.literal("Sneak & right-click to apply settings").withStyle(ChatFormatting.GRAY));
     }
 
 
@@ -80,7 +79,7 @@ public class ItemFurnaceCopy extends Item {
                 }
             }
             world.markAndNotifyBlock(pos, world.getChunkAt(pos), world.getBlockState(pos).getBlock().defaultBlockState(), world.getBlockState(pos), 3, 3);
-            ctx.getPlayer().sendMessage(new TextComponent("Settings applied"), ctx.getPlayer().getUUID());
+            ctx.getPlayer().displayClientMessage(Component.literal("Settings applied"), true);
         }
 
         return super.useOn(ctx);
