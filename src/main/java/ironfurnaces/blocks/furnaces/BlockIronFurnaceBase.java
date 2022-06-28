@@ -127,7 +127,7 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
         stack.getOrCreateTag().putIntArray("settings", settings);
 
         ((BlockIronFurnaceTileBase)te).onUpdateSent();
-        player.displayClientMessage(Component.literal("Settings copied"), true);
+        player.sendSystemMessage(Component.literal("Settings copied"));
         return InteractionResult.SUCCESS;
     }
     private InteractionResult interactAugment(Level world, BlockPos pos, Player player, InteractionHand handIn, ItemStack stack) {

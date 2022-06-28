@@ -79,7 +79,7 @@ public class ItemFurnaceCopy extends Item {
                 }
             }
             world.markAndNotifyBlock(pos, world.getChunkAt(pos), world.getBlockState(pos).getBlock().defaultBlockState(), world.getBlockState(pos), 3, 3);
-            ctx.getPlayer().displayClientMessage(Component.literal("Settings applied"), true);
+            ctx.getPlayer().sendSystemMessage(Component.literal("Settings applied"));
         }
 
         return super.useOn(ctx);

@@ -20,8 +20,7 @@ public class RainbowEnabledCondition implements ICondition
     }
 
     @Override
-    public boolean test()
-    {
+    public boolean test(IContext context) {
         return Config.enableRainbowContent.get();
     }
 

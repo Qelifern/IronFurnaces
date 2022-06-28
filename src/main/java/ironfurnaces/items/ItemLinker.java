@@ -52,12 +52,12 @@ public class ItemLinker extends Item {
                         stack.getOrCreateTag().putInt("X", pos.getX());
                         stack.getOrCreateTag().putInt("Y", pos.getY());
                         stack.getOrCreateTag().putInt("Z", pos.getZ());
-                        context.getPlayer().displayClientMessage(Component.literal("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()), true);
+                        context.getPlayer().sendSystemMessage(Component.literal("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()));
                     } else {
                         List<BlockIronFurnaceTileBase> list = ((BlockMillionFurnaceTile) tile).furnaces;
 
                         int str = Config.millionFurnacePower.get() - list.size();
-                        context.getPlayer().displayClientMessage(Component.literal("Missing: "  + str), true);
+                        context.getPlayer().sendSystemMessage(Component.literal("Missing: "  + str));
 
 
 
@@ -81,7 +81,7 @@ public class ItemLinker extends Item {
 
                             if (flag)
                             {
-                                context.getPlayer().displayClientMessage(Component.literal("Added: " + toAdd.getName().getString()), true);
+                                context.getPlayer().sendSystemMessage(Component.literal("Added: " + toAdd.getName().getString()));
                                 ((BlockMillionFurnaceTile) tile).furnaces.add(toAdd);
                                 toAdd.linkedPos = tile.getBlockPos();
                             }

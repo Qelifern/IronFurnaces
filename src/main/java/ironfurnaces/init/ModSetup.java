@@ -24,7 +24,6 @@ public class ModSetup {
 
     public static void init(final FMLCommonSetupEvent event) {
         CraftingHelper.register(RainbowEnabledCondition.Serializer.INSTANCE);
-        Registration.RecipeTypes.init();
     }
 
     @SubscribeEvent

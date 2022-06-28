@@ -12,8 +12,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.UUID;
-
 
 /**
  * Credits: Ellpeck, creator of the Actually Additions update checker, which I (pizzaatime) modified.
@@ -46,12 +44,12 @@ public class UpdateChecker {
             Player player = Minecraft.getInstance().player;
             int id = 0;
             if(UpdateChecker.checkFailed){
-                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.failed")), UUID.randomUUID());
+                player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.failed")));
             }
             else if(UpdateChecker.needsUpdateNotify){
-                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.speech")), UUID.randomUUID());
-                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)), UUID.randomUUID());
-                player.sendMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)), UUID.randomUUID());
+                player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.speech")));
+                player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)));
+                player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID+".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)));
             }
             if(threadFinished) MinecraftForge.EVENT_BUS.unregister(this);
         }

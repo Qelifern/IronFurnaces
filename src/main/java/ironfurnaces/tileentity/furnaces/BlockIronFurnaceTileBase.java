@@ -166,7 +166,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     protected Optional<GeneratorRecipe> getRecipeGeneratorBlasting(ItemStack item) {
         return (item.getItem() instanceof AirItem)
                 ? Optional.empty()
-                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor(Registration.RecipeTypes.GENERATOR, new SimpleContainer(item), this.level).orElse(null));
+                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor(Registration.GENERATOR_RECIPE_TYPE.get(), new SimpleContainer(item), this.level).orElse(null));
     }
 
     protected void checkRecipeType()

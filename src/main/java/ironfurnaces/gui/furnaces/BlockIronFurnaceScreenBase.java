@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
@@ -131,7 +130,7 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
         if (showInventoryButtons() && this.getMenu().getRedstoneMode() == 4) {
             int comSub = this.getMenu().getComSub();
             int i = comSub > 9 ? 28 : 31;
-            this.minecraft.font.draw(matrix, new TextComponent("" + comSub), i - 42, 90, 4210752);
+            this.minecraft.font.draw(matrix, Component.literal("" + comSub), i - 42, 90, 4210752);
         }
 
 

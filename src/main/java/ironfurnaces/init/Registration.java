@@ -15,19 +15,17 @@ import ironfurnaces.items.*;
 import ironfurnaces.items.augments.*;
 import ironfurnaces.items.upgrades.*;
 import ironfurnaces.recipes.GeneratorRecipe;
+import ironfurnaces.recipes.SimpleGeneratorRecipe;
 import ironfurnaces.tileentity.BlockWirelessEnergyHeaterTile;
 import ironfurnaces.tileentity.furnaces.*;
 import ironfurnaces.tileentity.furnaces.other.BlockAllthemodiumFurnaceTile;
 import ironfurnaces.tileentity.furnaces.other.BlockUnobtainiumFurnaceTile;
 import ironfurnaces.tileentity.furnaces.other.BlockVibraniumFurnaceTile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.BlockGetter;
@@ -55,6 +53,7 @@ public class Registration {
     private static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MOD_ID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MOD_ID);
 
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
@@ -66,30 +65,27 @@ public class Registration {
         TILES.register(modEventBus);
         CONTAINERS.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
+        RECIPE_TYPES.register(modEventBus);
         //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
-    private static <T extends Recipe<?>> RecipeType<T> registerType(ResourceLocation name) {
-        return Registry.register(Registry.RECIPE_TYPE, name, new RecipeType<T>() {
-            @Override
-            public String toString() {
-                return name.toString();
-            }
-        });
-    }
 
-    public static final ResourceLocation GENERATOR_ID = new ResourceLocation(IronFurnaces.MOD_ID, "generator_blasting");
+    public static final String GENERATOR_ID = "generator_blasting";
 
     public static final class RecipeTypes {
-        public static RecipeType<GeneratorRecipe> GENERATOR;
 
-        public static void init()
-        {
-            GENERATOR = registerType(GENERATOR_ID);
-        }
+        public static mezz.jei.api.recipe.RecipeType<GeneratorRecipe> GENERATOR_BLASTING = mezz.jei.api.recipe.RecipeType.create(IronFurnaces.MOD_ID, "generator_blasting", GeneratorRecipe.class);
+        public static mezz.jei.api.recipe.RecipeType<SimpleGeneratorRecipe> GENERATOR_SMOKING = mezz.jei.api.recipe.RecipeType.create(IronFurnaces.MOD_ID, "generator_smoking", SimpleGeneratorRecipe.class);
+        public static mezz.jei.api.recipe.RecipeType<SimpleGeneratorRecipe> GENERATOR_REGULAR = mezz.jei.api.recipe.RecipeType.create(IronFurnaces.MOD_ID, "generator_regular", SimpleGeneratorRecipe.class);
     }
-    public static RegistryObject<RecipeSerializer<GeneratorRecipe>> GENERATOR = RECIPE_SERIALIZERS.register("generator_blasting", GeneratorRecipe.Serializer::new);
+    public static RegistryObject<RecipeType<GeneratorRecipe>> GENERATOR_RECIPE_TYPE = RECIPE_TYPES.register(GENERATOR_ID, () -> new RecipeType<GeneratorRecipe>() {
+        @Override
+        public String toString() {
+            return GENERATOR_ID;
+        }
+    });
+    public static RegistryObject<RecipeSerializer<GeneratorRecipe>> GENERATOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register(GENERATOR_ID, GeneratorRecipe.Serializer::new);
 
 
     public static final RegistryObject<BlockIronFurnace> IRON_FURNACE = BLOCKS.register(BlockIronFurnace.IRON_FURNACE, () -> new BlockIronFurnace(Block.Properties.copy(Blocks.IRON_BLOCK)));

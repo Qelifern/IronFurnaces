@@ -51,7 +51,7 @@ public class RecipeCategoryGeneratorBlasting implements IRecipeCategory<Generato
 
     @Override
     public RecipeType<GeneratorRecipe> getRecipeType() {
-        return IRecipeCategory.super.getRecipeType();
+        return Registration.RecipeTypes.GENERATOR_BLASTING;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RecipeCategoryGeneratorBlasting implements IRecipeCategory<Generato
 
     @Override
     public IDrawable getIcon() {
-        return guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(Registration.GENERATOR_AUGMENT.get()));
+        return guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Registration.GENERATOR_AUGMENT.get()));
     }
 
     @Override
@@ -104,15 +104,5 @@ public class RecipeCategoryGeneratorBlasting implements IRecipeCategory<Generato
     @Override
     public @Nullable ResourceLocation getRegistryName(GeneratorRecipe recipe) {
         return IRecipeCategory.super.getRegistryName(recipe);
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    public Class<? extends GeneratorRecipe> getRecipeClass() {
-        return GeneratorRecipe.class;
     }
 }

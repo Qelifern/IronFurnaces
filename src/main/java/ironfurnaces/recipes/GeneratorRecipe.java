@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 public class GeneratorRecipe implements Recipe<Container> {
@@ -86,15 +85,15 @@ public class GeneratorRecipe implements Recipe<Container> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Registration.GENERATOR.get();
+        return Registration.GENERATOR_RECIPE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return Registration.RecipeTypes.GENERATOR;
+        return Registration.GENERATOR_RECIPE_TYPE.get();
     }
 
-    public static class Serializer extends IForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<GeneratorRecipe> {
+    public static class Serializer implements RecipeSerializer<GeneratorRecipe> {
         @Override
         public GeneratorRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             int energy = GsonHelper.getAsInt(json, "energy", 10000);

@@ -51,7 +51,7 @@ public class RecipeCategoryGeneratorSmoking implements IRecipeCategory<SimpleGen
 
     @Override
     public RecipeType<SimpleGeneratorRecipe> getRecipeType() {
-        return IRecipeCategory.super.getRecipeType();
+        return Registration.RecipeTypes.GENERATOR_SMOKING;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RecipeCategoryGeneratorSmoking implements IRecipeCategory<SimpleGen
 
     @Override
     public IDrawable getIcon() {
-        return guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(Registration.GENERATOR_AUGMENT.get()));
+        return guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Registration.GENERATOR_AUGMENT.get()));
     }
 
     @Override
@@ -106,13 +106,4 @@ public class RecipeCategoryGeneratorSmoking implements IRecipeCategory<SimpleGen
         return IRecipeCategory.super.getRegistryName(recipe);
     }
 
-    @Override
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    public Class<? extends SimpleGeneratorRecipe> getRecipeClass() {
-        return SimpleGeneratorRecipe.class;
-    }
 }
