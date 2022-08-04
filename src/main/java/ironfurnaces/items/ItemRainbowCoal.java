@@ -36,13 +36,15 @@ public class ItemRainbowCoal extends Item {
         return 200;
     }
 
+
     @Override
-    public boolean hasContainerItem(ItemStack stack) {
+    public boolean hasCraftingRemainingItem(ItemStack stack) {
         return true;
     }
 
+
     @Override
-    public ItemStack getContainerItem(ItemStack itemStack) {
+    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
         ItemStack stack = new ItemStack(this);
         stack.setDamageValue(this.getDamage(itemStack) + 1);
         if (stack.getDamageValue() >= 5120)

@@ -173,7 +173,7 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
         {
             BlockEntity tileEntity = world.getBlockEntity(pos);
             if (tileEntity instanceof MenuProvider) {
-                NetworkHooks.openGui((ServerPlayer) player, (MenuProvider)tileEntity, tileEntity.getBlockPos());
+                NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider)tileEntity, tileEntity.getBlockPos());
                 player.awardStat(Stats.INTERACT_WITH_FURNACE);
                 if (tileEntity instanceof BlockIronFurnaceTileBase)
                 {

@@ -796,12 +796,12 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     if (!e.getItem(GENERATOR_FUEL).isEmpty() && e.generatorBurn <= 0) {
                         e.generatorBurn = e.getGeneratorBurn();
                         e.generatorRecentRecipeRF = (int) e.generatorBurn;
-                        if (e.getItem(GENERATOR_FUEL).hasContainerItem())
-                            e.setItem(GENERATOR_FUEL, e.getItem(GENERATOR_FUEL).getContainerItem());
+                        if (e.getItem(GENERATOR_FUEL).hasCraftingRemainingItem())
+                            e.setItem(GENERATOR_FUEL, e.getItem(GENERATOR_FUEL).getCraftingRemainingItem());
                         else if (!e.getItem(GENERATOR_FUEL).isEmpty()) {
                             e.getItem(GENERATOR_FUEL).shrink(1);
                             if (e.getItem(GENERATOR_FUEL).isEmpty()) {
-                                e.setItem(GENERATOR_FUEL, e.getItem(GENERATOR_FUEL).getContainerItem());
+                                e.setItem(GENERATOR_FUEL, e.getItem(GENERATOR_FUEL).getCraftingRemainingItem());
                             }
                         }
                         e.setChanged();
@@ -936,11 +936,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         if (e.isBurning()) {
                             flag1 = true;
                             if (!(itemstack.getItem() instanceof ItemHeater)) {
-                                if (itemstack.hasContainerItem()) e.setItem(FUEL, itemstack.getContainerItem());
+                                if (itemstack.hasCraftingRemainingItem()) e.setItem(FUEL, itemstack.getCraftingRemainingItem());
                                 else if (!itemstack.isEmpty()) {
                                     itemstack.shrink(1);
                                     if (itemstack.isEmpty()) {
-                                        e.setItem(FUEL, itemstack.getContainerItem());
+                                        e.setItem(FUEL, itemstack.getCraftingRemainingItem());
                                     }
                                 }
                             }

@@ -98,7 +98,7 @@ public class BlockWirelessEnergyHeater extends Block implements EntityBlock {
     private void interactWith(Level world, BlockPos pos, Player player) {
         BlockEntity tileEntity = world.getBlockEntity(pos);
         if (tileEntity instanceof MenuProvider) {
-            NetworkHooks.openGui((ServerPlayer) player, (MenuProvider)tileEntity, tileEntity.getBlockPos());
+            NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider)tileEntity, tileEntity.getBlockPos());
 
         }
     }
