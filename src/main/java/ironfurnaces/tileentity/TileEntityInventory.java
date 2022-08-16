@@ -77,6 +77,11 @@ public abstract class TileEntityInventory extends BlockEntity implements ITileIn
     }
 
     @Override
+    public boolean canPlaceItem(int i, ItemStack itemStack) {
+        return IisItemValidForSlot(i, itemStack);
+    }
+
+    @Override
     public boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
         return IisItemValidForSlot(i, itemStack);
     }

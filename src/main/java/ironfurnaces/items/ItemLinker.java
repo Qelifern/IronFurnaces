@@ -45,6 +45,8 @@ public class ItemLinker extends Item {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
         ItemStack stack = context.getItemInHand();
+        if (!world.isClientSide)
+        {
             if (context.getPlayer().isCrouching()) {
                 BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
                 if (tile != null) {
@@ -71,12 +73,12 @@ public class ItemLinker extends Item {
                             boolean flag = true;
 
 
-                                for (int i = 0; i < list.size(); i++)
-                                {
-                                    if (toAdd.getBlockState().getBlock() == list.get(i).getBlockState().getBlock()) {
-                                        flag = false;
-                                    }
+                            for (int i = 0; i < list.size(); i++)
+                            {
+                                if (toAdd.getBlockState().getBlock() == list.get(i).getBlockState().getBlock()) {
+                                    flag = false;
                                 }
+                            }
 
 
                             if (flag)
@@ -88,6 +90,7 @@ public class ItemLinker extends Item {
                         }
                     }
 
+                }
             }
         }
 

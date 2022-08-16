@@ -3,6 +3,7 @@ package ironfurnaces.container.furnaces;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.container.slots.*;
 import ironfurnaces.energy.FEnergyStorage;
+import ironfurnaces.items.ItemHeater;
 import ironfurnaces.items.augments.ItemAugmentBlasting;
 import ironfurnaces.items.augments.ItemAugmentSmoking;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
@@ -639,7 +640,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                     }
                     else
                     {
-                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1)) {
+                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1) && !(itemstack1.getItem() instanceof ItemHeater)) {
                             if (!this.moveItemStackTo(itemstack1, 6, 7, false)) {
                                 return ItemStack.EMPTY;
                             }

@@ -1,3 +1,11 @@
+3.6.1
++Fixed particles not being produced
++Fixed Heat Reciever being able to be placed in a generator furnace
++Fixed checking for canPlaceItem for hoppers and pipes
++Fixed cooktime not behaving correctly
++Fixed crashing due to forge update
++Fixed buckets not being able to be extracted aswell as auto extracting of buckets fixed
++Fixed hoppers and pipes seeing invisible slots when a furnace is converted into a factory
 3.6.0
 +1.19.2
 3.5.0

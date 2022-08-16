@@ -6,6 +6,7 @@ import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,7 +25,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleWaterloggedBlock {
 
@@ -49,7 +49,7 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleW
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
         double d0 = (double) pos.getX() + 0.5D;
         double d1 = (double) pos.getY();
         double d2 = (double) pos.getZ() + 0.5D;

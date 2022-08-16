@@ -4,8 +4,7 @@ import ironfurnaces.init.Registration;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import ironfurnaces.tileentity.furnaces.BlockMillionFurnaceTile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockMillionFurnace extends BlockIronFurnaceBase {
 
@@ -28,8 +26,8 @@ public class BlockMillionFurnace extends BlockIronFurnaceBase {
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand) {
-        for (Direction direction : Direction.values()) {
+    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
+        /*for (Direction direction : Direction.values()) {
             if (Direction.from3DDataValue(direction.get3DDataValue()) != Direction.UP
                     && Direction.from3DDataValue(direction.get3DDataValue()) != Direction.DOWN) {
                 double d0 = (double) pos.getX() + 0.5D;
@@ -47,7 +45,7 @@ public class BlockMillionFurnace extends BlockIronFurnaceBase {
                     world.addParticle(ParticleTypes.CRIMSON_SPORE, d0 + d5, d1 + d6, d2 + d7, rand.nextGaussian() * 0.05D, 0.0D, rand.nextGaussian() * 0.05D);
                 }
             }
-        }
+        }*/
         super.animateTick(state, world, pos, rand);
 
     }

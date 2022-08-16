@@ -169,8 +169,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor(Registration.GENERATOR_RECIPE_TYPE.get(), new SimpleContainer(item), this.level).orElse(null));
     }
 
-    protected void checkRecipeType()
-    {
+    protected void checkRecipeType() {
         ItemStack stack = this.getItem(AUGMENT_RED);
         if (stack.getItem() instanceof ItemAugmentBlasting) {
             if (recipeType != RecipeType.BLASTING) {
@@ -208,9 +207,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return totalCookTime;
         }
         int speed = getSpeed();
-        if (speed == -1) {
-            return -1;
-        }
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof ItemAugmentSpeed) {
                 speed = Math.max(1, (speed / 2));
@@ -226,19 +222,12 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     protected int getSpeed() {
-        int i = getCookTimeConfig().get();
-        int j = getCache().computeIfAbsent(getItem(INPUT).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
-        if (j == 0) {
-            if (j == -1) {
-                return -1;
-            }
-        }
-        if (j < i) {
-            int k = j - (200 - i);
-            return k;
-        } else {
-            return i;
-        }
+        int regular = getCookTimeConfig().get();
+        int recipe = getCache().computeIfAbsent(getItem(INPUT).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
+        double div = 200.0 / recipe;
+        double i = regular / div;
+        return (int)Math.max(1, i);
+
     }
 
     protected int getFactoryCookTime(int slot) {
@@ -370,23 +359,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         int burn = 0;
         if (getItem(AUGMENT_RED).getItem() instanceof ItemAugmentSmoking) {
             burn = getSmokingBurn(getItem(GENERATOR_FUEL));
-        }
-        else if (getItem(AUGMENT_RED).getItem() instanceof ItemAugmentBlasting) {
+        } else if (getItem(AUGMENT_RED).getItem() instanceof ItemAugmentBlasting) {
             if (!getItem(GENERATOR_FUEL).isEmpty()) {
                 int energy = generator_cache.computeIfAbsent(getItem(GENERATOR_FUEL).getItem(), (item) -> getRecipeGeneratorBlasting(new ItemStack(item))).map(GeneratorRecipe::getEnergy).orElse(0);
                 burn = energy / 20;
             }
-        }
-        else
-        {
+        } else {
             burn = getBurnTime(getItem(GENERATOR_FUEL));
         }
-        if (getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentSpeed)
-        {
+        if (getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentSpeed) {
             burn /= 2;
-        }
-        else if (getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentFuel)
-        {
+        } else if (getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentFuel) {
             burn *= 2;
         }
         return burn;
@@ -402,84 +385,62 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return false;
     }
 
-    public Map<Integer, Integer> getSplitCounts(int[] slot, int[] input)
-    {
-        if (slot.length != input.length)
-        {
+    public Map<Integer, Integer> getSplitCounts(int[] slot, int[] input) {
+        if (slot.length != input.length) {
             return null;
         }
         Map<Integer, Integer> output = Maps.newHashMap();
         double sum = 0;
-        for (int i = 0; i < input.length; i++)
-        {
+        for (int i = 0; i < input.length; i++) {
             sum += input[i];
         }
-        double splitted = sum / (double)input.length;
-        if (sum % input.length != 0)
-        {
-            if (Math.floor(splitted) < splitted)
-            {
+        double splitted = sum / (double) input.length;
+        if (sum % input.length != 0) {
+            if (Math.floor(splitted) < splitted) {
                 double lowest = Math.floor(sum / input.length) * input.length;
-                int itemsLeftOver = (int)sum - (int)lowest;
-                for (int i = 0; i < input.length; i++)
-                {
-                    if (itemsLeftOver > 0)
-                    {
-                        input[i] = (int)Math.ceil(splitted);
+                int itemsLeftOver = (int) sum - (int) lowest;
+                for (int i = 0; i < input.length; i++) {
+                    if (itemsLeftOver > 0) {
+                        input[i] = (int) Math.ceil(splitted);
                         itemsLeftOver--;
-                    }
-                    else
-                    {
-                        input[i] = (int)splitted;
+                    } else {
+                        input[i] = (int) splitted;
                     }
 
                 }
             }
 
-        }
-        else
-        {
-            for (int i = 0; i < input.length; i++)
-            {
-                input[i] = (int)splitted;
+        } else {
+            for (int i = 0; i < input.length; i++) {
+                input[i] = (int) splitted;
             }
         }
-        for (int i = 0; i < input.length; i++)
-        {
+        for (int i = 0; i < input.length; i++) {
             output.put(slot[i], input[i]);
         }
         return output;
     }
 
-    public void fillEmptySlots(int start, int size)
-    {
+    public void fillEmptySlots(int start, int size) {
         int amount = 0;
-        for (int i = start; i < size; i++)
-        {
-            if (getItem(FACTORY_INPUT[i]).isEmpty())
-            {
+        for (int i = start; i < size; i++) {
+            if (getItem(FACTORY_INPUT[i]).isEmpty()) {
                 amount++;
             }
         }
-        if (amount == 0)
-        {
+        if (amount == 0) {
             return;
         }
         ItemStack stack = ItemStack.EMPTY;
-        for (int j = start; j < size; j++)
-        {
-            if (!getItem(FACTORY_INPUT[j]).isEmpty())
-            {
-                if (getItem(FACTORY_INPUT[j]).getCount() > 1 && amount > 0)
-                {
-                    if (amount >= getItem(FACTORY_INPUT[j]).getCount())
-                    {
-                        amount = getItem(FACTORY_INPUT[j]).getCount()-1;
+        for (int j = start; j < size; j++) {
+            if (!getItem(FACTORY_INPUT[j]).isEmpty()) {
+                if (getItem(FACTORY_INPUT[j]).getCount() > 1 && amount > 0) {
+                    if (amount >= getItem(FACTORY_INPUT[j]).getCount()) {
+                        amount = getItem(FACTORY_INPUT[j]).getCount() - 1;
                     }
                     stack = new ItemStack(getItem(FACTORY_INPUT[j]).getItem());
                     getItem(FACTORY_INPUT[j]).shrink(amount);
-                    for (int i = start; i < size; i++)
-                    {
+                    for (int i = start; i < size; i++) {
                         if (getItem(FACTORY_INPUT[i]).isEmpty() && amount > 0) {
                             setItem(FACTORY_INPUT[i], stack.copy());
                             amount--;
@@ -494,89 +455,69 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     }
 
-    public void split(boolean fullCheck, int start, int size)
-    {
+    public void split(boolean fullCheck, int start, int size) {
         ItemStack itemToCheck = ItemStack.EMPTY;
         int fullCheckCount = 0;
-        if (!fullCheck)
-        {
-            for (int i = start; i < size; i++)
-            {
-                if (getItem(FACTORY_INPUT[i]).isEmpty())
-                {
+        if (!fullCheck) {
+            for (int i = start; i < size; i++) {
+                if (getItem(FACTORY_INPUT[i]).isEmpty()) {
                     fullCheckCount++;
                 }
             }
-            if (fullCheckCount == 0)
-            {
+            if (fullCheckCount == 0) {
                 return;
             }
         }
-        for (int i = start; i < size; i++)
-        {
-            if (!getItem(FACTORY_INPUT[i]).isEmpty())
-            {
+        for (int i = start; i < size; i++) {
+            if (!getItem(FACTORY_INPUT[i]).isEmpty()) {
                 itemToCheck = getItem(FACTORY_INPUT[i]);
             }
         }
-        if (!itemToCheck.isEmpty())
-        {
+        if (!itemToCheck.isEmpty()) {
             fillEmptySlots(start, size);
-        }
-        else
-        {
+        } else {
             return;
         }
 
         Map<Integer, Integer> items = Maps.newHashMap();
         Map<Integer, Integer> setCounts = Maps.newHashMap();
 
-        for (int i = start; i < size; i++)
-        {
-            if (!getItem(FACTORY_INPUT[i]).isEmpty() && getItem(FACTORY_INPUT[i]).getItem() == itemToCheck.getItem())
-            {
+        for (int i = start; i < size; i++) {
+            if (!getItem(FACTORY_INPUT[i]).isEmpty() && getItem(FACTORY_INPUT[i]).getItem() == itemToCheck.getItem()) {
                 items.put(FACTORY_INPUT[i], getItem(FACTORY_INPUT[i]).getCount());
             }
 
         }
-        if (items.isEmpty())
-        {
+        if (items.isEmpty()) {
             return;
         }
         int[] slot = new int[items.size()];
         int[] input = new int[items.size()];
         int j = 0;
-        for (Map.Entry<Integer, Integer> itemEntry : items.entrySet())
-        {
+        for (Map.Entry<Integer, Integer> itemEntry : items.entrySet()) {
             slot[j] = itemEntry.getKey();
             input[j] = itemEntry.getValue();
             j++;
         }
         setCounts = getSplitCounts(slot, input);
         int check = 0;
-        for (Map.Entry<Integer, Integer> countsEntry : setCounts.entrySet())
-        {
+        for (Map.Entry<Integer, Integer> countsEntry : setCounts.entrySet()) {
             int count = getItem(countsEntry.getKey()).getCount();
-            if (count == countsEntry.getValue())
-            {
+            if (count == countsEntry.getValue()) {
                 check++;
             }
 
         }
-        if (check == setCounts.size())
-        {
+        if (check == setCounts.size()) {
             return;
         }
-        for (Map.Entry<Integer, Integer> countsEntry : setCounts.entrySet())
-        {
+        for (Map.Entry<Integer, Integer> countsEntry : setCounts.entrySet()) {
             setItem(countsEntry.getKey(), new ItemStack(getItem(countsEntry.getKey()).getItem(), countsEntry.getValue()));
             setChanged();
         }
 
 
     }
-
-
 
 
     public static void tick(Level level, BlockPos worldPosition, BlockState blockState, BlockIronFurnaceTileBase e) {
@@ -703,8 +644,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 e.checkRecipeType();
                 int start = e.getTier() == 0 ? 2 : e.getTier() == 1 ? 1 : 0;
                 int size = e.getTier() == 0 ? 4 : e.getTier() == 1 ? 5 : 6;
-                if (e.isAutoSplit())
-                {
+                if (e.isAutoSplit()) {
                     e.split(false, start, size);
                 }
                 for (int i = start; i < size; i++) {
@@ -722,22 +662,20 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     energyRecipe / 2 : energyRecipe;
                             if (e.getEnergy() >= energy || e.factoryCookTime[i] > 0) {
                                 e.factoryCookTime[i]++;
-                                e.usedRF[i] += (double)(energy / e.factoryTotalCookTime[i]);
-                                e.setEnergy((int)(e.getEnergy() - (double)(energy / e.factoryTotalCookTime[i])));
+                                e.usedRF[i] += (double) (energy / e.factoryTotalCookTime[i]);
+                                e.setEnergy((int) (e.getEnergy() - (double) (energy / e.factoryTotalCookTime[i])));
                                 if (level.getBlockState(e.getBlockPos()).getValue(BlockStateProperties.LIT) != e.isFactoryCooking()) {
                                     level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(BlockStateProperties.LIT, e.isFactoryCooking()), 3);
                                 }
                                 if (e.factoryCookTime[i] >= e.factoryTotalCookTime[i]) {
                                     e.factoryCookTime[i] = 0;
-                                    if (e.usedRF[i] < energy)
-                                    {
+                                    if (e.usedRF[i] < energy) {
                                         double diff = energy - e.usedRF[i];
-                                        e.setEnergy((int)(e.getEnergy() - diff));
+                                        e.setEnergy((int) (e.getEnergy() - diff));
                                     }
                                     e.usedRF[i] = 0;
                                     e.factoryTotalCookTime[i] = e.getFactoryCookTime(slot);
-                                    if (e.isAutoSplit())
-                                    {
+                                    if (e.isAutoSplit()) {
                                         e.split(true, start, size);
                                     }
                                     e.factorySmelt(irecipe.orElse(null), slot);
@@ -745,8 +683,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 }
                             }
                         }
-                    }
-                    else {
+                    } else {
                         e.factoryCookTime[i] = 0;
                         if (level.getBlockState(e.getBlockPos()).getValue(BlockStateProperties.LIT) != e.isFactoryCooking()) {
                             level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(BlockStateProperties.LIT, e.isFactoryCooking()), 3);
@@ -762,11 +699,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     if (state.getValue(BlockIronFurnaceBase.JOVIAL) != e.jovial) {
                         level.setBlock(worldPosition, state.setValue(BlockIronFurnaceBase.JOVIAL, e.jovial), 3);
                     }
-                    for (int i = 0; i < e.factoryCookTime.length; i++)
-                    {
+                    for (int i = 0; i < e.factoryCookTime.length; i++) {
                         if (e.factoryCookTime[i] <= 0) {
-                            for (int j = 0; j < FACTORY_INPUT.length; j++)
-                            {
+                            for (int j = 0; j < FACTORY_INPUT.length; j++) {
                                 if (e.getItem(FACTORY_INPUT[j]).isEmpty()) {
                                     e.autoFactoryIO();
                                     e.setChanged();
@@ -806,8 +741,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         }
                         e.setChanged();
                     }
-                    if (e.isGenerator())
-                    {
+                    if (e.isGenerator()) {
                         if (level.getBlockState(e.getBlockPos()).getValue(BlockStateProperties.LIT) != e.generatorBurn > 0) {
                             level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(BlockStateProperties.LIT, e.generatorBurn > 0), 3);
                         }
@@ -936,7 +870,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         if (e.isBurning()) {
                             flag1 = true;
                             if (!(itemstack.getItem() instanceof ItemHeater)) {
-                                if (itemstack.hasCraftingRemainingItem()) e.setItem(FUEL, itemstack.getCraftingRemainingItem());
+                                if (itemstack.hasCraftingRemainingItem())
+                                    e.setItem(FUEL, itemstack.getCraftingRemainingItem());
                                 else if (!itemstack.isEmpty()) {
                                     itemstack.shrink(1);
                                     if (itemstack.isEmpty()) {
@@ -1014,8 +949,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     }
 
-    protected int getCapacityFromTier()
-    {
+    protected int getCapacityFromTier() {
         return switch (getTier()) {
             case 1 -> Config.furnaceEnergyCapacityTier1.get();
             case 2 -> Config.furnaceEnergyCapacityTier2.get();
@@ -1089,6 +1023,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         if (other.getStackInSlot(i).isEmpty()) {
                                             continue;
                                         }
+                                        if (other.getStackInSlot(i).getItem() == Items.BUCKET)
+                                        {
+                                            continue;
+                                        }
                                         ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
                                         if (isItemFuel(stack) && getItem(FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(FUEL), stack)) {
                                             insertItemInternal(FUEL, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getItem(FUEL).getCount(), false), false);
@@ -1102,11 +1040,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     if (this.getItem(FUEL).isEmpty()) {
                                         continue;
                                     }
-                                    ItemStack stack = extractItemInternal(FUEL, 1, true);
-                                    if (stack.getItem() != Items.BUCKET) {
-                                        continue;
-                                    }
                                     for (int i = 0; i < other.getSlots(); i++) {
+                                        ItemStack stack = extractItemInternal(FUEL, this.getItem(FUEL).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                             other.insertItem(i, extractItemInternal(FUEL, stack.getCount(), false), false);
                                         }
@@ -1148,8 +1083,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     }
                     if (other != null) {
                         if (this.getAutoInput() != 0) {
-
-
                             if (furnaceSettings.get(dir.ordinal()) == 4) {
                                 if (this.getItem(GENERATOR_FUEL).getCount() >= this.getItem(GENERATOR_FUEL).getMaxStackSize()) {
                                     continue;
@@ -1158,13 +1091,37 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     if (other.getStackInSlot(i).isEmpty()) {
                                         continue;
                                     }
+                                    if (other.getStackInSlot(i).getItem() == Items.BUCKET)
+                                    {
+                                        continue;
+                                    }
                                     ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
+                                    if (stack.getItem() instanceof ItemHeater)
+                                    {
+                                        continue;
+                                    }
                                     if (isItemFuel(stack) && getItem(GENERATOR_FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(GENERATOR_FUEL), stack)) {
                                         insertItemInternal(GENERATOR_FUEL, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getItem(GENERATOR_FUEL).getCount(), false), false);
                                     }
                                 }
                             }
-
+                        }
+                        if (this.getAutoOutput() != 0)
+                        {
+                            if (furnaceSettings.get(dir.ordinal()) == 4)
+                            {
+                                if (this.getItem(GENERATOR_FUEL).isEmpty()) {
+                                    continue;
+                                }
+                                if (!isItemFuel(getItem(GENERATOR_FUEL))) {
+                                    for (int i = 0; i < other.getSlots(); i++) {
+                                        ItemStack stack = extractItemInternal(GENERATOR_FUEL, this.getItem(GENERATOR_FUEL).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
+                                        if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
+                                            other.insertItem(i, extractItemInternal(GENERATOR_FUEL, stack.getCount(), false), false);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -1192,8 +1149,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     int start = getTier() == 0 ? 2 : getTier() == 1 ? 1 : 0;
                                     int size = getTier() == 0 ? 4 : getTier() == 1 ? 5 : 6;
 
-                                    for (int j = start; j < size; j++)
-                                    {
+                                    for (int j = start; j < size; j++) {
                                         if (this.getItem(FACTORY_INPUT[j]).getCount() >= this.getItem(FACTORY_INPUT[j]).getMaxStackSize()) {
                                             continue;
                                         }
@@ -1215,8 +1171,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 if (furnaceSettings.get(dir.ordinal()) == 2 || furnaceSettings.get(dir.ordinal()) == 3) {
                                     int start = getTier() == 0 ? 2 : getTier() == 1 ? 1 : 0;
                                     int size = getTier() == 0 ? 4 : getTier() == 1 ? 5 : 6;
-                                    for (int j = start; j < size; j++)
-                                    {
+                                    for (int j = start; j < size; j++) {
                                         if (this.getItem(FACTORY_INPUT[j] + 6).isEmpty()) {
                                             continue;
                                         }
@@ -1307,8 +1262,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     //CLIENT SYNC
 
-    public boolean isAutoSplit()
-    {
+    public boolean isAutoSplit() {
         return furnaceSettings.autoSplit == 1;
     }
 
@@ -1427,50 +1381,30 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return furnaceBurnTime > 0;
     }
 
-    protected void smelt(@Nullable Recipe<?> recipe)
-    {
-        if (this instanceof BlockMillionFurnaceTile)
-        {
+    protected void smelt(@Nullable Recipe<?> recipe) {
+        if (this instanceof BlockMillionFurnaceTile) {
             smeltItemMult(recipe, 64);
-        }
-        else if (this instanceof BlockAllthemodiumFurnaceTile)
-        {
+        } else if (this instanceof BlockAllthemodiumFurnaceTile) {
             smeltItemMult(recipe, Config.allthemodiumFurnaceSmeltMult.get());
-        }
-        else if (this instanceof BlockVibraniumFurnaceTile)
-        {
+        } else if (this instanceof BlockVibraniumFurnaceTile) {
             smeltItemMult(recipe, Config.vibraniumFurnaceSmeltMult.get());
-        }
-        else if (this instanceof BlockUnobtainiumFurnaceTile)
-        {
+        } else if (this instanceof BlockUnobtainiumFurnaceTile) {
             smeltItemMult(recipe, Config.unobtainiumFurnaceSmeltMult.get());
-        }
-        else
-        {
+        } else {
             smeltItem(recipe);
         }
     }
 
-    protected void factorySmelt(@Nullable Recipe<?> recipe, int slot)
-    {
-        if (this instanceof BlockMillionFurnaceTile)
-        {
+    protected void factorySmelt(@Nullable Recipe<?> recipe, int slot) {
+        if (this instanceof BlockMillionFurnaceTile) {
             smeltFactoryItemMult(recipe, slot, 64);
-        }
-        else if (this instanceof BlockAllthemodiumFurnaceTile)
-        {
+        } else if (this instanceof BlockAllthemodiumFurnaceTile) {
             smeltFactoryItemMult(recipe, slot, Config.allthemodiumFurnaceSmeltMult.get());
-        }
-        else if (this instanceof BlockVibraniumFurnaceTile)
-        {
+        } else if (this instanceof BlockVibraniumFurnaceTile) {
             smeltFactoryItemMult(recipe, slot, Config.vibraniumFurnaceSmeltMult.get());
-        }
-        else if (this instanceof BlockUnobtainiumFurnaceTile)
-        {
+        } else if (this instanceof BlockUnobtainiumFurnaceTile) {
             smeltFactoryItemMult(recipe, slot, Config.unobtainiumFurnaceSmeltMult.get());
-        }
-        else
-        {
+        } else {
             smeltFactoryItem(recipe, slot);
         }
     }
@@ -1639,24 +1573,19 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     @Override
     public void load(CompoundTag tag) {
 
-        for (int i = 0; i < factoryCookTime.length; i++)
-        {
+        for (int i = 0; i < factoryCookTime.length; i++) {
             int[] tagArr = tag.getIntArray("FactoryCookTime");
-            if (tagArr.length == factoryCookTime.length)
-            {
+            if (tagArr.length == factoryCookTime.length) {
                 factoryCookTime[i] = tagArr[i];
             }
         }
-        for (int i = 0; i < factoryTotalCookTime.length; i++)
-        {
+        for (int i = 0; i < factoryTotalCookTime.length; i++) {
             int[] tagArr = tag.getIntArray("FactoryTotalCookTime");
-            if (tagArr.length == factoryTotalCookTime.length)
-            {
+            if (tagArr.length == factoryTotalCookTime.length) {
                 factoryTotalCookTime[i] = tagArr[i];
             }
         }
-        for (int i = 0; i < usedRF.length; i++)
-        {
+        for (int i = 0; i < usedRF.length; i++) {
             double tagRF = tag.getDouble("UsedRF" + i);
             usedRF[i] = tagRF;
         }
@@ -1690,8 +1619,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         super.saveAdditional(tag);
         tag.putIntArray("FactoryCookTime", factoryCookTime);
         tag.putIntArray("FactoryTotalCookTime", factoryTotalCookTime);
-        for (int i = 0; i < usedRF.length; i++)
-        {
+        for (int i = 0; i < usedRF.length; i++) {
             tag.putDouble("UsedRF" + i, usedRF[i]);
         }
 
@@ -1829,8 +1757,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             if (furnaceSettings.get(DirectionUtil.getId(direction)) == 4 && stack.getItem() == Items.BUCKET) {
                 return true;
             }
-        }
-        else if (isFactory()) {
+        } else if (isFactory()) {
             if (furnaceSettings.get(DirectionUtil.getId(direction)) == 2) {
                 return index >= 13 && index <= 18;
             } else if (furnaceSettings.get(DirectionUtil.getId(direction)) == 3) {
@@ -1868,9 +1795,12 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 if (getItem(AUGMENT_RED).isEmpty() && getBurnTime(stack) > 0) {
                     return true;
                 }
+                if (stack.getItem() instanceof ItemHeater)
+                {
+                    return false;
+                }
             }
-        }
-        else if (isFactory()) {
+        } else if (isFactory()) {
             if ((index >= 13 && index <= 18) || index == 3 || index == 4 || index == 5) {
                 return false;
             }
@@ -1878,7 +1808,28 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 if (stack.isEmpty()) {
                     return false;
                 }
-
+                if (getTier() == 0)
+                {
+                    if (index >= 9 && index <= 10)
+                    {
+                        return hasRecipe(stack);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (getTier() == 1)
+                {
+                    if (index >= 8 && index <= 11)
+                    {
+                        return hasRecipe(stack);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
                 return hasRecipe(stack);
             }
         }

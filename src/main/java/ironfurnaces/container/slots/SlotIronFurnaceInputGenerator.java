@@ -1,5 +1,6 @@
 package ironfurnaces.container.slots;
 
+import ironfurnaces.items.ItemHeater;
 import ironfurnaces.items.augments.ItemAugmentBlasting;
 import ironfurnaces.items.augments.ItemAugmentSmoking;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
@@ -29,6 +30,10 @@ public class SlotIronFurnaceInputGenerator extends Slot {
             {
                 return te.getSmokingBurn(stack) > 0;
             }
+        }
+        if (stack.getItem() instanceof ItemHeater)
+        {
+            return false;
         }
         return BlockIronFurnaceTileBase.isItemFuel(stack);
     }
