@@ -144,7 +144,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     public boolean hasRecipe(ItemStack stack) {
-        return getRecipe(stack).isPresent();
+        return (getCache().computeIfAbsent(stack.getItem(), (item) -> getRecipe(stack))).isPresent();
     }
 
     public boolean hasGeneratorBlastingRecipe(ItemStack stack) {
