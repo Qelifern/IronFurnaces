@@ -200,7 +200,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     public int getCookTime() {
-
         ItemStack stack = this.getItem(AUGMENT_GREEN);
 
         if (this.getItem(INPUT).getItem() == Items.AIR) {
@@ -1038,6 +1037,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
                                 if (furnaceSettings.get(dir.ordinal()) == 4) {
                                     if (this.getItem(FUEL).isEmpty()) {
+                                        continue;
+                                    }
+                                    if (this.getItem(FUEL).getItem() != Items.BUCKET) {
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
