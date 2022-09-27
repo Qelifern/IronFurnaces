@@ -47,11 +47,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -201,7 +200,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     public int getCookTime() {
         ItemStack stack = this.getItem(AUGMENT_GREEN);
-
         if (this.getItem(INPUT).getItem() == Items.AIR) {
             return totalCookTime;
         }
@@ -214,10 +212,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 speed = Math.max(1, (int) (Math.ceil(speed * 1.25)));
             }
         }
-
-
         return Math.max(1, speed);
-
     }
 
     protected int getSpeed() {
@@ -230,16 +225,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     protected int getFactoryCookTime(int slot) {
-
         ItemStack stack = this.getItem(AUGMENT_GREEN);
-
         if (this.getItem(slot).getItem() == Items.AIR) {
             return factoryTotalCookTime[slot - FACTORY_INPUT[0]];
         }
         int speed = getFactorySpeed(slot);
-        if (speed == -1) {
-            return -1;
-        }
         if (!stack.isEmpty()) {
             if (stack.getItem() instanceof ItemAugmentSpeed) {
                 speed = Math.max(1, (speed / 2));
@@ -248,24 +238,15 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 speed = Math.max(1, (int) (Math.ceil(speed * 1.25)));
             }
         }
-
-
         return Math.max(1, speed);
-
     }
 
     protected int getFactorySpeed(int slot) {
-        int i = getCookTimeConfig().get();
-        int j = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipeFactory(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
-        if (j == 0) {
-            return -1;
-        }
-        if (j < i) {
-            int k = j - (200 - i);
-            return k;
-        } else {
-            return i;
-        }
+        int regular = getCookTimeConfig().get();
+        int recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
+        double div = 200.0 / recipe;
+        double i = regular / div;
+        return (int)Math.max(1, i);
     }
 
     public ForgeConfigSpec.IntValue getCookTimeConfig() {
@@ -620,7 +601,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     for (Direction dir : Direction.values()) {
                         BlockEntity tile = level.getBlockEntity(e.worldPosition.offset(dir.getNormal()));
                         if (tile != null) {
-                            tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).ifPresent(h -> {
+                            tile.getCapability(ForgeCapabilities.ENERGY, dir.getOpposite()).ifPresent(h -> {
                                 h.receiveEnergy(Config.millionFurnacePowerToGenerate.get(), false);
                             });
                         }
@@ -632,7 +613,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
         if (e.isFactory()) {
             if (!e.level.isClientSide) {
-                e.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> {
+                e.getCapability(ForgeCapabilities.ENERGY).ifPresent(h -> {
                     if (!h.canReceive()) {
                         ((FEnergyStorage) h).setMaxReceive(h.getMaxEnergyStored());
                     }
@@ -718,7 +699,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
         } else if (e.isGenerator()) {
             if (!level.isClientSide) {
-                e.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> {
+                e.getCapability(ForgeCapabilities.ENERGY).ifPresent(h -> {
                     if (h.canReceive()) {
                         ((FEnergyStorage) h).setMaxReceive(0);
                     }
@@ -806,7 +787,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
 
         } else if (e.isFurnace()) {
-            e.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> {
+            e.getCapability(ForgeCapabilities.ENERGY).ifPresent(h -> {
                 if (h.canReceive()) {
                     ((FEnergyStorage) h).setMaxReceive(0);
                 }
@@ -964,7 +945,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 continue;
             }
             if (furnaceSettings.get(dir.ordinal()) == 2 || furnaceSettings.get(dir.ordinal()) == 3) {
-                IEnergyStorage other = tile.getCapability(CapabilityEnergy.ENERGY, dir.getOpposite()).map(other1 -> other1).orElse(null);
+                IEnergyStorage other = tile.getCapability(ForgeCapabilities.ENERGY, dir.getOpposite()).map(other1 -> other1).orElse(null);
                 if (other == null) {
                     continue;
                 }
@@ -974,8 +955,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
         }
         for (Map.Entry<BlockEntity, Direction> entry : tiles.entrySet()) {
-            int energy = Math.min(getCapability(CapabilityEnergy.ENERGY).map(h -> ((FEnergyStorage) h).getMaxExtract()).orElse(0), getEnergy()) / tiles.size();
-            entry.getKey().getCapability(CapabilityEnergy.ENERGY, entry.getValue()).ifPresent(
+            int energy = Math.min(getCapability(ForgeCapabilities.ENERGY).map(h -> ((FEnergyStorage) h).getMaxExtract()).orElse(0), getEnergy()) / tiles.size();
+            entry.getKey().getCapability(ForgeCapabilities.ENERGY, entry.getValue()).ifPresent(
                     h -> {
                         removeEnergy(h.receiveEnergy(energy, false));
                     });
@@ -992,7 +973,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
             if (furnaceSettings.get(dir.ordinal()) == 1 || furnaceSettings.get(dir.ordinal()) == 2 || furnaceSettings.get(dir.ordinal()) == 3 || furnaceSettings.get(dir.ordinal()) == 4) {
                 if (tile != null) {
-                    IItemHandler other = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()).map(other1 -> other1).orElse(null);
+                    IItemHandler other = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).map(other1 -> other1).orElse(null);
 
                     if (other == null) {
                         continue;
@@ -1022,8 +1003,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         if (other.getStackInSlot(i).isEmpty()) {
                                             continue;
                                         }
-                                        if (other.getStackInSlot(i).getItem() == Items.BUCKET)
-                                        {
+                                        if (!isItemFuel(other.getStackInSlot(i))) {
                                             continue;
                                         }
                                         ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
@@ -1039,11 +1019,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     if (this.getItem(FUEL).isEmpty()) {
                                         continue;
                                     }
-                                    if (this.getItem(FUEL).getItem() != Items.BUCKET) {
+                                    if (isItemFuel(this.getItem(FUEL))) {
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
-                                        ItemStack stack = extractItemInternal(FUEL, this.getItem(FUEL).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
+                                        ItemStack stack = extractItemInternal(FUEL, other.getSlotLimit(i) - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                             other.insertItem(i, extractItemInternal(FUEL, stack.getCount(), false), false);
                                         }
@@ -1055,7 +1035,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
-                                        ItemStack stack = extractItemInternal(OUTPUT, this.getItem(OUTPUT).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
+                                        ItemStack stack = extractItemInternal(OUTPUT, other.getSlotLimit(i) - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                             other.insertItem(i, extractItemInternal(OUTPUT, stack.getCount(), false), false);
                                         }
@@ -1078,7 +1058,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
             if (furnaceSettings.get(dir.ordinal()) == 4) {
                 if (tile != null) {
-                    IItemHandler other = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()).map(other1 -> other1).orElse(null);
+                    IItemHandler other = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).map(other1 -> other1).orElse(null);
 
                     if (other == null) {
                         continue;
@@ -1139,7 +1119,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
             if (furnaceSettings.get(dir.ordinal()) == 1 || furnaceSettings.get(dir.ordinal()) == 2 || furnaceSettings.get(dir.ordinal()) == 3) {
                 if (tile != null) {
-                    IItemHandler other = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()).map(other1 -> other1).orElse(null);
+                    IItemHandler other = tile.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).map(other1 -> other1).orElse(null);
 
                     if (other == null) {
                         continue;
@@ -1179,7 +1159,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         }
 
                                         for (int i = 0; i < other.getSlots(); i++) {
-                                            ItemStack stack = extractItemInternal(FACTORY_INPUT[j] + 6, this.getItem(FACTORY_INPUT[j] + 6).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
+                                            ItemStack stack = extractItemInternal(FACTORY_INPUT[j] + 6, other.getSlotLimit(i) - other.getStackInSlot(i).getCount(), true);
                                             if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                                 other.insertItem(i, extractItemInternal(FACTORY_INPUT[j] + 6, stack.getCount(), false), false);
                                             }
@@ -1685,7 +1665,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
 
-        if (!this.isRemoved() && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (!this.isRemoved() && facing != null && capability == ForgeCapabilities.ITEM_HANDLER) {
             if (facing == Direction.DOWN)
                 return invHandlers[0].cast();
             else if (facing == Direction.UP)
@@ -1699,7 +1679,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             else
                 return invHandlers[5].cast();
         }
-        if (!this.isRemoved() && capability == CapabilityEnergy.ENERGY && (isGenerator() || isFactory())) {
+        if (!this.isRemoved() && capability == ForgeCapabilities.ENERGY && (isGenerator() || isFactory())) {
             return energy.cast();
         }
         return super.getCapability(capability, facing);

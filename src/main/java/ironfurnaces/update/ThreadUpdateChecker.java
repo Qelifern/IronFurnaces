@@ -1,5 +1,6 @@
 package ironfurnaces.update;
 
+import ironfurnaces.Config;
 import ironfurnaces.IronFurnaces;
 
 import java.io.InputStreamReader;
@@ -21,6 +22,7 @@ public class ThreadUpdateChecker extends Thread {
 
     @Override
     public void run() {
+
         IronFurnaces.LOGGER.info("Starting Update Check...");
         try {
             URL newestURL = new URL("https://raw.githubusercontent.com/Qelifern/IronFurnaces/" + IronFurnaces.GITHUB_BRANCH + "/update/updateVersions.properties");

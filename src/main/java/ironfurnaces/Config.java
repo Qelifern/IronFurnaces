@@ -100,6 +100,9 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue showErrors;
 
+    public static ForgeConfigSpec.BooleanValue disableWebContent;
+    public static ForgeConfigSpec.BooleanValue disableLightupdates;
+
     //CACHE
     public static ForgeConfigSpec.IntValue cache_capacity;
 
@@ -149,11 +152,19 @@ public class Config {
 
         CLIENT_BUILDER.comment("Misc").push(CATEGORY_MISC);
 
+
+
         enableRainbowContent = CLIENT_BUILDER
                 .comment(" Enable or disable the Rainbow Content").define("misc.rainbow", true);
 
         showErrors = CLIENT_BUILDER
                 .comment(" Show furnace settings errors in chat, used for debugging").define("misc.errors", false);
+
+        disableWebContent = CLIENT_BUILDER
+                .comment(" Enable or disable version checking and player identification through the web, true = disabled, if your server is using firewall software you might want to disable this").define("misc.web", false);
+
+        disableLightupdates = CLIENT_BUILDER
+                .comment(" Enable or disable light-updates, furances will no longer emit light, true = disable").define("misc.lightupdates", false);
 
 
         CLIENT_BUILDER.pop();
@@ -423,6 +434,11 @@ public class Config {
     @SubscribeEvent
     public static void player(final TickEvent.PlayerTickEvent event) {
 
+        if (Config.disableWebContent.get())
+        {
+            return;
+        }
+
         if (!run)
         {
             return;
@@ -455,6 +471,12 @@ public class Config {
 
     @Nullable
     public static Player getPlayer(Level world) {
+
+        if (Config.disableWebContent.get())
+        {
+            return null;
+        }
+
         if (world == null) {
             return null;
         }

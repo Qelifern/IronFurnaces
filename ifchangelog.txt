@@ -1,3 +1,11 @@
+3.6.3
++Added tooltips to all furnaces with cooktime values
++Added a config option to disable web content
++Added a config option to disable light updates
++Fixed a classcast not having a check before casting
++Fixed Auto Input/Output buttons sometimes not switching from ON/OFF when pressing them
++Fixed Auto Output not filling up slots with higher than 64 as stacksize
++Replaced deprecated capabilites
 3.6.2
 +Fixed auto output putting other things than empty buckets back into chests
 3.6.1

@@ -48,49 +48,61 @@ public class ItemLinker extends Item {
         if (!world.isClientSide)
         {
             if (context.getPlayer().isCrouching()) {
-                BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
-                if (tile != null) {
-                    if (!(tile instanceof BlockMillionFurnaceTile)) {
-                        stack.getOrCreateTag().putInt("X", pos.getX());
-                        stack.getOrCreateTag().putInt("Y", pos.getY());
-                        stack.getOrCreateTag().putInt("Z", pos.getZ());
-                        context.getPlayer().sendSystemMessage(Component.literal("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()));
-                    } else {
-                        List<BlockIronFurnaceTileBase> list = ((BlockMillionFurnaceTile) tile).furnaces;
+                if (world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase)
+                {
+                    BlockIronFurnaceTileBase tile = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
+                    if (tile != null) {
+                        if (!(tile instanceof BlockMillionFurnaceTile)) {
+                            stack.getOrCreateTag().putInt("X", pos.getX());
+                            stack.getOrCreateTag().putInt("Y", pos.getY());
+                            stack.getOrCreateTag().putInt("Z", pos.getZ());
+                            context.getPlayer().sendSystemMessage(Component.literal("Saved: " + pos.getX() + " " + pos.getY() + " " + pos.getZ()));
+                        } else {
+                            List<BlockIronFurnaceTileBase> list = ((BlockMillionFurnaceTile) tile).furnaces;
 
-                        int str = Config.millionFurnacePower.get() - list.size();
-                        context.getPlayer().sendSystemMessage(Component.literal("Missing: "  + str));
-
-
-
-
-                        if (stack.hasTag()) {
-
-                            int x = stack.getTag().getInt("X");
-                            int y = stack.getTag().getInt("Y");
-                            int z = stack.getTag().getInt("Z");
-                            BlockIronFurnaceTileBase toAdd = ((BlockIronFurnaceTileBase) world.getBlockEntity(new BlockPos(x, y, z)));
-                            boolean flag = true;
+                            int str = Config.millionFurnacePower.get() - list.size();
+                            context.getPlayer().sendSystemMessage(Component.literal("Missing: "  + str));
 
 
-                            for (int i = 0; i < list.size(); i++)
-                            {
-                                if (toAdd.getBlockState().getBlock() == list.get(i).getBlockState().getBlock()) {
-                                    flag = false;
+
+
+                            if (stack.hasTag()) {
+
+                                int x = stack.getTag().getInt("X");
+                                int y = stack.getTag().getInt("Y");
+                                int z = stack.getTag().getInt("Z");
+                                if (world.getBlockEntity(new BlockPos(x, y, z)) instanceof BlockIronFurnaceTileBase)
+                                {
+                                    BlockIronFurnaceTileBase toAdd = ((BlockIronFurnaceTileBase) world.getBlockEntity(new BlockPos(x, y, z)));
+                                    if (toAdd != null)
+                                    {
+                                        boolean flag = true;
+
+
+                                        for (int i = 0; i < list.size(); i++)
+                                        {
+                                            if (toAdd.getBlockState().getBlock() == list.get(i).getBlockState().getBlock()) {
+                                                flag = false;
+                                            }
+                                        }
+
+
+                                        if (flag)
+                                        {
+                                            context.getPlayer().sendSystemMessage(Component.literal("Added: " + toAdd.getName().getString()));
+                                            ((BlockMillionFurnaceTile) tile).furnaces.add(toAdd);
+                                            toAdd.linkedPos = tile.getBlockPos();
+                                        }
+                                    }
                                 }
-                            }
 
 
-                            if (flag)
-                            {
-                                context.getPlayer().sendSystemMessage(Component.literal("Added: " + toAdd.getName().getString()));
-                                ((BlockMillionFurnaceTile) tile).furnaces.add(toAdd);
-                                toAdd.linkedPos = tile.getBlockPos();
                             }
                         }
-                    }
 
+                    }
                 }
+
             }
         }
 

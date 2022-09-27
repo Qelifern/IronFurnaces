@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -79,7 +80,7 @@ public class BlockWirelessEnergyHeater extends Block implements EntityBlock {
                 te.setCustomName(stack.getDisplayName());
             }
             if (stack.hasTag()) {
-                te.getCapability(CapabilityEnergy.ENERGY).ifPresent(h -> {
+                te.getCapability(ForgeCapabilities.ENERGY).ifPresent(h -> {
                     h.receiveEnergy(stack.getTag().getInt("Energy"), false);
                 });
             }

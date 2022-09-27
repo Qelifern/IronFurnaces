@@ -13,8 +13,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nullable;
@@ -51,11 +51,11 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
     }
 
     public int getEnergy() {
-        return this.getCapability(CapabilityEnergy.ENERGY).map(h -> h.getEnergyStored()).orElse(0);
+        return this.getCapability(ForgeCapabilities.ENERGY).map(h -> h.getEnergyStored()).orElse(0);
     }
 
     public int getCapacity() {
-        return this.getCapability(CapabilityEnergy.ENERGY).map(h -> h.getMaxEnergyStored()).orElse(0);
+        return this.getCapability(ForgeCapabilities.ENERGY).map(h -> h.getMaxEnergyStored()).orElse(0);
     }
 
     public void setEnergy(int energy) {
@@ -122,7 +122,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
     @Override
     public <T> net.minecraftforge.common.util.LazyOptional<T> getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @Nullable Direction facing) {
         //world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
-        if (!this.isRemoved() && facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (!this.isRemoved() && facing != null && capability == ForgeCapabilities.ITEM_HANDLER) {
             if (facing == Direction.UP)
                 return handlers[0].cast();
             else if (facing == Direction.DOWN)
@@ -130,7 +130,7 @@ public class BlockWirelessEnergyHeaterTile extends TileEntityInventory {
             else
                 return handlers[2].cast();
         }
-        if (!this.isRemoved() && capability == CapabilityEnergy.ENERGY) {
+        if (!this.isRemoved() && capability == ForgeCapabilities.ENERGY) {
             return energy.cast();
         }
         return super.getCapability(capability, facing);

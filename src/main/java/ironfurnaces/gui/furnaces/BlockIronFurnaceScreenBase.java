@@ -486,10 +486,22 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
             if (mouseX >= -13 && mouseX <= 0 && mouseY >= 4 && mouseY <= 26) {
                 setShowConfig(0);
             }
-            autoInputButton.onClick(mouseX, mouseY, getMenu().getPos(), 6, 1, !getMenu().getAutoInput());
-            autoInputButton.onClick(mouseX, mouseY, getMenu().getPos(), 6, 0, getMenu().getAutoInput());
-            autoOutputButton.onClick(mouseX, mouseY, getMenu().getPos(), 7, 1, !getMenu().getAutoOutput());
-            autoOutputButton.onClick(mouseX, mouseY, getMenu().getPos(), 7, 0, getMenu().getAutoOutput());
+            if (!getMenu().getAutoInput())
+            {
+                autoInputButton.onClick(mouseX, mouseY, getMenu().getPos(), 6, 1, true);
+            }
+            else if (getMenu().getAutoInput())
+            {
+                autoInputButton.onClick(mouseX, mouseY, getMenu().getPos(), 6, 0, true);
+            }
+            if (!getMenu().getAutoOutput())
+            {
+                autoOutputButton.onClick(mouseX, mouseY, getMenu().getPos(), 7, 1, true);
+            }
+            else if (getMenu().getAutoOutput())
+            {
+                autoOutputButton.onClick(mouseX, mouseY, getMenu().getPos(), 7, 0, true);
+            }
             clickInvButton(mouseX, mouseY, topButton, button, getMenu().getSettingTop(), Direction.UP.ordinal());
             clickInvButton(mouseX, mouseY, bottomButton, button, getMenu().getSettingBottom(), Direction.DOWN.ordinal());
             clickInvButton(mouseX, mouseY, frontButton, button, getMenu().getSettingFront(), getMenu().getIndexFront(), isShiftKeyDown());

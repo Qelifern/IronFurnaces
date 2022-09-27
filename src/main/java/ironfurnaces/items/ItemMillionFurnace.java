@@ -7,8 +7,6 @@ import ironfurnaces.util.StringHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -35,6 +33,7 @@ public class ItemMillionFurnace extends BlockItem {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            tooltip.add(Component.literal("Cooktime: " + Config.millionFurnaceSpeed.get()).withStyle(ChatFormatting.GRAY));
             timer++;
             if (timer % 20 == 0) {
                 timer = 0;

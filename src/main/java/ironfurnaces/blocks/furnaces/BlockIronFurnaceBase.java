@@ -1,6 +1,7 @@
 package ironfurnaces.blocks.furnaces;
 
 import com.mojang.math.Vector3d;
+import ironfurnaces.Config;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemFurnaceCopy;
 import ironfurnaces.items.ItemSpooky;
@@ -61,6 +62,10 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        if (Config.disableLightupdates.get())
+        {
+            return 0;
+        }
         return state.getValue(BlockStateProperties.LIT) ? 14 : 0;
     }
 
@@ -259,10 +264,13 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
                 BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase)te);
                 if (!(furnace instanceof BlockMillionFurnaceTile) && furnace.linkedPos != new BlockPos(0, 0, 0))
                 {
-                    BlockMillionFurnaceTile tile = (BlockMillionFurnaceTile)world.getBlockEntity(furnace.linkedPos);
-                    if (tile != null)
+                    if (world.getBlockEntity(furnace.linkedPos) instanceof BlockMillionFurnaceTile)
                     {
-                        tile.furnaces = new ArrayList<BlockIronFurnaceTileBase>();
+                        BlockMillionFurnaceTile tile = (BlockMillionFurnaceTile)world.getBlockEntity(furnace.linkedPos);
+                        if (tile != null)
+                        {
+                            tile.furnaces = new ArrayList<BlockIronFurnaceTileBase>();
+                        }
                     }
 
                 }
