@@ -28,4 +28,5 @@ public class ItemFurnace extends BlockItem {
         tooltip.add(Component.literal("Cooktime: " + cooktime).withStyle(ChatFormatting.GRAY));
 
     }
+
 }

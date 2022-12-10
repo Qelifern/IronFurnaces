@@ -1,6 +1,5 @@
 package ironfurnaces.blocks.furnaces;
 
-import com.mojang.math.Vector3d;
 import ironfurnaces.Config;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemFurnaceCopy;
@@ -41,6 +40,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

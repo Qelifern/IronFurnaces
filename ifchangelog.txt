@@ -1,3 +1,7 @@
+3.7.0
++1.19.3
++Changed stacksize of augments to 64
++Redid creative tab
 3.6.3
 +Added tooltips to all furnaces with cooktime values
 +Added a config option to disable web content
