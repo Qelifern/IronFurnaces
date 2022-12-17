@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.apache.logging.log4j.core.jmx.Server;
 
 public class SlotIronFurnaceOutputFactory extends Slot {
 
@@ -68,7 +69,7 @@ public class SlotIronFurnaceOutputFactory extends Slot {
     protected void onQuickCraft(ItemStack stack, int p_75210_2_) {
         stack.onCraftedBy(this.player.level, this.player, this.removeCount);
         if (!this.player.level.isClientSide && this.te instanceof BlockIronFurnaceTileBase) {
-            ((BlockIronFurnaceTileBase)this.te).unlockRecipes(this.player);
+            ((BlockIronFurnaceTileBase)this.te).unlockRecipes((ServerPlayer) this.player);
         }
 
         this.removeCount = 0;

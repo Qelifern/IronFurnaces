@@ -14,16 +14,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -37,13 +38,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import org.joml.Vector3d;
+import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BlockIronFurnaceBase extends Block implements EntityBlock {
 
@@ -86,6 +89,10 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
             }
             te.totalCookTime = te.getCookTimeConfig().get();
             te.placeConfig();
+            if (entity instanceof Player)
+            {
+                //te.savedPlayer = ((Player)entity);
+            }
         }
     }
 
@@ -277,7 +284,7 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
 
 
                 Containers.dropContents(world, pos, furnace);
-                furnace.grantStoredRecipeExperience(world, new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
+                furnace.grantStoredRecipeExperience((ServerLevel) world, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
                 world.updateNeighbourForOutputSignal(pos, this);
             }
 
@@ -286,8 +293,63 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
     }
 
     public int getComparatorInputOverride(BlockState state, Level world, BlockPos pos) {
-        return AbstractContainerMenu.getRedstoneSignalFromContainer((WorldlyContainer) world.getBlockEntity(pos));
+        List<Integer> slots = Lists.newArrayList();
+        if (world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase)
+        {
 
+            BlockIronFurnaceTileBase te = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
+            if (te.isFurnace()) slots.add(0); slots.add(1); slots.add(2);
+            if (te.isGenerator()) slots.add(6);
+            if (te.isFactory())
+            {
+                int tier = te.getTier();
+                if (tier >= 0)
+                {
+                    slots.add(9);
+                    slots.add(10);
+                    slots.add(15);
+                    slots.add(16);
+                    if (tier >= 1)
+                    {
+                        slots.add(8);
+                        slots.add(11);
+                        slots.add(14);
+                        slots.add(17);
+                        if (tier >= 2)
+                        {
+                            slots.add(7);
+                            slots.add(12);
+                            slots.add(13);
+                            slots.add(18);
+                        }
+                    }
+
+                }
+            }
+            return getRedstoneSignalFromContainer((WorldlyContainer) world.getBlockEntity(pos), slots);
+
+        }
+        return 0;
+    }
+
+    public static int getRedstoneSignalFromContainer(@Nullable Container container, List<Integer> slots) {
+        if (container == null) {
+            return 0;
+        } else {
+            int i = 0;
+            float f = 0.0F;
+
+            for(int slot : slots) {
+                ItemStack itemstack = container.getItem(slot);
+                if (!itemstack.isEmpty()) {
+                    f += (float)itemstack.getCount() / (float)Math.min(container.getMaxStackSize(), itemstack.getMaxStackSize());
+                    ++i;
+                }
+            }
+
+            f /= (float)slots.size();
+            return Mth.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+        }
     }
 
     @Override
@@ -322,7 +384,7 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
 
     @Override
     public int getSignal(BlockState p_180656_1_, BlockGetter p_180656_2_, BlockPos p_180656_3_, Direction p_180656_4_) {
-        return super.getDirectSignal(p_180656_1_, p_180656_2_, p_180656_3_, p_180656_4_);
+        return getDirectSignal(p_180656_1_, p_180656_2_, p_180656_3_, p_180656_4_);
     }
 
     @Override

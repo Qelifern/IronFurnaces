@@ -23,7 +23,7 @@
     {
       "value": {
         "type": "forge:tag_empty",
-        "tag": "forge:ingots/copper"
+        "tag": "forge:ingots/silver"
       },
       "type": "forge:not"
     }

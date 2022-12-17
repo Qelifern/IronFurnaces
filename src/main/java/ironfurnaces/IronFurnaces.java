@@ -26,7 +26,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "370";
+    public static final String VERSION = "371";
     public static final String MC_VERSION = "1.19.3";
     public static final String GITHUB_BRANCH = "1.19.3";
 
@@ -102,6 +102,7 @@ public class IronFurnaces
                     output.accept(Registration.GENERATOR_AUGMENT.get());
                     output.accept(Registration.SPEED_AUGMENT.get());
                     output.accept(Registration.FUEL_AUGMENT.get());
+                    output.accept(Registration.XP_AUGMENT.get());
                     output.accept(Registration.ITEM_SPOOKY.get());
                     output.accept(Registration.ITEM_XMAS.get());
                     output.accept(Registration.ITEM_COPY.get());

@@ -25,6 +25,8 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.List;
 
 public class BlockWirelessEnergyHeater extends Block implements EntityBlock {
 

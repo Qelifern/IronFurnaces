@@ -264,6 +264,7 @@ public class Registration {
     public static final RegistryObject<ItemAugmentGenerator> GENERATOR_AUGMENT = ITEMS.register("augment_generator", () -> new ItemAugmentGenerator(new Item.Properties()));
     public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", () -> new ItemAugmentSpeed(new Item.Properties()));
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", () -> new ItemAugmentFuel(new Item.Properties()));
+    public static final RegistryObject<ItemAugmentXP> XP_AUGMENT = ITEMS.register("augment_xp", () -> new ItemAugmentXP(new Item.Properties()));
 
     public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", () -> new ItemSpooky(new Item.Properties()));
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties()));

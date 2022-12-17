@@ -44,9 +44,6 @@ public class Config {
     public static ForgeConfigSpec COMMON_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
 
-    public static ForgeConfigSpec.IntValue furnaceXPDropValue;
-    public static ForgeConfigSpec.IntValue furnaceXPDropValue2;
-
     public static ForgeConfigSpec.IntValue ironFurnaceSpeed;
     public static ForgeConfigSpec.IntValue goldFurnaceSpeed;
     public static ForgeConfigSpec.IntValue diamondFurnaceSpeed;
@@ -88,7 +85,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue silverFurnaceTier;
     public static ForgeConfigSpec.IntValue millionFurnaceTier;
 
-
+    public static ForgeConfigSpec.IntValue recipeMaxXPLevel;
 
     public static ForgeConfigSpec.BooleanValue enableJeiPlugin;
     public static ForgeConfigSpec.BooleanValue enableJeiCatalysts;
@@ -313,23 +310,18 @@ public class Config {
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
                 .defineInRange("rainbow_furnace.speed", 20, 2, 72000);
 
-        millionFurnacePowerToGenerate = CLIENT_BUILDER
-                .comment(" How much power the Rainbow Furnace will generate.\n Default: 10000")
-                .defineInRange("rainbow_furnace.power_to_generate", 10000, 1, 100000000);
-
         millionFurnacePower = CLIENT_BUILDER
                 .comment(" How many furnaces that need to be linked in order for the Rainbow Furnace to generate power.\n Default: 9")
                 .defineInRange("rainbow_furnace.power", 9, 1, 100);
 
+        millionFurnacePowerToGenerate = CLIENT_BUILDER
+                .comment(" How much power the Rainbow Furnace will generate.\n Default: 50000")
+                .defineInRange("rainbow_furnace.rainbow_generation", 50000, 1, 100000000);
 
 
-        furnaceXPDropValue = CLIENT_BUILDER
-                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 10, Recipes")
-                .defineInRange("furance_xp_drop.value", 10, 1, 500);
-
-        furnaceXPDropValue2 = CLIENT_BUILDER
-                .comment(" This value indicates when the furnace should 'overload' and spit out the xp stored. \n Default: 100000, Single recipe uses")
-                .defineInRange("furance_xp_drop.value_two", 100000, 1, 1000000);
+        recipeMaxXPLevel = CLIENT_BUILDER
+                .comment(" How many levels of experience that can be stored in recipes stored in the furnace, after the experience stored in the recipe reaches this value (in levels) it will be voided.\n Default: 100 \n 100 levels is 30971 XP")
+                .defineInRange("recipeMaxXPLevel.level", 100, 1, 1000);
 
     }
 

@@ -48,7 +48,7 @@ public class SlotIronFurnace extends Slot {
     protected void onQuickCraft(ItemStack stack, int p_75210_2_) {
         stack.onCraftedBy(this.player.level, this.player, this.removeCount);
         if (!this.player.level.isClientSide && this.te instanceof BlockIronFurnaceTileBase) {
-            ((BlockIronFurnaceTileBase)this.te).unlockRecipes(this.player);
+            ((BlockIronFurnaceTileBase)this.te).unlockRecipes((ServerPlayer)this.player);
         }
 
         this.removeCount = 0;

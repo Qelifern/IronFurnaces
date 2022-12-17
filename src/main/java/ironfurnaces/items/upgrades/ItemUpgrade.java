@@ -69,6 +69,10 @@ public class ItemUpgrade extends Item {
                 world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
                 world.setBlock(pos, next, 3);
                 world.markAndNotifyBlock(pos, world.getChunkAt(pos), world.getBlockState(pos).getBlock().defaultBlockState(), world.getBlockState(pos),3,  3);
+                BlockEntity te2 = world.getBlockEntity(pos);
+                if (te2 instanceof BlockIronFurnaceTileBase) {
+                    ((BlockIronFurnaceTileBase) te2).placeConfig();
+                }
             }
             if (te instanceof BlockIronFurnaceTileBase) {
                 int[] FACTORY_COOKTIME = ((BlockIronFurnaceTileBase) te).factoryCookTime;
