@@ -2,6 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "top": "ironfurnaces:block/unobtainium_furnace_top_smoke",
+        "bottom": "ironfurnaces:block/unobtainium_furnace_side",
         "front": "ironfurnaces:block/unobtainium_furnace_front_on_smoke",
         "side": "ironfurnaces:block/unobtainium_furnace_side"
     }

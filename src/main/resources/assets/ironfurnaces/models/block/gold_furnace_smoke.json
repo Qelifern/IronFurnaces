@@ -2,6 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "top": "ironfurnaces:block/gold_furnace_top_smoke",
+        "bottom": "ironfurnaces:block/gold_furnace_side",
         "front": "ironfurnaces:block/gold_furnace_front_smoke",
         "side": "ironfurnaces:block/gold_furnace_side"
     }

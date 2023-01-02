@@ -42,7 +42,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -293,7 +292,7 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
     }
 
     public int getComparatorInputOverride(BlockState state, Level world, BlockPos pos) {
-        List<Integer> slots = Lists.newArrayList();
+        List<Integer> slots = new ArrayList<>();
         if (world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase)
         {
 
