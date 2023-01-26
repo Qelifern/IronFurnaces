@@ -26,7 +26,7 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "372";
+    public static final String VERSION = "373";
     public static final String MC_VERSION = "1.19.3";
     public static final String GITHUB_BRANCH = "1.19.3";
 
@@ -63,6 +63,7 @@ public class IronFurnaces
             IronFurnaces.LOGGER.warn("You have disabled Iron Furnaces's Update Checker, to re-enable: change the value of Update Checker in .minecraft->config->ironfurnaces-client.toml to 'true'.");
         }
     }
+
 
     private void registerTabs(CreativeModeTabEvent.Register event) {
         tabIronFurnaces = event.registerCreativeModeTab(new ResourceLocation(IronFurnaces.MOD_ID, "ironfurnaces"), builder -> builder

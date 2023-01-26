@@ -423,7 +423,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     if (amount >= getItem(FACTORY_INPUT[j]).getCount()) {
                         amount = getItem(FACTORY_INPUT[j]).getCount() - 1;
                     }
+                    CompoundTag stackTag = getItem(FACTORY_INPUT[j]).getTag();
                     stack = new ItemStack(getItem(FACTORY_INPUT[j]).getItem());
+                    stack.setTag(stackTag);
                     getItem(FACTORY_INPUT[j]).shrink(amount);
                     for (int i = start; i < size; i++) {
                         if (getItem(FACTORY_INPUT[i]).isEmpty() && amount > 0) {
@@ -455,7 +457,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
         for (int i = start; i < size; i++) {
             if (!getItem(FACTORY_INPUT[i]).isEmpty()) {
-                itemToCheck = getItem(FACTORY_INPUT[i]);
+                itemToCheck = getItem(FACTORY_INPUT[i]).copy();
             }
         }
         if (!itemToCheck.isEmpty()) {
@@ -497,7 +499,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return;
         }
         for (Map.Entry<Integer, Integer> countsEntry : setCounts.entrySet()) {
-            setItem(countsEntry.getKey(), new ItemStack(getItem(countsEntry.getKey()).getItem(), countsEntry.getValue()));
+            CompoundTag newTag = getItem(countsEntry.getKey()).getTag();
+            ItemStack newStack = new ItemStack(getItem(countsEntry.getKey()).getItem(), countsEntry.getValue());
+            newStack.setTag(newTag);
+            setItem(countsEntry.getKey(), newStack);
             setChanged();
         }
 
