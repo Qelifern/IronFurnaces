@@ -1,5 +1,5 @@
 {
-    "_comment": "Đồ Vật",
+    "_comment": "Vật Phẩm",
     "item.ironfurnaces.upgrade_iron": "Nâng cấp Lò Nung từ Đá thành Sắt",
     "item.ironfurnaces.upgrade_gold": "Nâng cấp Lò Nung từ Sắt thành Vàng",
     "item.ironfurnaces.upgrade_diamond": "Nâng cấp Lò Nung từ Vàng thành Kim Cương",
@@ -32,7 +32,7 @@
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
 
-    "_comment": "Blocks",
+    "_comment": "Khối",
     "block.ironfurnaces.iron_furnace": "Lò Nung Sắt",
     "block.ironfurnaces.gold_furnace": "Lò Nung Vàng",
     "block.ironfurnaces.diamond_furnace": "Lò Nung Kim Cương",
@@ -74,7 +74,7 @@
     "ironfurnaces.jei_category_blasting": "Phát Điện | Lò Cao",
     "ironfurnaces.jei_category_smoking": "Phát Điện | Lò Nướng",
 
-    "_comment": "Tooltips",
+    "_comment": "Hướng dẫn công cụ",
     "tooltip.ironfurnaces.upgrade_right_click": "Ngồi & chuột phải để nâng cấp",
     "tooltip.ironfurnaces.xmas_right_click": "Chuột phải vào lò nung để bóc nó như là gói quà!",
     "tooltip.ironfurnaces.xmas1": "Nhưng không phải nó sẽ cái bọc sẽ cháy sao?",
@@ -145,7 +145,7 @@
 
 
 
-    "_comment": "Updates",
+    "_comment": "Cập Nhật",
     "ironfurnaces.update.speech": "[{\"text\":\"Có một bản Cập Nhật cho \"},{\"text\":\"Iron Furnaces \",\"color\":\"dark_green\"},{\"text\":\"đã sẵn sàng!\",\"color\":\"none\"}]",
     "ironfurnaces.update.version": "[{\"text\":\"Phiên bản hiện tại: \"},{\"text\":\"%s\",\"color\":\"dark_red\"},{\"text\":\", Phiên bản mới nhất: \",\"color\":\"none\"},{\"text\":\"%s\",\"color\":\"dark_green\"}]",
     "ironfurnaces.update.buttons": "[{\"text\":\"[\"},{\"text\":\"Bấm để xem Thay Đổi\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"%s\"}},{\"text\":\"] [\",\"color\":\"none\"},{\"text\":\"Bấm để Tải Xuống\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"%s\"}},{\"text\":\"]\",\"color\":\"none\"}]",
