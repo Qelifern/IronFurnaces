@@ -584,7 +584,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 }
 
 
-                if (furnaceTile.furnaces.size() == Config.millionFurnacePower.get()) {
+                if (furnaceTile.furnaces.size() >= Config.millionFurnacePower.get()) {
                     for (BlockIronFurnaceTileBase furnace : furnaceTile.furnaces) {
                         level.getChunkAt(furnace.getBlockPos()).setLoaded(true);
                         if (furnace.generatorBurn <= 0 || furnace.getEnergy() >= furnace.getCapacity()) {
