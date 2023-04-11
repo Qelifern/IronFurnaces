@@ -1,3 +1,5 @@
+3.8.0
++Version bump for 1.19.4
 [WIP]3.7.3
 [WIP]+Added XP Augment which will output any XP stored into adjacent fluid handlers as liquid XP if a liquid XP from any other mod exists
 3.7.2

@@ -21,6 +21,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -1477,10 +1478,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             smeltFactoryItem(recipe, slot);
         }
     }
-
     protected boolean canSmelt(@Nullable Recipe<?> recipe) {
         if (!this.getItem(0).isEmpty() && recipe != null) {
-            ItemStack recipeOutput = recipe.getResultItem();
+            ItemStack recipeOutput = recipe.getResultItem(RegistryAccess.EMPTY);
             if (!recipeOutput.isEmpty()) {
                 ItemStack output = this.getItem(OUTPUT);
                 if (output.isEmpty()) return true;
@@ -1495,7 +1495,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
             ItemStack itemstack = this.getItem(INPUT);
-            ItemStack itemstack1 = recipe.getResultItem();
+            ItemStack itemstack1 = recipe.getResultItem(RegistryAccess.EMPTY);
             ItemStack itemstack2 = this.getItem(OUTPUT);
             if (itemstack2.isEmpty()) {
                 this.setItem(OUTPUT, itemstack1.copy());
@@ -1524,7 +1524,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     protected boolean canFactorySmelt(@Nullable Recipe<?> recipe, int slot) {
         int outputSlot = slot + 6;
         if (!this.getItem(slot).isEmpty() && recipe != null) {
-            ItemStack recipeOutput = recipe.getResultItem();
+            ItemStack recipeOutput = recipe.getResultItem(RegistryAccess.EMPTY);
             if (!recipeOutput.isEmpty()) {
                 ItemStack output = this.getItem(outputSlot);
                 if (output.isEmpty()) return true;
@@ -1540,7 +1540,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         int outputSlot = slot + 6;
         if (recipe != null && this.canFactorySmelt(recipe, slot)) {
             ItemStack itemstack = this.getItem(slot);
-            ItemStack itemstack1 = recipe.getResultItem();
+            ItemStack itemstack1 = recipe.getResultItem(RegistryAccess.EMPTY);
             ItemStack itemstack2 = this.getItem(outputSlot);
             if (itemstack2.isEmpty()) {
                 this.setItem(outputSlot, itemstack1.copy());
@@ -1566,7 +1566,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         timer = 0;
         if (recipe != null && this.canSmelt(recipe)) {
             ItemStack itemstack = this.getItem(INPUT);
-            ItemStack itemstack1 = recipe.getResultItem();
+            ItemStack itemstack1 = recipe.getResultItem(RegistryAccess.EMPTY);
             ItemStack itemstack2 = this.getItem(OUTPUT);
             int maxCanSmelt = (64 - itemstack2.getCount()) / itemstack1.getCount();
             int wantToSmeltCount = Math.min(Math.min(div, maxCanSmelt), itemstack.getCount());
@@ -1604,7 +1604,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         int outputSlot = slot + 6;
         if (recipe != null && this.canFactorySmelt(recipe, slot)) {
             ItemStack itemstack = this.getItem(slot);
-            ItemStack itemstack1 = recipe.getResultItem();
+            ItemStack itemstack1 = recipe.getResultItem(RegistryAccess.EMPTY);
             ItemStack itemstack2 = this.getItem(outputSlot);
             int maxCanSmelt = (64 - itemstack2.getCount()) / itemstack1.getCount();
             int wantToSmeltCount = Math.min(Math.min(div, maxCanSmelt), itemstack.getCount());

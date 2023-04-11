@@ -2,6 +2,7 @@ package ironfurnaces.recipes;
 
 import com.google.gson.JsonObject;
 import ironfurnaces.init.Registration;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -59,20 +60,18 @@ public class GeneratorRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container inv) {
+    public ItemStack assemble(Container p_44001_, RegistryAccess p_267165_) {
         return ItemStack.EMPTY;
     }
-
     @Override
     public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
         return true;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess p_267052_) {
         return stack;
     }
-
     @Override
     public boolean isSpecial() {
         return true;

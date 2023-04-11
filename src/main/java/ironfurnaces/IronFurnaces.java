@@ -26,9 +26,9 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "373";
-    public static final String MC_VERSION = "1.19.3";
-    public static final String GITHUB_BRANCH = "1.19.3";
+    public static final String VERSION = "380";
+    public static final String MC_VERSION = "1.19.4";
+    public static final String GITHUB_BRANCH = "1.19.4";
 
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -69,7 +69,7 @@ public class IronFurnaces
         tabIronFurnaces = event.registerCreativeModeTab(new ResourceLocation(IronFurnaces.MOD_ID, "ironfurnaces"), builder -> builder
                 .icon(() -> new ItemStack(Registration.IRON_FURNACE.get()))
                 .title(Component.translatable("itemGroup.ironfurnaces"))
-                .displayItems((featureFlags, output, hasOp) -> {
+                .displayItems((featureFlags, output) -> {
                     output.accept(Registration.IRON_FURNACE_ITEM.get());
                     output.accept(Registration.GOLD_FURNACE_ITEM.get());
                     output.accept(Registration.DIAMOND_FURNACE_ITEM.get());
