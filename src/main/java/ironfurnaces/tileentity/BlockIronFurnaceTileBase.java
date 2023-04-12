@@ -784,9 +784,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.inventory.set(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
             if (ModList.get().isLoaded("pmmo")) {
-                FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 0);
+                FurnaceHandler.handleSmelted(itemstack2, level, worldPosition, 0);
                 if (this.recipeType == IRecipeType.SMOKING) {
-                    FurnaceHandler.handleSmelted(itemstack, itemstack2, level, worldPosition, 1);
+                    FurnaceHandler.handleSmelted(itemstack2, level, worldPosition, 1);
                 }
             }
             itemstack.shrink(1);
