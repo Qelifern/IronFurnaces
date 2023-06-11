@@ -435,16 +435,16 @@ public class Config {
         {
             return;
         }
-        if (!event.player.getLevel().isClientSide) {
+        if (!event.player.level().isClientSide) {
             if (event.player.getServer().getAdvancements() != null)
             {
                 Advancement adv = event.player.getServer().getAdvancements().getAdvancement(new ResourceLocation(IronFurnaces.MOD_ID, "coal"));
                 if (adv != null)
                 {
                     if (!((ServerPlayer) event.player).getAdvancements().getOrStartProgress(adv).isDone()) {
-                        Player player = getPlayer(event.player.getLevel());
+                        Player player = getPlayer(event.player.level());
                         if (player != null && player == event.player) {
-                            event.player.level.addFreshEntity(new ItemEntity(event.player.level, event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL.get())));
+                            event.player.level().addFreshEntity(new ItemEntity(event.player.level(), event.player.position().x, event.player.position().y, event.player.position().z, new ItemStack(Registration.RAINBOW_COAL.get())));
 
                         }
                     }

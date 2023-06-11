@@ -1,14 +1,16 @@
 package ironfurnaces.util.gui;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import ironfurnaces.network.Messages;
 import ironfurnaces.network.PacketSettingsButton;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import org.lwjgl.glfw.GLFW;
 
@@ -87,17 +89,17 @@ public class FurnaceGuiButton {
         }
     }
 
-    public void render(Screen screen, PoseStack matrix, int mouseX, int mouseY, boolean enabled)
+    public void render(ResourceLocation location, GuiGraphics matrix, int mouseX, int mouseY, boolean enabled)
     {
 
             if (!hovering(mouseX, mouseY) && hasUV())
-                screen.blit(matrix, left + x, top + y, u, v, width, height);
+                matrix.blit(location, left + x, top + y, u, v, width, height);
 
             if (hovering(mouseX, mouseY) && hasUVHover())
-                screen.blit(matrix, left + x, top + y, u_hover, v_hover, width, height);
+                matrix.blit(location, left + x, top + y, u_hover, v_hover, width, height);
 
             if (enabled && hasUVEnabled())
-                screen.blit(matrix, left + x, top + y, u_enabled, v_enabled, width, height);
+                matrix.blit(location, left + x, top + y, u_enabled, v_enabled, width, height);
 
 
 
@@ -108,18 +110,18 @@ public class FurnaceGuiButton {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
-    public void renderTooltip(Screen screen, PoseStack matrix, Component text, int mouseX, int mouseY, boolean condition)
+    public void renderTooltip(Font font, GuiGraphics matrix, Component text, int mouseX, int mouseY, boolean condition)
     {
         if (condition)
             if (hovering(mouseX, mouseY))
-                screen.renderTooltip(matrix, text, mouseX, mouseY);
+                matrix.renderTooltip(font, text, mouseX, mouseY);
     }
 
-    public void renderComponentTooltip(Screen screen, PoseStack matrix, List<Component> text, int mouseX, int mouseY, boolean condition)
+    public void renderComponentTooltip(Font font, GuiGraphics matrix, List<Component> text, int mouseX, int mouseY, boolean condition)
     {
         if (condition)
             if (hovering(mouseX, mouseY))
-                screen.renderComponentTooltip(matrix, text, mouseX, mouseY);
+                matrix.renderComponentTooltip(font, text, mouseX, mouseY);
     }
 
     public boolean hasUV()

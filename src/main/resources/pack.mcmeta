@@ -1,6 +1,8 @@
 {
-    "pack": {
-        "description": "ironfurnaces resources",
-        "pack_format": 8
-    }
+  "pack": {
+    "description": {
+      "text": "${mod_id} resources"
+    },
+    "pack_format": 15
+  }
 }

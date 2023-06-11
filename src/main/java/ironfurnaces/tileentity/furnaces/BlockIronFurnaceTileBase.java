@@ -611,65 +611,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                     e.rainbowEnergyOut();
                 }
             }
-            /** WIP
-            if (e.getItem(AUGMENT_GREEN).is(Registration.XP_AUGMENT.get()))
-            {
-                if (!e.recipes.isEmpty())
-                {
-                    for (Object2IntMap.Entry<ResourceLocation> entry : e.recipes.object2IntEntrySet()) {
-                        level.getRecipeManager().byKey(entry.getKey()).ifPresent((h) -> {
-                            int i = Mth.floor((float) entry.getIntValue() * ((AbstractCookingRecipe) h).getExperience());
-                            float f = Mth.frac((float) entry.getIntValue() * ((AbstractCookingRecipe) h).getExperience());
-                            if (f != 0.0F && Math.random() < (double) f) {
-                                ++i;
-                            }
-
-
-                            for (Direction side : Direction.values())
-                            {
-                                IFluidHandler handler = e.level.getBlockEntity(worldPosition.relative(side)).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
-                                if (handler != null)
-                                {
-                                    for (int j = 0; j < handler.getTanks(); j++)
-                                    {
-                                        FluidStack fluid = handler.getFluidInTank(j);
-                                        Fluid xpFluid = ItemTagsIronFurnaces.getOreDict("experience");
-                                        if (xpFluid != null)
-                                        {
-                                            if (!fluid.isEmpty())
-                                            {
-                                                boolean isXP = fluid.getRawFluid().defaultFluidState().getTags().toList().contains(new ResourceLocation("forge", "experience"));
-                                                if (isXP)
-                                                {
-                                                    int filled = handler.fill(new FluidStack(xpFluid, i * 20), IFluidHandler.FluidAction.EXECUTE);
-                                                    if (filled > 0)
-                                                    {
-                                                        e.recipes.clear();
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-
-                                                handler.fill(new FluidStack(xpFluid, i * 20), IFluidHandler.FluidAction.EXECUTE);
-                                                e.recipes.clear();
-                                            }
-
-                                        }
-                                    }
-                                }
-
-
-
-                            }
-
-
-                        });
-                    }
-
-                }
-            }
-             **/
         }
 
         if (e.isFactory()) {
@@ -1484,7 +1425,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             if (!recipeOutput.isEmpty()) {
                 ItemStack output = this.getItem(OUTPUT);
                 if (output.isEmpty()) return true;
-                else if (!output.sameItem(recipeOutput)) return false;
+                else if (!ItemStack.isSameItemSameTags(output, recipeOutput)) return false;
                 else return output.getCount() + recipeOutput.getCount() <= Math.min(output.getMaxStackSize(), 64);
             }
         }
@@ -1528,7 +1469,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             if (!recipeOutput.isEmpty()) {
                 ItemStack output = this.getItem(outputSlot);
                 if (output.isEmpty()) return true;
-                else if (!output.sameItem(recipeOutput)) return false;
+                else if (!ItemStack.isSameItemSameTags(output, recipeOutput)) return false;
                 else return output.getCount() + recipeOutput.getCount() <= output.getMaxStackSize();
             }
         }
@@ -1951,7 +1892,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     public void unlockRecipes(ServerPlayer player) {
-        List<Recipe<?>> list = this.grantStoredRecipeExperience(player.getLevel(), player.position());
+        List<Recipe<?>> list = this.grantStoredRecipeExperience(player.serverLevel(), player.position());
         player.awardRecipes(list);
         recipes.clear();
     }

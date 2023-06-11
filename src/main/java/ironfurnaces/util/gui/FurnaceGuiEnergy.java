@@ -2,8 +2,11 @@ package ironfurnaces.util.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import ironfurnaces.util.StringHelper;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public class FurnaceGuiEnergy {
 
@@ -45,9 +48,9 @@ public class FurnaceGuiEnergy {
     }
 
 
-    public void render(Screen screen, PoseStack matrix, int scaled)
+    public void render(ResourceLocation location, GuiGraphics matrix, int scaled)
     {
-        screen.blit(matrix, left + x, top + y + 42 - scaled, u, v + height - scaled, width, scaled);
+        matrix.blit(location, left + x, top + y + 42 - scaled, u, v + height - scaled, width, scaled);
     }
 
     public boolean hovering(double mouseX, double mouseY)
@@ -55,11 +58,11 @@ public class FurnaceGuiEnergy {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
-    public void renderTooltip(Screen screen, PoseStack matrix, int mouseX, int mouseY, int energy, int capacity, boolean condition)
+    public void renderTooltip(Font font, GuiGraphics matrix, int mouseX, int mouseY, int energy, int capacity, boolean condition)
     {
         if (condition)
             if (hovering(mouseX, mouseY))
-                screen.renderTooltip(matrix, Component.literal(StringHelper.displayEnergy(energy, capacity).get(0)), mouseX, mouseY);
+                matrix.renderTooltip(font, Component.literal(StringHelper.displayEnergy(energy, capacity).get(0)), mouseX, mouseY);
     }
 
 

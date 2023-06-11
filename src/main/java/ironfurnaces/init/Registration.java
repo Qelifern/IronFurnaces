@@ -23,8 +23,12 @@ import ironfurnaces.tileentity.furnaces.other.BlockAllthemodiumFurnaceTile;
 import ironfurnaces.tileentity.furnaces.other.BlockUnobtainiumFurnaceTile;
 import ironfurnaces.tileentity.furnaces.other.BlockVibraniumFurnaceTile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -54,6 +58,10 @@ public class Registration {
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
+
+
+
 
     //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
     //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
@@ -66,6 +74,7 @@ public class Registration {
         CONTAINERS.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
         RECIPE_TYPES.register(modEventBus);
+        CREATIVE_MODE_TABS.register(modEventBus);
         //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
@@ -264,7 +273,6 @@ public class Registration {
     public static final RegistryObject<ItemAugmentGenerator> GENERATOR_AUGMENT = ITEMS.register("augment_generator", () -> new ItemAugmentGenerator(new Item.Properties()));
     public static final RegistryObject<ItemAugmentSpeed> SPEED_AUGMENT = ITEMS.register("augment_speed", () -> new ItemAugmentSpeed(new Item.Properties()));
     public static final RegistryObject<ItemAugmentFuel> FUEL_AUGMENT = ITEMS.register("augment_fuel", () -> new ItemAugmentFuel(new Item.Properties()));
-    public static final RegistryObject<ItemAugmentXP> XP_AUGMENT = ITEMS.register("augment_xp", () -> new ItemAugmentXP(new Item.Properties()));
 
     public static final RegistryObject<ItemSpooky> ITEM_SPOOKY = ITEMS.register("item_spooky", () -> new ItemSpooky(new Item.Properties()));
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties()));
@@ -289,7 +297,55 @@ public class Registration {
         return new BlockMillionFurnaceContainer(windowId, world, pos, inv, inv.player);
     }));
 
+    public static final RegistryObject<CreativeModeTab> tabIronFurnaces = CREATIVE_MODE_TABS.register("ironfurnaces_tab", () -> CreativeModeTab.builder()
+            .withTabsBefore(CreativeModeTabs.COMBAT)
+            .icon(() -> IRON_FURNACE.get().asItem().getDefaultInstance())
+            .title(Component.translatable("itemGroup.ironfurnaces"))
+            .displayItems((parameters, output) -> {
 
+                output.accept(Registration.IRON_FURNACE_ITEM.get());
+                output.accept(Registration.GOLD_FURNACE_ITEM.get());
+                output.accept(Registration.DIAMOND_FURNACE_ITEM.get());
+                output.accept(Registration.EMERALD_FURNACE_ITEM.get());
+                output.accept(Registration.OBSIDIAN_FURNACE_ITEM.get());
+                output.accept(Registration.CRYSTAL_FURNACE_ITEM.get());
+                output.accept(Registration.NETHERITE_FURNACE_ITEM.get());
+                output.accept(Registration.COPPER_FURNACE_ITEM.get());
+                output.accept(Registration.SILVER_FURNACE_ITEM.get());
+
+                output.accept(Registration.IRON_UPGRADE.get());
+                output.accept(Registration.GOLD_UPGRADE.get());
+                output.accept(Registration.DIAMOND_UPGRADE.get());
+                output.accept(Registration.EMERALD_UPGRADE.get());
+                output.accept(Registration.OBSIDIAN_UPGRADE.get());
+                output.accept(Registration.CRYSTAL_UPGRADE.get());
+                output.accept(Registration.NETHERITE_UPGRADE.get());
+                output.accept(Registration.COPPER_UPGRADE.get());
+                output.accept(Registration.SILVER_UPGRADE.get());
+
+                output.accept(Registration.OBSIDIAN2_UPGRADE.get());
+                output.accept(Registration.IRON2_UPGRADE.get());
+                output.accept(Registration.GOLD2_UPGRADE.get());
+                output.accept(Registration.SILVER2_UPGRADE.get());
+                output.accept(Registration.HEATER_ITEM.get());
+                output.accept(Registration.ITEM_HEATER.get());
+                output.accept(Registration.BLASTING_AUGMENT.get());
+                output.accept(Registration.SMOKING_AUGMENT.get());
+                output.accept(Registration.FACTORY_AUGMENT.get());
+
+                output.accept(Registration.GENERATOR_AUGMENT.get());
+                output.accept(Registration.SPEED_AUGMENT.get());
+                output.accept(Registration.FUEL_AUGMENT.get());
+                output.accept(Registration.ITEM_SPOOKY.get());
+                output.accept(Registration.ITEM_XMAS.get());
+                output.accept(Registration.ITEM_COPY.get());
+                output.accept(Registration.ITEM_LINKER.get());
+                output.accept(Registration.RAINBOW_CORE.get());
+                output.accept(Registration.RAINBOW_PLATING.get());
+
+                output.accept(Registration.MILLION_FURNACE_ITEM.get());
+                output.accept(Registration.RAINBOW_COAL.get());
+            }).build());
 
 
 

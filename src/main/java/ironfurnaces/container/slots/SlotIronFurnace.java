@@ -46,8 +46,8 @@ public class SlotIronFurnace extends Slot {
 
     @Override
     protected void onQuickCraft(ItemStack stack, int p_75210_2_) {
-        stack.onCraftedBy(this.player.level, this.player, this.removeCount);
-        if (!this.player.level.isClientSide && this.te instanceof BlockIronFurnaceTileBase) {
+        stack.onCraftedBy(this.player.level(), this.player, this.removeCount);
+        if (!this.player.level().isClientSide && this.te instanceof BlockIronFurnaceTileBase) {
             ((BlockIronFurnaceTileBase)this.te).unlockRecipes((ServerPlayer)this.player);
         }
 
@@ -55,7 +55,7 @@ public class SlotIronFurnace extends Slot {
     }
 
     protected void checkTakeAchievements(ItemStack p_39558_) {
-        p_39558_.onCraftedBy(this.player.level, this.player, this.removeCount);
+        p_39558_.onCraftedBy(this.player.level(), this.player, this.removeCount);
         if (this.player instanceof ServerPlayer && this.container instanceof BlockIronFurnaceTileBase) {
             ((BlockIronFurnaceTileBase)this.container).unlockRecipes((ServerPlayer)this.player);
         }

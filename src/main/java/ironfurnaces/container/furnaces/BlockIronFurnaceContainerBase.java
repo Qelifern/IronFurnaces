@@ -37,7 +37,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
         this.te = (BlockIronFurnaceTileBase) world.getBlockEntity(pos);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
-        this.world = playerInventory.player.level;
+        this.world = playerInventory.player.level();
 
         //FURNACE
         this.addSlot(new SlotIronFurnaceInput(te, 0, 56, 17));

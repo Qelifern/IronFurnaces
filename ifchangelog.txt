@@ -1,3 +1,6 @@
+3.9.0
++Version bump for 1.20
+-Removed XP Augment
 3.8.0
 +Version bump for 1.19.4
 [WIP]3.7.3
