@@ -21,6 +21,9 @@
     },
     {
       "item": "ironfurnaces:copper_furnace"
+    },
+    {
+      "item": "ironfurnaces:netherite_furnace"
     }
   ],
   "result": {
