@@ -278,9 +278,6 @@ public class Registration {
     public static final RegistryObject<ItemXmas> ITEM_XMAS = ITEMS.register("item_xmas", () -> new ItemXmas(new Item.Properties()));
 
     public static final RegistryObject<ItemFurnaceCopy> ITEM_COPY = ITEMS.register("item_copy", () -> new ItemFurnaceCopy(new Item.Properties().stacksTo(1)));
-
-    public static final RegistryObject<ItemLinker> ITEM_LINKER = ITEMS.register("item_linker", () -> new ItemLinker(new Item.Properties().stacksTo(1)));
-
     public static final RegistryObject<Item> RAINBOW_CORE = ITEMS.register("rainbow_core", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> RAINBOW_PLATING = ITEMS.register("rainbow_plating", () -> new Item(new Item.Properties()));
     public static final RegistryObject<ItemRainbowCoal> RAINBOW_COAL = ITEMS.register("rainbow_coal", () -> new ItemRainbowCoal(new Item.Properties()));
@@ -339,7 +336,6 @@ public class Registration {
                 output.accept(Registration.ITEM_SPOOKY.get());
                 output.accept(Registration.ITEM_XMAS.get());
                 output.accept(Registration.ITEM_COPY.get());
-                output.accept(Registration.ITEM_LINKER.get());
                 output.accept(Registration.RAINBOW_CORE.get());
                 output.accept(Registration.RAINBOW_PLATING.get());
 

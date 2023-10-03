@@ -15,6 +15,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -52,10 +54,10 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 			List<SimpleGeneratorRecipe> recipes = Lists.newArrayList();
 			for (Item item : ForgeRegistries.ITEMS.getValues())
 			{
-				if (BlockIronFurnaceTileBase.getBurnTime(new ItemStack(item)) > 0)
+				if (ForgeHooks.getBurnTime(new ItemStack(item), RecipeType.SMELTING) > 0)
 				{
 					ItemStack stack = new ItemStack(item);
-					recipes.add(new SimpleGeneratorRecipe(BlockIronFurnaceTileBase.getBurnTime(new ItemStack(item)) * 20, stack));
+					recipes.add(new SimpleGeneratorRecipe(ForgeHooks.getBurnTime(new ItemStack(item), RecipeType.SMELTING) * 20, stack));
 				}
 			}
 			registration.addRecipes(Registration.RecipeTypes.GENERATOR_REGULAR, recipes);
@@ -76,7 +78,7 @@ public class IronFurnacesJEIPlugin implements IModPlugin {
 					if (item.getFoodProperties().getNutrition() > 0)
 					{
 						ItemStack stack = new ItemStack(item);
-						recipes2.add(new SimpleGeneratorRecipe(BlockIronFurnaceTileBase.getSmokingBurn(stack) * 20, stack));
+						recipes2.add(new SimpleGeneratorRecipe(BlockIronFurnaceTileBase.getSmokingBurn(stack) * 40, stack));
 					}
 				}
 			}

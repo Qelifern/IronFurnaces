@@ -27,7 +27,6 @@
     "item.ironfurnaces.upgrade_iron2": "Copper to Iron Furnace Upgrade",
     "item.ironfurnaces.upgrade_gold2": "Silver to Gold Furnace Upgrade",
     "item.ironfurnaces.item_copy": "Furnace Settings Linker",
-    "item.ironfurnaces.item_linker": "Rainbow Linker",
 
     "_comment": "TAB",
     "itemGroup.ironfurnaces": "Iron Furnaces",
@@ -144,7 +143,7 @@
     "tooltip.ironfurnaces.for_details": " for Details.",
     "tooltip.ironfurnaces.augment_slot": "Augment Slot",
     "tooltip.ironfurnaces.rainbow_gen1": "Will generate",
-    "tooltip.ironfurnaces.rainbow_gen2": "RF/tick if all other furnaces are generating power and they are connected with the Rainbow Linker",
+    "tooltip.ironfurnaces.rainbow_gen2": "RF/tick if all other furnaces are generating power",
 
 
 

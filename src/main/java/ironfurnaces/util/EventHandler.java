@@ -2,6 +2,7 @@ package ironfurnaces.util;
 
 
 import ironfurnaces.IronFurnaces;
+import ironfurnaces.capability.PlayerFurnacesListProvider;
 import ironfurnaces.capability.PlayerShowConfigProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +20,7 @@ public class EventHandler {
         if (event.getObject() instanceof Player)
         {
             event.addCapability(new ResourceLocation(IronFurnaces.MOD_ID, "show_config"), new PlayerShowConfigProvider());
+            event.addCapability(new ResourceLocation(IronFurnaces.MOD_ID, "furnaces_list"), new PlayerFurnacesListProvider());
         }
     }
 

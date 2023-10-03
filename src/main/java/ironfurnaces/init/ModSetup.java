@@ -1,7 +1,9 @@
 package ironfurnaces.init;
 
+import ironfurnaces.capability.CapabilityPlayerFurnacesList;
 import ironfurnaces.capability.CapabilityPlayerShowConfig;
 import ironfurnaces.util.RainbowEnabledCondition;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +21,7 @@ public class ModSetup {
     public static void registerCapabilities(RegisterCapabilitiesEvent event)
     {
         CapabilityPlayerShowConfig.register(event);
+        CapabilityPlayerFurnacesList.register(event);
     }
 
 

@@ -1,6 +1,8 @@
 package ironfurnaces.blocks.furnaces;
 
 import ironfurnaces.Config;
+import ironfurnaces.capability.CapabilityPlayerFurnacesList;
+import ironfurnaces.capability.CapabilityPlayerShowConfig;
 import ironfurnaces.init.Registration;
 import ironfurnaces.items.ItemFurnaceCopy;
 import ironfurnaces.items.ItemSpooky;
@@ -90,7 +92,12 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
             te.placeConfig();
             if (entity instanceof Player)
             {
-                //te.savedPlayer = ((Player)entity);
+                Player player = (Player)entity;
+                player.getCapability(CapabilityPlayerFurnacesList.FURNACES_LIST).ifPresent(h -> h.add(pos));
+                if (te instanceof BlockMillionFurnaceTile)
+                {
+                    te.owner = player.getUUID();
+                }
             }
         }
     }
@@ -158,11 +165,12 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
         ItemStack newStack = new ItemStack(stack.getItem(), 1);
         newStack.setTag(stack.getTag());
         ((WorldlyContainer) te).setItem(slot, newStack);
-        world.playSound(null, te.getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        world.playSound(null, te.getBlockPos(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.05F, 1.0F);
         if (!player.isCreative()) {
             player.getItemInHand(handIn).shrink(1);
         }
         ((BlockIronFurnaceTileBase)te).onUpdateSent();
+        te.getLevel().markAndNotifyBlock(pos, player.level().getChunkAt(pos), te.getLevel().getBlockState(pos).getBlock().defaultBlockState(), te.getLevel().getBlockState(pos), 2, 0);
         return InteractionResult.SUCCESS;
     }
     private InteractionResult interactJovial(Level world, BlockPos pos, Player player, InteractionHand handIn, int jovial) {
@@ -266,25 +274,18 @@ public abstract class BlockIronFurnaceBase extends Block implements EntityBlock 
         if (state.getBlock() != oldState.getBlock()) {
             BlockEntity te = world.getBlockEntity(pos);
             if (te instanceof BlockIronFurnaceTileBase) {
-
                 BlockIronFurnaceTileBase furnace = ((BlockIronFurnaceTileBase)te);
-                if (!(furnace instanceof BlockMillionFurnaceTile) && furnace.linkedPos != new BlockPos(0, 0, 0))
+                if (furnace.owner != null)
                 {
-                    if (world.getBlockEntity(furnace.linkedPos) instanceof BlockMillionFurnaceTile)
+                    if (world.getPlayerByUUID(furnace.owner) != null)
                     {
-                        BlockMillionFurnaceTile tile = (BlockMillionFurnaceTile)world.getBlockEntity(furnace.linkedPos);
-                        if (tile != null)
-                        {
-                            tile.furnaces = new ArrayList<BlockIronFurnaceTileBase>();
-                        }
+                        world.getPlayerByUUID(furnace.owner).getCapability(CapabilityPlayerFurnacesList.FURNACES_LIST).ifPresent(h -> h.remove(te.getBlockPos()));
                     }
-
                 }
-
-
                 Containers.dropContents(world, pos, furnace);
                 furnace.grantStoredRecipeExperience((ServerLevel) world, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
                 world.updateNeighbourForOutputSignal(pos, this);
+
             }
 
             super.onRemove(state, world, pos, oldState, p_196243_5_);

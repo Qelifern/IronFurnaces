@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -25,9 +26,9 @@ public class IronFurnaces
 {
 
     public static final String MOD_ID = "ironfurnaces";
-    public static final String VERSION = "390";
-    public static final String MC_VERSION = "1.20";
-    public static final String GITHUB_BRANCH = "1.20";
+    public static final String VERSION = "410";
+    public static final String MC_VERSION = "1.20.1";
+    public static final String GITHUB_BRANCH = "1.20.1";
 
     public static final Logger LOGGER = LogManager.getLogger();
 

@@ -54,7 +54,6 @@ public class Config {
     public static ForgeConfigSpec.IntValue copperFurnaceSpeed;
     public static ForgeConfigSpec.IntValue silverFurnaceSpeed;
     public static ForgeConfigSpec.IntValue millionFurnaceSpeed;
-    public static ForgeConfigSpec.IntValue millionFurnacePower;
     public static ForgeConfigSpec.IntValue millionFurnacePowerToGenerate;
 
 
@@ -179,35 +178,35 @@ public class Config {
 
     private static void setupGenerationConfig(ForgeConfigSpec.Builder COMMON_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
         ironFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 20")
-                .defineInRange("iron_furnace.generation", 20, 1, 100000);
+                .comment(" How much RF to generate per tick\n Default: 40")
+                .defineInRange("iron_furnace.generation", 40, 1, 100000);
         goldFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 80")
-                .defineInRange("gold_furnace.generation", 80, 1, 100000);
-        diamondFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 120")
-                .defineInRange("diamond_furnace.generation", 120, 1, 100000);
-        emeraldFurnaceGeneration = CLIENT_BUILDER
                 .comment(" How much RF to generate per tick\n Default: 160")
-                .defineInRange("emerald_furnace.generation", 160, 1, 100000);
+                .defineInRange("gold_furnace.generation", 160, 1, 100000);
+        diamondFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 240")
+                .defineInRange("diamond_furnace.generation", 240, 1, 100000);
+        emeraldFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 320")
+                .defineInRange("emerald_furnace.generation", 320, 1, 100000);
         obsidianFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 250")
-                .defineInRange("obsidian_furnace.generation", 250, 1, 100000);
+                .comment(" How much RF to generate per tick\n Default: 500")
+                .defineInRange("obsidian_furnace.generation", 500, 1, 100000);
         crystalFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 180")
-                .defineInRange("crystal_furnace.generation", 180, 1, 100000);
+                .comment(" How much RF to generate per tick\n Default: 360")
+                .defineInRange("crystal_furnace.generation", 360, 1, 100000);
         netheriteFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 400")
-                .defineInRange("netherite_furnace.generation", 400, 1, 100000);
-        millionFurnaceGeneration = CLIENT_BUILDER
                 .comment(" How much RF to generate per tick\n Default: 1000")
-                .defineInRange("rainbow_furnace.generation", 1000, 1, 100000);
+                .defineInRange("netherite_furnace.generation", 1000, 1, 100000);
+        millionFurnaceGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 2000")
+                .defineInRange("rainbow_furnace.generation", 2000, 1, 100000);
         copperFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 20")
-                .defineInRange("copper_furnace.generation", 20, 1, 100000);
+                .comment(" How much RF to generate per tick\n Default: 40")
+                .defineInRange("copper_furnace.generation", 40, 1, 100000);
         silverFurnaceGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 50")
-                .defineInRange("silver_furnace.generation", 50, 1, 100000);
+                .comment(" How much RF to generate per tick\n Default: 100")
+                .defineInRange("silver_furnace.generation", 100, 1, 100000);
 
     }
 
@@ -310,9 +309,6 @@ public class Config {
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 20")
                 .defineInRange("rainbow_furnace.speed", 20, 2, 72000);
 
-        millionFurnacePower = CLIENT_BUILDER
-                .comment(" How many furnaces that need to be linked in order for the Rainbow Furnace to generate power.\n Default: 9")
-                .defineInRange("rainbow_furnace.power", 9, 1, 100);
 
         millionFurnacePowerToGenerate = CLIENT_BUILDER
                 .comment(" How much power the Rainbow Furnace will generate.\n Default: 50000")
@@ -346,14 +342,14 @@ public class Config {
                 .comment(" Number of items that can be smelted at once. The regular furnace only smelts 1 item at once of course.\n Default: 64")
                 .defineInRange("unobtainium_furnace.mult", 64, 1, 64);
         allthemodiumGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 1000")
-                .defineInRange("allthemodium_furnace.generation", 1000, 1, 100000);
-        vibraniumGeneration = CLIENT_BUILDER
-                .comment(" How much RF to generate per tick\n Default: 1500")
-                .defineInRange("vibranium_furnace.generation", 1500, 1, 100000);
-        unobtainiumGeneration = CLIENT_BUILDER
                 .comment(" How much RF to generate per tick\n Default: 2000")
-                .defineInRange("unobtainium_furnace.generation", 2000, 1, 100000);
+                .defineInRange("allthemodium_furnace.generation", 2000, 1, 100000);
+        vibraniumGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 3000")
+                .defineInRange("vibranium_furnace.generation", 3000, 1, 100000);
+        unobtainiumGeneration = CLIENT_BUILDER
+                .comment(" How much RF to generate per tick\n Default: 5000")
+                .defineInRange("unobtainium_furnace.generation", 5000, 1, 100000);
 
         allthemodiumFurnaceTier = CLIENT_BUILDER
                 .comment(" What tier this furnace should be.\n Default: 2")

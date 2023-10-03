@@ -1,3 +1,10 @@
+4.1.0
++Added a new effect for rainbow generation
++Limited rainbow generation to 1 rainbow generator in total
++Doubled the default config value for RF generation.
++Doubled the amount of RF gained from generating with a smoking augment.
+-Removed Item Rainbow Linker, now furnaces are linked to the player once the player places down the furnaces.
+-Removed rainbow_furnace.power config settings since its no longer required with the new rainbow gen system.
 3.9.0
 +Version bump for 1.20
 -Removed XP Augment
