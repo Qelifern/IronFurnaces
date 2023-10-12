@@ -1,7 +1,7 @@
 # Iron Furnaces
 Inspired by cpw's Iron Chests mod, adds a few different tiers of furnace.
 
-# Report an issue or propose an enhancement. 
+# Report an issue or propose an enhancement
 Create an issue here on GitHub and follow the issue template.
 
 For feature additions, create an enhancement-tagged issue.
