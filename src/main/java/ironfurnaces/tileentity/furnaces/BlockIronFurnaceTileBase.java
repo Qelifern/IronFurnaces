@@ -2,6 +2,8 @@ package ironfurnaces.tileentity.furnaces;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import harmonised.pmmo.api.events.FurnaceBurnEvent;
+import harmonised.pmmo.events.impl.FurnaceHandler;
 import ironfurnaces.Config;
 import ironfurnaces.blocks.furnaces.BlockIronFurnaceBase;
 import ironfurnaces.blocks.furnaces.BlockMillionFurnace;
@@ -48,6 +50,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
@@ -58,6 +61,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -158,16 +162,18 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return getRecipeGeneratorBlasting(stack).isPresent();
     }
 
-    protected Optional<AbstractCookingRecipe> getRecipe(ItemStack item) {
-        return (item.getItem() instanceof AirItem)
+    protected Optional<AbstractCookingRecipe> getRecipe(ItemStack stack) {
+        Optional<AbstractCookingRecipe> recipe = getCache().computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
                 ? Optional.empty()
-                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(item), this.level).orElse(null));
+                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).orElse(null)));
+        return recipe;
     }
 
-    protected Optional<AbstractCookingRecipe> getRecipeFactory(ItemStack item) {
-        return (item.getItem() instanceof AirItem)
+    protected Optional<AbstractCookingRecipe> getRecipeFactory(ItemStack stack) {
+        Optional<AbstractCookingRecipe> recipe = getCache().computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
                 ? Optional.empty()
-                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(item), this.level).orElse(null));
+                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).orElse(null)));
+        return recipe;
     }
 
     protected Optional<GeneratorRecipe> getRecipeGeneratorBlasting(ItemStack item) {
@@ -226,6 +232,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     protected int getSpeed() {
         int regular = getCookTimeConfig().get();
         int recipe = getCache().computeIfAbsent(getItem(INPUT).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
+
         double div = 200.0 / recipe;
         double i = regular / div;
         return (int)Math.max(1, i);
@@ -818,6 +825,14 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     e.setChanged();
                                 }
                             }
+                            for (int j = 0; j < FACTORY_INPUT.length; j++)
+                            {
+                                int outputSlot = FACTORY_INPUT[j] + 6;
+                                if (!e.getItem(outputSlot).isEmpty() && e.getItem(outputSlot).getCount() >= 64)
+                                {
+                                    e.autoFactoryIO();
+                                }
+                            }
 
                         }
                     }
@@ -1026,6 +1041,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         } else if (e.getItem(FUEL).getCount() < e.getItem(FUEL).getMaxStackSize()) {
                             e.autoIO();
                             flag1 = true;
+                        }
+
+                        if (!e.getItem(OUTPUT).isEmpty() && e.getItem(OUTPUT).getCount() >= 64)
+                        {
+                            e.autoIO();
                         }
                     }
 
@@ -1580,12 +1600,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.setItem(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
             if (ModList.get().isLoaded("pmmo")) {
-
-                if (recipe instanceof SmokingRecipe) {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 1);
-                } else {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 0);
-                }
+                handleSmeltedPMMO(itemstack, level, worldPosition);
             }
             itemstack.shrink(1);
         }
@@ -1620,12 +1635,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.setRecipeUsed(recipe);
             }
             if (ModList.get().isLoaded("pmmo")) {
-
-                if (recipe instanceof SmokingRecipe) {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 1);
-                } else {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 0);
-                }
+                handleSmeltedPMMO(itemstack, level, worldPosition);
             }
             itemstack.shrink(1);
         }
@@ -1655,12 +1665,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 this.setItem(FUEL, new ItemStack(Items.WATER_BUCKET));
             }
             if (ModList.get().isLoaded("pmmo")) {
-
-                if (recipe instanceof SmokingRecipe) {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 1);
-                } else {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 0);
-                }
+                handleSmeltedPMMO(itemstack, level, worldPosition);
             }
 
             itemstack.shrink(decrement);
@@ -1688,19 +1693,14 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 }
             }
             if (ModList.get().isLoaded("pmmo")) {
-
-                if (recipe instanceof SmokingRecipe) {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 1);
-                } else {
-                    handleSmeltedPMMO(itemstack, itemstack2, level, worldPosition, 0);
-                }
+                handleSmeltedPMMO(itemstack, level, worldPosition);
             }
             itemstack.shrink(decrement);
         }
     }
 
-    private void handleSmeltedPMMO(ItemStack stack, ItemStack stack1, Level level, BlockPos pos, int i) {
-        //FurnaceHandler.handleSmelted(stack, stack1, level, pos, i);
+    private void handleSmeltedPMMO(ItemStack stack, Level level, BlockPos pos) {
+        FurnaceHandler.handle(new FurnaceBurnEvent(stack, level, pos));
     }
 
 

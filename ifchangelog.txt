@@ -1,3 +1,6 @@
+4.1.1
++PMMO support
++hasRecipe() now consults recipe cache and this should eliminate lag on high mod count modpacks. (finally)
 4.1.0
 +Added a new effect for rainbow generation
 +Limited rainbow generation to 1 rainbow generator in total
