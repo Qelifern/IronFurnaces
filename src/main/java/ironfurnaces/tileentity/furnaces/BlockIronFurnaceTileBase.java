@@ -94,6 +94,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public int totalCookTime;
     public int recipesUsed;
 
+    public long lastGameTickEnergyUpdated;
+
     public UUID owner;
 
     public boolean rainbowGenerating;
@@ -116,7 +118,16 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public FEnergyStorage energyStorage = new FEnergyStorage(Config.furnaceEnergyCapacityTier2.get()) {
         @Override
         protected void onEnergyChanged() {
-            setChanged();
+            if (lastGameTickEnergyUpdated <= 0)
+            {
+                setChanged();
+                lastGameTickEnergyUpdated = level.getGameTime();
+            }
+            else if (level.getGameTime() - lastGameTickEnergyUpdated >= 20)
+            {
+                setChanged();
+                lastGameTickEnergyUpdated = level.getGameTime();
+            }
         }
     };
     public LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
@@ -133,6 +144,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
 
     }
+
+
 
     public int getEnergy() {
         return energyStorage.getEnergy();
@@ -169,11 +182,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return recipe;
     }
 
-    protected Optional<AbstractCookingRecipe> getRecipeFactory(ItemStack stack) {
-        Optional<AbstractCookingRecipe> recipe = getCache().computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
+    protected Optional<AbstractCookingRecipe> getRecipeFactory(int slot, ItemStack stack) {
+        Optional<AbstractCookingRecipe> recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
                 ? Optional.empty()
                 : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).orElse(null)));
         return recipe;
+    }
+
+    protected Optional<AbstractCookingRecipe> getRecipeNonCached(ItemStack stack) {
+        return stack.getItem() instanceof AirItem
+                ? Optional.empty()
+                : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).orElse(null));
     }
 
     protected Optional<GeneratorRecipe> getRecipeGeneratorBlasting(ItemStack item) {
@@ -231,8 +250,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected int getSpeed() {
         int regular = getCookTimeConfig().get();
-        int recipe = getCache().computeIfAbsent(getItem(INPUT).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
-
+        int recipe = getCache().computeIfAbsent(getItem(INPUT).getItem(), (item) -> getRecipeNonCached(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
         double div = 200.0 / recipe;
         double i = regular / div;
         return (int)Math.max(1, i);
@@ -258,7 +276,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected int getFactorySpeed(int slot) {
         int regular = getCookTimeConfig().get();
-        int recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipe(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
+        int recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipeNonCached(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
         double div = 200.0 / recipe;
         double i = regular / div;
         return (int)Math.max(1, i);
@@ -768,7 +786,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                         e.factoryTotalCookTime[i] = e.getFactoryCookTime(slot);
                     }
                     if (!e.getItem(slot).isEmpty()) {
-                        Optional<AbstractCookingRecipe> irecipe = e.getRecipeFactory(e.getItem(slot));
+                        Optional<AbstractCookingRecipe> irecipe = e.getRecipeFactory(slot, e.getItem(slot));
                         boolean valid = e.canFactorySmelt(irecipe.orElse(null), slot);
                         if (valid) {
                             int energyRecipe = irecipe.get().getCookingTime() * 20;
@@ -1318,7 +1336,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                                 continue;
                                             }
                                             ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
-                                            if (hasRecipe(stack) && getItem(FACTORY_INPUT[j]).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(FACTORY_INPUT[j]), stack)) {
+                                            if (hasRecipe(stack) && getItem(FACTORY_INPUT[j]).isEmpty() || canItemStacksStack(getItem(FACTORY_INPUT[j]), stack)) {
                                                 insertItemInternal(FACTORY_INPUT[j], other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getItem(FACTORY_INPUT[j]).getCount(), false), false);
                                             }
                                         }
@@ -1338,7 +1356,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
                                         for (int i = 0; i < other.getSlots(); i++) {
                                             ItemStack stack = extractItemInternal(FACTORY_INPUT[j] + 6, other.getSlotLimit(i) - other.getStackInSlot(i).getCount(), true);
-                                            if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
+                                            if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
                                                 boolean check = other.insertItem(i, extractItemInternal(FACTORY_INPUT[j] + 6, stack.getCount(), true), true).isEmpty();
                                                 if (check) other.insertItem(i, extractItemInternal(FACTORY_INPUT[j] + 6, stack.getCount(), false), false);
                                             }
@@ -1353,6 +1371,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 }
             }
         }
+    }
+
+    public static boolean canItemStacksStack(@NotNull ItemStack a, @NotNull ItemStack b)
+    {
+        /*
+        if (a.isEmpty() || !ItemStack.isSameItem(a, b) || a.hasTag() != b.hasTag())
+            return false;
+
+        return (!a.hasTag() || a.getTag().equals(b.getTag()));
+        */
+        return ItemHandlerHelper.canItemStacksStack(a, b);
     }
 
     @Nonnull
@@ -1749,6 +1778,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         furnaceSettings.read(tag);
 
         setEnergy(tag.getInt("Energy"));
+        lastGameTickEnergyUpdated = 0;
 
         super.load(tag);
     }
@@ -1787,6 +1817,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             compoundnbt.putInt(recipeId.toString(), craftedAmount);
         });
         tag.put("RecipesUsed", compoundnbt);
+
 
         //tag.putString("SavedPlayer", savedPlayer.getStringUUID());
     }

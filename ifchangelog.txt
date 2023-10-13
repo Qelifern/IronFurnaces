@@ -1,3 +1,6 @@
+4.1.2
++Hotfix for double computeAbsent
++Reduced block update to only occur once every 20 game ticks
 4.1.1
 +PMMO support
 +hasRecipe() now consults recipe cache and this should eliminate lag on high mod count modpacks. (finally)
