@@ -1,3 +1,5 @@
+4.1.3
++Added missing null check
 4.1.2
 +Hotfix for double computeAbsent
 +Reduced block update to only occur once every 20 game ticks

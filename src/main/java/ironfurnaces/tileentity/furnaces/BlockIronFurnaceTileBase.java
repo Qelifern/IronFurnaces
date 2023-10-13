@@ -118,16 +118,22 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     public FEnergyStorage energyStorage = new FEnergyStorage(Config.furnaceEnergyCapacityTier2.get()) {
         @Override
         protected void onEnergyChanged() {
-            if (lastGameTickEnergyUpdated <= 0)
+            if (level != null && level.getBlockEntity(getBlockPos()) != null)
             {
-                setChanged();
-                lastGameTickEnergyUpdated = level.getGameTime();
+                if (lastGameTickEnergyUpdated <= 0)
+                {
+                    setChanged();
+                    lastGameTickEnergyUpdated = level.getGameTime();
+                }
+                else if (level.getGameTime() - lastGameTickEnergyUpdated >= 20)
+                {
+                    setChanged();
+                    lastGameTickEnergyUpdated = level.getGameTime();
+                }
             }
-            else if (level.getGameTime() - lastGameTickEnergyUpdated >= 20)
-            {
-                setChanged();
-                lastGameTickEnergyUpdated = level.getGameTime();
-            }
+
+
+
         }
     };
     public LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
