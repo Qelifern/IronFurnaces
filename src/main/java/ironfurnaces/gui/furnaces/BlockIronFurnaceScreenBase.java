@@ -6,23 +6,28 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import ironfurnaces.IronFurnaces;
 import ironfurnaces.capability.ClientShowConfig;
 import ironfurnaces.container.furnaces.BlockIronFurnaceContainerBase;
+import ironfurnaces.items.ItemMillionFurnace;
 import ironfurnaces.network.Messages;
 import ironfurnaces.network.PacketSettingsButton;
 import ironfurnaces.network.PacketShowConfigButton;
 import ironfurnaces.util.StringHelper;
 import ironfurnaces.util.gui.FurnaceGuiButton;
 import ironfurnaces.util.gui.FurnaceGuiEnergy;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceContainerBase> extends AbstractContainerScreen<T> {
 
@@ -62,6 +67,9 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     public FurnaceGuiButton subButton;
 
     public FurnaceGuiEnergy energyBar;
+
+    private int timer;
+    private Random rand = new Random();
 
     public BlockIronFurnaceScreenBase(T t, Inventory inv, Component name) {
         super(t, inv, name);
@@ -121,6 +129,25 @@ public abstract class BlockIronFurnaceScreenBase<T extends BlockIronFurnaceConta
     protected void renderLabels(GuiGraphics matrix, int mouseX, int mouseY) {
         int actualMouseX = mouseX - ((this.width - this.getXSize()) / 2);
         int actualMouseY = mouseY - ((this.height - this.getYSize()) / 2);
+        if (this.getMenu().isRainbowFurnace())
+        {
+            timer++;
+            if (timer % 20 == 0) {
+                timer = 0;
+                String name = this.name.getString();
+                ArrayList<Component> names = Lists.newArrayList();
+                for (int i = 0; i < name.length(); i++) {
+                    names.add((Component) Component.literal("" + name.charAt(i)).withStyle(ChatFormatting.getById(ItemMillionFurnace.getIDRandom(rand.nextInt(6)))));
+                }
+                MutableComponent component = Component.literal("");
+                for (int i = 0; i < names.size(); i++) {
+                    component.append(names.get(i));
+                }
+                this.name = component;
+
+            }
+        }
+
         if (this.getMenu().getIsFactory())
             matrix.drawString(font, name, this.getXSize() / 2 - this.minecraft.font.width(name.getString()) / 2, -10, 16777215, false);
         else

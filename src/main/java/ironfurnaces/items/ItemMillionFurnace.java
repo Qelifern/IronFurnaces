@@ -50,13 +50,18 @@ public class ItemMillionFurnace extends BlockItem {
 
             }
 
+        Format decimal = new DecimalFormat();
+        String part1 = Component.translatable("tooltip.ironfurnaces.rainbow_gen1").getString();
+        String part2 = Component.translatable("tooltip.ironfurnaces.rainbow_gen2").getString();
+        tooltip.add(Component.literal(part1 + " " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " " + part2).withStyle(ChatFormatting.GRAY));
+
+
 
         if (BlockIronFurnaceScreenBase.isShiftKeyDown())
         {
-            Format decimal = new DecimalFormat();
-            String part1 = Component.translatable("tooltip.ironfurnaces.rainbow_gen1").getString();
-            String part2 = Component.translatable("tooltip.ironfurnaces.rainbow_gen2").getString();
-            tooltip.add(Component.literal(part1 + " " + decimal.format(Config.millionFurnacePowerToGenerate.get()).toString().replaceAll("\u00A0", ",") + " " + part2).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.ironfurnaces.rainbow_gen3").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.ironfurnaces.rainbow_gen4").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.ironfurnaces.rainbow_gen5").withStyle(ChatFormatting.GRAY));
         }
         else
         {
@@ -65,7 +70,7 @@ public class ItemMillionFurnace extends BlockItem {
 
     }
 
-    private static int getIDRandom(int id)
+    public static int getIDRandom(int id)
     {
         switch (id)
         {

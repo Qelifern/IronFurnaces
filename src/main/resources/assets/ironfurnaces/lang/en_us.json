@@ -144,7 +144,9 @@
     "tooltip.ironfurnaces.augment_slot": "Augment Slot",
     "tooltip.ironfurnaces.rainbow_gen1": "Will generate",
     "tooltip.ironfurnaces.rainbow_gen2": "RF/tick if all other furnaces are generating power",
-
+    "tooltip.ironfurnaces.rainbow_gen3": "For power generation, one of each tier of furnace must be an active generator and not have a full buffer",
+    "tooltip.ironfurnaces.rainbow_gen4": "Outputs energy to any side that is configured as output, it wont add energy to the internal buffer",
+    "tooltip.ironfurnaces.rainbow_gen5": "You can only have one Rainbow Generator",
 
 
     "_comment": "Updates",

@@ -239,11 +239,11 @@ public class Config {
 
         diamondFurnaceTier = CLIENT_BUILDER
                 .comment(" What tier this furnace should be.\n Default: 1")
-                .defineInRange("diamond_furnace.tier", 1, 0, 2);
+                .defineInRange("diamond_furnace.tier", 2, 0, 2);
 
         emeraldFurnaceTier = CLIENT_BUILDER
                 .comment(" What tier this furnace should be.\n Default: 1")
-                .defineInRange("emerald_furnace.tier", 1, 0, 2);
+                .defineInRange("emerald_furnace.tier", 2, 0, 2);
 
         silverFurnaceTier = CLIENT_BUILDER
                 .comment(" What tier this furnace should be.\n Default: 1")

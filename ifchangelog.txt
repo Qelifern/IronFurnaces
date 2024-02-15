@@ -1,3 +1,7 @@
+4.1.4
++Emerald and Diamond furnaces are now tier 2 by default (6 slots in factory)
++Added blasting and smoking caches to factory furnaces, this fixes a blasting recipe being saved and used when there is no blasting augment in the furance
++Added more info on how the Rainbow Furnace generates power
 4.1.3
 +Added missing null check
 4.1.2

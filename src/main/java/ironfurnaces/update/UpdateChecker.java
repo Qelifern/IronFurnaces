@@ -54,7 +54,7 @@ public class UpdateChecker {
                     player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID + ".update.failed")));
                 } else if (UpdateChecker.needsUpdateNotify) {
                     player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID + ".update.speech")));
-                    player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID + ".update.version", IronFurnaces.MC_VERSION + "-release" + IronFurnaces.VERSION, UpdateChecker.updateVersionString)));
+                    player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID + ".update.version", IronFurnaces.MC_VERSION + IronFurnaces.RELEASE_TYPE + IronFurnaces.VERSION, UpdateChecker.updateVersionString)));
                     player.sendSystemMessage(Component.Serializer.fromJson(I18n.get(IronFurnaces.MOD_ID + ".update.buttons", UpdateChecker.CHANGELOG_LINK, UpdateChecker.DOWNLOAD_LINK)));
                 }
                 if (threadFinished) MinecraftForge.EVENT_BUS.unregister(this);

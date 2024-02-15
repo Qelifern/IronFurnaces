@@ -557,6 +557,10 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
         return this.te.isBurning();
     }
 
+    public boolean isRainbowFurnace() {
+        return this.te.isRainbowFurnace();
+    }
+
 
     public int getCookScaled(int pixels) {
         int i = this.te.cookTime;

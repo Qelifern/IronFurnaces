@@ -115,6 +115,22 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             LRUCache.newInstance(Config.cache_capacity.get()),
             LRUCache.newInstance(Config.cache_capacity.get()));
 
+    public List<LRUCache<Item, Optional<AbstractCookingRecipe>>> factory_blasting_cache = Lists.newArrayList(
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()));
+
+    public List<LRUCache<Item, Optional<AbstractCookingRecipe>>> factory_smoking_cache = Lists.newArrayList(
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()),
+            LRUCache.newInstance(Config.cache_capacity.get()));
+
     public FEnergyStorage energyStorage = new FEnergyStorage(Config.furnaceEnergyCapacityTier2.get()) {
         @Override
         protected void onEnergyChanged() {
@@ -189,7 +205,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     protected Optional<AbstractCookingRecipe> getRecipeFactory(int slot, ItemStack stack) {
-        Optional<AbstractCookingRecipe> recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
+        Optional<AbstractCookingRecipe> recipe = getFactoryCache().get(slot - FACTORY_INPUT[0]).computeIfAbsent(stack.getItem(), (item) -> (stack.getItem() instanceof AirItem)
                 ? Optional.empty()
                 : Optional.ofNullable(this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).orElse(null)));
         return recipe;
@@ -237,6 +253,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return cache;
     }
 
+    protected List<LRUCache<Item, Optional<AbstractCookingRecipe>>> getFactoryCache() {
+        checkRecipeType();
+        if (recipeType == RecipeType.BLASTING) {
+            return factory_blasting_cache;
+        }
+        if (recipeType == RecipeType.SMOKING) {
+            return factory_smoking_cache;
+        }
+        return factory_cache;
+    }
+
     public int getCookTime() {
         ItemStack stack = this.getItem(AUGMENT_GREEN);
         if (this.getItem(INPUT).getItem() == Items.AIR) {
@@ -282,7 +309,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     protected int getFactorySpeed(int slot) {
         int regular = getCookTimeConfig().get();
-        int recipe = factory_cache.get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipeNonCached(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
+        int recipe = getFactoryCache().get(slot - FACTORY_INPUT[0]).computeIfAbsent(getItem(slot).getItem(), (item) -> getRecipeNonCached(new ItemStack(item))).map(AbstractCookingRecipe::getCookingTime).orElse(0);
         double div = 200.0 / recipe;
         double i = regular / div;
         return (int)Math.max(1, i);
@@ -404,6 +431,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return false;
     }
 
+    // ???????????????? what does this even do
     public Map<Integer, Integer> getSplitCounts(int[] slot, int[] input) {
         if (slot.length != input.length) {
             return null;
@@ -440,6 +468,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return output;
     }
 
+    // lmao
     public void fillEmptySlots(int start, int size) {
         int amount = 0;
         for (int i = start; i < size; i++) {
@@ -476,6 +505,8 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         }
     }
 
+
+    // whaaat
     public void split(boolean fullCheck, int start, int size) {
         ItemStack itemToCheck = ItemStack.EMPTY;
         int fullCheckCount = 0;
@@ -1575,6 +1606,10 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
 
     public boolean isBurning() {
         return furnaceBurnTime > 0;
+    }
+
+    public boolean isRainbowFurnace() {
+        return this instanceof BlockMillionFurnaceTile;
     }
 
     protected void smelt(@Nullable Recipe<?> recipe) {
