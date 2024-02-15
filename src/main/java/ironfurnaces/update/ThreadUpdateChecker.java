@@ -15,7 +15,7 @@ import java.util.Properties;
 public class ThreadUpdateChecker extends Thread {
 
     public ThreadUpdateChecker() {
-        this.setName(" Iron Furnaces Update Checker");
+        this.setName("Iron Furnaces Update Checker");
         this.setDaemon(true);
         this.start();
     }
