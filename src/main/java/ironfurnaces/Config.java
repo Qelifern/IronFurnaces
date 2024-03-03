@@ -102,6 +102,8 @@ public class Config {
     //CACHE
     public static ForgeConfigSpec.IntValue cache_capacity;
 
+    public static ForgeConfigSpec.IntValue has_recipe_cache_capacity;
+
     //ALLTHEMODS
     public static ForgeConfigSpec.IntValue vibraniumFurnaceSpeed;
     public static ForgeConfigSpec.IntValue unobtainiumFurnaceSpeed;
@@ -268,6 +270,10 @@ public class Config {
         cache_capacity = CLIENT_BUILDER
                 .comment(" The capacity of the recipe cache, higher values use more memory.\n Default: 10")
                 .defineInRange("recipe_cache", 10, 1, 100);
+
+        has_recipe_cache_capacity = CLIENT_BUILDER
+                .comment(" The capacity of the has_recipe cache, higher values use more memory.\n Default: 200")
+                .defineInRange("has_recipe_cache", 200, 1, 1000);
 
         ironFurnaceSpeed = CLIENT_BUILDER
                 .comment(" Number of ticks to complete one smelting operation.\n 200 ticks is what a regular furnace takes.\n Default: 160")

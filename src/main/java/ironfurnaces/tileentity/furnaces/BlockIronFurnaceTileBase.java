@@ -131,6 +131,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             LRUCache.newInstance(Config.cache_capacity.get()),
             LRUCache.newInstance(Config.cache_capacity.get()));
 
+
+    public LRUCache<Item, Boolean> has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
+    public LRUCache<Item, Boolean> smoking_has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
+    public LRUCache<Item, Boolean> blasting_has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
+
     public FEnergyStorage energyStorage = new FEnergyStorage(Config.furnaceEnergyCapacityTier2.get()) {
         @Override
         protected void onEnergyChanged() {
@@ -190,8 +195,9 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     public boolean hasRecipe(ItemStack stack) {
-        return getRecipe(stack).isPresent();
+        return getHasRecipeCache().computeIfAbsent(stack.getItem(), (item -> this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).isPresent()));
     }
+
 
     public boolean hasGeneratorBlastingRecipe(ItemStack stack) {
         return getRecipeGeneratorBlasting(stack).isPresent();
@@ -251,6 +257,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return smoking_cache;
         }
         return cache;
+    }
+
+    protected LRUCache<Item, Boolean> getHasRecipeCache() {
+        checkRecipeType();
+        if (recipeType == RecipeType.BLASTING) {
+            return blasting_has_recipe_cache;
+        }
+        if (recipeType == RecipeType.SMOKING) {
+            return smoking_has_recipe_cache;
+        }
+        return has_recipe_cache;
     }
 
     protected List<LRUCache<Item, Optional<AbstractCookingRecipe>>> getFactoryCache() {

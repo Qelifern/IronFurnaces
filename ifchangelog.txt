@@ -1,3 +1,7 @@
+4.1.5
++Added a way to get Rainbow Coal
++Fixed energy not being conserved when using furnace upgrades
++Fixed hasRecipe() to consult it's own cache fixing Auto Input causing lag when interfacing with large inventories that contained unsmeltable items. https://github.com/Qelifern/IronFurnaces/issues/199 This fix adds 3 more caches to the furnaces, cache capacity can be modified through the config.
 4.1.4
 +Emerald and Diamond furnaces are now tier 2 by default (6 slots in factory)
 +Added blasting and smoking caches to factory furnaces, this fixes a blasting recipe being saved and used when there is no blasting augment in the furance

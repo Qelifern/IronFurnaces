@@ -1,6 +1,7 @@
 package ironfurnaces.items.upgrades;
 
 import ironfurnaces.IronFurnaces;
+import ironfurnaces.energy.FEnergyStorage;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import ironfurnaces.util.FurnaceSettings;
 import net.minecraft.ChatFormatting;
@@ -75,6 +76,7 @@ public class ItemUpgrade extends Item {
                 }
             }
             if (te instanceof BlockIronFurnaceTileBase) {
+                FEnergyStorage energyStorage = ((BlockIronFurnaceTileBase) te).energyStorage;
                 int[] FACTORY_COOKTIME = ((BlockIronFurnaceTileBase) te).factoryCookTime;
                 int[] FACTORY_TOTALCOOKTIME = ((BlockIronFurnaceTileBase) te).factoryTotalCookTime;
                 double[] usedRF = ((BlockIronFurnaceTileBase) te).usedRF;
@@ -93,6 +95,7 @@ public class ItemUpgrade extends Item {
                 BlockEntity newTe = world.getBlockEntity(pos);
                 if (newTe instanceof BlockIronFurnaceTileBase)
                 {
+                    ((BlockIronFurnaceTileBase) newTe).energyStorage = energyStorage;
                     ((BlockIronFurnaceTileBase) newTe).factoryCookTime = FACTORY_COOKTIME;
                     ((BlockIronFurnaceTileBase) newTe).factoryTotalCookTime = FACTORY_TOTALCOOKTIME;
                     ((BlockIronFurnaceTileBase) newTe).usedRF = usedRF;
