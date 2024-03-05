@@ -17,6 +17,8 @@ import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -644,7 +646,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                     }
                     else
                     {
-                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1) && !(itemstack1.getItem() instanceof ItemHeater)) {
+                        if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING) && !(itemstack1.getItem() instanceof ItemHeater)) {
                             if (!this.moveItemStackTo(itemstack1, 6, 7, false)) {
                                 return ItemStack.EMPTY;
                             }
@@ -739,7 +741,7 @@ public abstract class BlockIronFurnaceContainerBase extends AbstractContainerMen
                         if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (BlockIronFurnaceTileBase.isItemFuel(itemstack1)) {
+                    } else if (BlockIronFurnaceTileBase.isItemFuel(itemstack1, RecipeType.SMELTING)) {
                         if (!this.moveItemStackTo(itemstack1, 1, 2, false)) {
                             return ItemStack.EMPTY;
                         }

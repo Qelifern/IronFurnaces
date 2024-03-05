@@ -25,6 +25,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -55,17 +56,26 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.extensions.IForgeItem;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static ironfurnaces.init.ModSetup.SMOKING_BURNS;
+import static ironfurnaces.init.ModSetup.HAS_RECIPE;
+import static ironfurnaces.init.ModSetup.HAS_RECIPE_SMOKING;
+import static ironfurnaces.init.ModSetup.HAS_RECIPE_BLASTING;
 
 public abstract class BlockIronFurnaceTileBase extends TileEntityInventory implements RecipeHolder, StackedContentsCompatible {
 
@@ -132,9 +142,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             LRUCache.newInstance(Config.cache_capacity.get()));
 
 
-    public LRUCache<Item, Boolean> has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
-    public LRUCache<Item, Boolean> smoking_has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
-    public LRUCache<Item, Boolean> blasting_has_recipe_cache = LRUCache.newInstance(Config.has_recipe_cache_capacity.get());
+
 
     public FEnergyStorage energyStorage = new FEnergyStorage(Config.furnaceEnergyCapacityTier2.get()) {
         @Override
@@ -195,7 +203,20 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
     }
 
     public boolean hasRecipe(ItemStack stack) {
-        return getHasRecipeCache().computeIfAbsent(stack.getItem(), (item -> this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).isPresent()));
+
+        Item item = stack.getItem();
+        if (recipeType == RecipeType.SMOKING)
+        {
+            return HAS_RECIPE_SMOKING.computeIfAbsent(ForgeRegistries.ITEMS.getDelegateOrThrow(item), (value) -> this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).isPresent());
+        }
+        else if (recipeType == RecipeType.BLASTING)
+        {
+            return HAS_RECIPE_BLASTING.computeIfAbsent(ForgeRegistries.ITEMS.getDelegateOrThrow(item), (value) -> this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).isPresent());
+
+        }
+        return HAS_RECIPE.computeIfAbsent(ForgeRegistries.ITEMS.getDelegateOrThrow(item), (value) -> this.level.getRecipeManager().getRecipeFor((RecipeType<AbstractCookingRecipe>) recipeType, new SimpleContainer(stack), this.level).isPresent());
+
+
     }
 
 
@@ -257,17 +278,6 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             return smoking_cache;
         }
         return cache;
-    }
-
-    protected LRUCache<Item, Boolean> getHasRecipeCache() {
-        checkRecipeType();
-        if (recipeType == RecipeType.BLASTING) {
-            return blasting_has_recipe_cache;
-        }
-        if (recipeType == RecipeType.SMOKING) {
-            return smoking_has_recipe_cache;
-        }
-        return has_recipe_cache;
     }
 
     protected List<LRUCache<Item, Optional<AbstractCookingRecipe>>> getFactoryCache() {
@@ -407,7 +417,26 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         return getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentSpeed ? rf * 2 : getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentFuel ? (int) (rf * 0.75) : rf;
     }
 
-    public static int getSmokingBurn(ItemStack stack) {
+    public static int getSmokingBurn(ItemStack stack)
+    {
+        if (stack.isEmpty())
+        {
+            return 0;
+        }
+        else
+        {
+            Item item = stack.getItem();
+            return SMOKING_BURNS.getOrDefault(ForgeRegistries.ITEMS.getDelegateOrThrow(item), addSmokingBurn(stack));
+        }
+    }
+
+    public static int addSmokingBurn(ItemStack stack) {
+        int burnTime = getSmokingBurnTime(stack);
+        Item item = stack.getItem();
+        SMOKING_BURNS.put(ForgeRegistries.ITEMS.getDelegateOrThrow(item), burnTime);
+        return 0;
+    }
+    public static int getSmokingBurnTime(ItemStack stack) {
         if (!stack.isEmpty()) {
             if (stack.getItem().getFoodProperties() != null) {
                 if (stack.getItem().getFoodProperties().getNutrition() > 0) {
@@ -428,7 +457,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 burn = energy / 20;
             }
         } else {
-            burn = getBurnTime(getItem(GENERATOR_FUEL));
+            burn = getBurnTime(getItem(GENERATOR_FUEL), RecipeType.SMELTING);
         }
         if (getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentSpeed) {
             burn /= 2;
@@ -1053,17 +1082,17 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                             {
                                 if (e.getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentFuel)
                                 {
-                                    e.furnaceBurnTime = (getBurnTime(itemstack) * e.getCookTime() / 200) * 2;
+                                    e.furnaceBurnTime = (getBurnTime(itemstack, e.recipeType) * e.getCookTime() / 200) * 2;
                                 }
                                 else if (e.getItem(AUGMENT_GREEN).getItem() instanceof ItemAugmentSpeed)
                                 {
-                                    e.furnaceBurnTime = (getBurnTime(itemstack) * e.getCookTime() / 200) / 2;
+                                    e.furnaceBurnTime = (getBurnTime(itemstack, e.recipeType) * e.getCookTime() / 200) / 2;
 
                                 }
                             }
                             else
                             {
-                                e.furnaceBurnTime = getBurnTime(itemstack) * e.getCookTime() / 200;
+                                e.furnaceBurnTime = getBurnTime(itemstack, e.recipeType) * e.getCookTime() / 200;
                             }
                             e.recipesUsed = e.furnaceBurnTime;
                         }
@@ -1251,11 +1280,11 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                         if (other.getStackInSlot(i).isEmpty()) {
                                             continue;
                                         }
-                                        if (!isItemFuel(other.getStackInSlot(i))) {
+                                        if (!isItemFuel(other.getStackInSlot(i), recipeType)) {
                                             continue;
                                         }
                                         ItemStack stack = other.extractItem(i, other.getStackInSlot(i).getMaxStackSize(), true);
-                                        if (isItemFuel(stack) && getItem(FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(FUEL), stack)) {
+                                        if (isItemFuel(stack, recipeType) && getItem(FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(FUEL), stack)) {
                                             insertItemInternal(FUEL, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getItem(FUEL).getCount(), false), false);
                                         }
                                     }
@@ -1266,7 +1295,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     if (this.getItem(FUEL).isEmpty()) {
                                         continue;
                                     }
-                                    if (isItemFuel(this.getItem(FUEL))) {
+                                    if (isItemFuel(this.getItem(FUEL), recipeType)) {
                                         continue;
                                     }
                                     for (int i = 0; i < other.getSlots(); i++) {
@@ -1331,7 +1360,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                     {
                                         continue;
                                     }
-                                    if (isItemFuel(stack) && getItem(GENERATOR_FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(GENERATOR_FUEL), stack)) {
+                                    if (isItemFuel(stack, recipeType) && getItem(GENERATOR_FUEL).isEmpty() || ItemHandlerHelper.canItemStacksStack(getItem(GENERATOR_FUEL), stack)) {
                                         insertItemInternal(GENERATOR_FUEL, other.extractItem(i, other.getStackInSlot(i).getMaxStackSize() - this.getItem(GENERATOR_FUEL).getCount(), false), false);
                                     }
                                 }
@@ -1344,7 +1373,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                                 if (this.getItem(GENERATOR_FUEL).isEmpty()) {
                                     continue;
                                 }
-                                if (!isItemFuel(getItem(GENERATOR_FUEL))) {
+                                if (!isItemFuel(getItem(GENERATOR_FUEL), recipeType)) {
                                     for (int i = 0; i < other.getSlots(); i++) {
                                         ItemStack stack = extractItemInternal(GENERATOR_FUEL, this.getItem(GENERATOR_FUEL).getMaxStackSize() - other.getStackInSlot(i).getCount(), true);
                                         if (other.isItemValid(i, stack) && (other.getStackInSlot(i).isEmpty() || (ItemHandlerHelper.canItemStacksStack(other.getStackInSlot(i), stack) && other.getStackInSlot(i).getCount() + stack.getCount() <= other.getSlotLimit(i)))) {
@@ -1827,7 +1856,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         totalCookTime = tag.getInt("CookTimeTotal");
         currentAugment = tag.getIntArray("Augment");
         jovial = tag.getInt("Jovial");
-        recipesUsed = this.getBurnTime(this.getItem(1));
+        recipesUsed = this.getBurnTime(this.getItem(1), recipeType);
         CompoundTag compoundnbt = tag.getCompound("RecipesUsed");
 
         for (String s : compoundnbt.getAllKeys()) {
@@ -1880,19 +1909,13 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
         //tag.putString("SavedPlayer", savedPlayer.getStringUUID());
     }
 
-    public static int getBurnTime(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return 0;
-        } else {
-            Item item = stack.getItem();
-            int ret = stack.getBurnTime(RecipeType.SMELTING);
-            return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? AbstractFurnaceBlockEntity.getFuel().getOrDefault(item, 0) : ret, RecipeType.SMELTING);
-        }
+    public static int getBurnTime(ItemStack stack, RecipeType recipeType) {
+        return ForgeHooks.getBurnTime(stack, recipeType);
     }
 
 
-    public static boolean isItemFuel(ItemStack stack) {
-        return getBurnTime(stack) > 0 || stack.getItem() instanceof ItemHeater;
+    public static boolean isItemFuel(ItemStack stack, RecipeType recipeType) {
+        return getBurnTime(stack, recipeType) > 0 || stack.getItem() instanceof ItemHeater;
     }
 
     public static boolean isItemAugment(ItemStack stack, int type) {
@@ -2014,7 +2037,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
             }
             if (index == FUEL) {
                 ItemStack itemstack = this.getItem(FUEL);
-                return getBurnTime(stack) > 0 || (stack.getItem() == Items.BUCKET && itemstack.getItem() != Items.BUCKET) || stack.getItem() instanceof ItemHeater;
+                return getBurnTime(stack, recipeType) > 0 || (stack.getItem() == Items.BUCKET && itemstack.getItem() != Items.BUCKET) || stack.getItem() instanceof ItemHeater;
             }
         } else if (isGenerator()) {
             if (index == GENERATOR_FUEL) {
@@ -2024,7 +2047,7 @@ public abstract class BlockIronFurnaceTileBase extends TileEntityInventory imple
                 if (getItem(AUGMENT_RED).getItem() instanceof ItemAugmentBlasting && hasGeneratorBlastingRecipe(stack)) {
                     return true;
                 }
-                if (getItem(AUGMENT_RED).isEmpty() && getBurnTime(stack) > 0) {
+                if (getItem(AUGMENT_RED).isEmpty() && getBurnTime(stack, recipeType) > 0) {
                     return true;
                 }
                 if (stack.getItem() instanceof ItemHeater)

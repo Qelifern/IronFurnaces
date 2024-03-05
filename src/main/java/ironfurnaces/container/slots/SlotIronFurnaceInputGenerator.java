@@ -6,6 +6,7 @@ import ironfurnaces.items.augments.ItemAugmentSmoking;
 import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class SlotIronFurnaceInputGenerator extends Slot {
 
@@ -35,7 +36,7 @@ public class SlotIronFurnaceInputGenerator extends Slot {
         {
             return false;
         }
-        return BlockIronFurnaceTileBase.isItemFuel(stack);
+        return BlockIronFurnaceTileBase.isItemFuel(stack, RecipeType.SMELTING);
     }
 
     @Override

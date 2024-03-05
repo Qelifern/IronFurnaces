@@ -4,6 +4,7 @@ import ironfurnaces.tileentity.furnaces.BlockIronFurnaceTileBase;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class SlotIronFurnaceFuel extends Slot {
     BlockIronFurnaceTileBase te;
@@ -18,7 +19,7 @@ public class SlotIronFurnaceFuel extends Slot {
      */
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return BlockIronFurnaceTileBase.isItemFuel(stack) || isBucket(stack);
+        return BlockIronFurnaceTileBase.isItemFuel(stack, RecipeType.SMELTING) || isBucket(stack);
     }
 
     @Override
