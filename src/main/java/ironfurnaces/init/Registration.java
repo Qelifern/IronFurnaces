@@ -49,6 +49,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import static ironfurnaces.IronFurnaces.MOD_ID;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Registration {
 
@@ -61,11 +62,6 @@ public class Registration {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
 
-
-
-    //private static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, MOD_ID);
-    //private static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, MOD_ID);
-
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BLOCKS.register(modEventBus);
@@ -75,8 +71,6 @@ public class Registration {
         RECIPE_SERIALIZERS.register(modEventBus);
         RECIPE_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
-        //ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        //DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
 
@@ -88,7 +82,7 @@ public class Registration {
         public static mezz.jei.api.recipe.RecipeType<SimpleGeneratorRecipe> GENERATOR_SMOKING = mezz.jei.api.recipe.RecipeType.create(IronFurnaces.MOD_ID, "generator_smoking", SimpleGeneratorRecipe.class);
         public static mezz.jei.api.recipe.RecipeType<SimpleGeneratorRecipe> GENERATOR_REGULAR = mezz.jei.api.recipe.RecipeType.create(IronFurnaces.MOD_ID, "generator_regular", SimpleGeneratorRecipe.class);
     }
-    public static RegistryObject<RecipeType<GeneratorRecipe>> GENERATOR_RECIPE_TYPE = RECIPE_TYPES.register(GENERATOR_ID, () -> new RecipeType<GeneratorRecipe>() {
+    public static RegistryObject<RecipeType<GeneratorRecipe>> GENERATOR_RECIPE_TYPE = RECIPE_TYPES.register(GENERATOR_ID, () -> new RecipeType<>() {
         @Override
         public String toString() {
             return GENERATOR_ID;
@@ -151,7 +145,7 @@ public class Registration {
     public static final RegistryObject<BlockCrystalFurnace> CRYSTAL_FURNACE = BLOCKS.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> new BlockCrystalFurnace(Block.Properties.copy(Blocks.PRISMARINE).noOcclusion().isValidSpawn(Registration::isntSolid).isSuffocating(Registration::isntSolid).isViewBlocking(Registration::isntSolid)));
 
     private static Boolean isntSolid(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType) {
-        return (Boolean) false;
+        return false;
     }
 
     public static final RegistryObject<Item> CRYSTAL_FURNACE_ITEM = ITEMS.register(BlockCrystalFurnace.CRYSTAL_FURNACE, () -> new ItemFurnace(CRYSTAL_FURNACE.get(), new Item.Properties(), Config.crystalFurnaceSpeed.get()));
@@ -216,7 +210,7 @@ public class Registration {
     public static final RegistryObject<ItemUpgradeSilver2> SILVER2_UPGRADE = ITEMS.register("upgrade_silver2", () -> new ItemUpgradeSilver2(new Item.Properties()));
 
     public static RegistryObject<BlockAllthemodiumFurnace> ALLTHEMODIUM_FURNACE = BLOCKS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> new BlockAllthemodiumFurnace(Block.Properties.copy(Blocks.GOLD_BLOCK)));
-    public static final RegistryObject<Item> ALLTHEMODIUM_FURNACE_ITEM = ITEMS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> new ItemFurnace(ALLTHEMODIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties(), Config.allthemodiumFurnaceSpeed.get()));
+    public static final RegistryObject<Item> ALLTHEMODIUM_FURNACE_ITEM = ITEMS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> new ItemFurnace(ALLTHEMODIUM_FURNACE.get(), new Item.Properties(), Config.allthemodiumFurnaceSpeed.get()));
     public static final RegistryObject<BlockEntityType<BlockAllthemodiumFurnaceTile>> ALLTHEMODIUM_FURNACE_TILE = TILES.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> BlockEntityType.Builder.of(BlockAllthemodiumFurnaceTile::new, ALLTHEMODIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<MenuType<BlockAllthemodiumFurnaceContainer>> ALLTHEMODIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockAllthemodiumFurnace.ALLTHEMODIUM_FURNACE, () -> IForgeMenuType.create((windowId, inv, data) -> {
@@ -226,7 +220,7 @@ public class Registration {
     }));
 
     public static final RegistryObject<BlockVibraniumFurnace> VIBRANIUM_FURNACE = BLOCKS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> new BlockVibraniumFurnace(Block.Properties.copy(Blocks.DIAMOND_BLOCK)));
-    public static final RegistryObject<Item> VIBRANIUM_FURNACE_ITEM = ITEMS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> new ItemFurnace(VIBRANIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties(), Config.vibraniumFurnaceSpeed.get()));
+    public static final RegistryObject<Item> VIBRANIUM_FURNACE_ITEM = ITEMS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> new ItemFurnace(VIBRANIUM_FURNACE.get(), new Item.Properties(), Config.vibraniumFurnaceSpeed.get()));
     public static final RegistryObject<BlockEntityType<BlockVibraniumFurnaceTile>> VIBRANIUM_FURNACE_TILE = TILES.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> BlockEntityType.Builder.of(BlockVibraniumFurnaceTile::new, VIBRANIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<MenuType<BlockVibraniumFurnaceContainer>> VIBRANIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockVibraniumFurnace.VIBRANIUM_FURNACE, () -> IForgeMenuType.create((windowId, inv, data) -> {
@@ -236,7 +230,7 @@ public class Registration {
     }));
 
     public static final RegistryObject<BlockUnobtainiumFurnace> UNOBTAINIUM_FURNACE = BLOCKS.register(BlockUnobtainiumFurnace.UNOBTAINIUM_FURNACE, () -> new BlockUnobtainiumFurnace(Block.Properties.copy(Blocks.NETHERITE_BLOCK)));
-    public static final RegistryObject<Item> UNOBTAINIUM_FURNACE_ITEM = ITEMS.register(BlockUnobtainiumFurnace.UNOBTAINIUM_FURNACE, () -> new ItemFurnace(UNOBTAINIUM_FURNACE.get(), ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties(), Config.unobtainiumFurnaceSpeed.get()));
+    public static final RegistryObject<Item> UNOBTAINIUM_FURNACE_ITEM = ITEMS.register(BlockUnobtainiumFurnace.UNOBTAINIUM_FURNACE, () -> new ItemFurnace(UNOBTAINIUM_FURNACE.get(), new Item.Properties(), Config.unobtainiumFurnaceSpeed.get()));
     public static final RegistryObject<BlockEntityType<BlockUnobtainiumFurnaceTile>> UNOBTAINIUM_FURNACE_TILE = TILES.register(BlockUnobtainiumFurnace.UNOBTAINIUM_FURNACE, () -> BlockEntityType.Builder.of(BlockUnobtainiumFurnaceTile::new, UNOBTAINIUM_FURNACE.get()).build(null));
 
     public static final RegistryObject<MenuType<BlockUnobtainiumFurnaceContainer>> UNOBTAINIUM_FURNACE_CONTAINER = CONTAINERS.register(BlockUnobtainiumFurnace.UNOBTAINIUM_FURNACE, () -> IForgeMenuType.create((windowId, inv, data) -> {
@@ -246,9 +240,9 @@ public class Registration {
     }));
 
 
-    public static final RegistryObject<ItemUpgradeAllthemodium> ALLTHEMODIUM_UPGRADE = ITEMS.register("upgrade_allthemodium", () -> new ItemUpgradeAllthemodium(ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties()));
-    public static final RegistryObject<ItemUpgradeVibranium> VIBRANIUM_UPGRADE = ITEMS.register("upgrade_vibranium", () -> new ItemUpgradeVibranium(ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties()));
-    public static final RegistryObject<ItemUpgradeUnobtainium> UNOBTAINIUM_UPGRADE = ITEMS.register("upgrade_unobtainium", () -> new ItemUpgradeUnobtainium(ModList.get().isLoaded("allthemodium") ? new Item.Properties() : new Item.Properties()));
+    public static final RegistryObject<ItemUpgradeAllthemodium> ALLTHEMODIUM_UPGRADE = ITEMS.register("upgrade_allthemodium", () -> new ItemUpgradeAllthemodium(new Item.Properties()));
+    public static final RegistryObject<ItemUpgradeVibranium> VIBRANIUM_UPGRADE = ITEMS.register("upgrade_vibranium", () -> new ItemUpgradeVibranium(new Item.Properties()));
+    public static final RegistryObject<ItemUpgradeUnobtainium> UNOBTAINIUM_UPGRADE = ITEMS.register("upgrade_unobtainium", () -> new ItemUpgradeUnobtainium(new Item.Properties()));
 
 
 
@@ -341,9 +335,13 @@ public class Registration {
 
                 output.accept(Registration.MILLION_FURNACE_ITEM.get());
                 output.accept(Registration.RAINBOW_COAL.get());
+                if (ModList.get().isLoaded("allthemodium")) {
+                    output.accept(Registration.ALLTHEMODIUM_FURNACE_ITEM.get());
+                    output.accept(Registration.VIBRANIUM_FURNACE_ITEM.get());
+                    output.accept(Registration.UNOBTAINIUM_FURNACE_ITEM.get());
+                    output.accept(Registration.ALLTHEMODIUM_UPGRADE.get());
+                    output.accept(Registration.VIBRANIUM_UPGRADE.get());
+                    output.accept(Registration.UNOBTAINIUM_UPGRADE.get());
+                }
             }).build());
-
-
-
-
 }

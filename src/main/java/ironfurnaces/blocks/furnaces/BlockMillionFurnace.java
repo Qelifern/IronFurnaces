@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +36,7 @@ public class BlockMillionFurnace extends BlockIronFurnaceBase {
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
+    public void animateTick(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull RandomSource rand) {
         if (world.getBlockEntity(pos) != null && world.getBlockEntity(pos) instanceof BlockMillionFurnaceTile)
         {
             if (((BlockMillionFurnaceTile)world.getBlockEntity(pos)).getItem(BlockMillionFurnaceTile.AUGMENT_BLUE).getItem() == Registration.GENERATOR_AUGMENT.get())

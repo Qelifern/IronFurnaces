@@ -23,9 +23,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleWaterloggedBlock {
 
     public static final String CRYSTAL_FURNACE = "crystal_furnace";
@@ -33,25 +35,26 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleW
 
     public BlockCrystalFurnace(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false).setValue(TYPE, 0).setValue(JOVIAL, 0).setValue(WATERLOGGED, Boolean.valueOf(false)));
+        this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.LIT, false).setValue(TYPE, 0).setValue(JOVIAL, 0).setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return createFurnaceTicker(level, type, Registration.CRYSTAL_FURNACE_TILE.get());
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
-        return (BlockState) this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidState.getType() == Fluids.WATER));
+        return this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, ctx.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
+    @SuppressWarnings({"unused", "DuplicatedCode"})
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
+    public void animateTick(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull RandomSource rand) {
         double d0 = (double) pos.getX() + 0.5D;
-        double d1 = (double) pos.getY();
+        double d1 = pos.getY();
         double d2 = (double) pos.getZ() + 0.5D;
 
         Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -68,14 +71,13 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleW
         {
             return;
         }
-        if (!(world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase))
+        if (!(world.getBlockEntity(pos) instanceof BlockIronFurnaceTileBase tile))
         {
             return;
         }
-        BlockIronFurnaceTileBase tile = ((BlockIronFurnaceTileBase) world.getBlockEntity(pos));
         if (tile.getItem(3).getItem() == Registration.SMOKING_AUGMENT.get()) {
             double lvt_5_1_ = (double) pos.getX() + 0.5D;
-            double lvt_7_1_ = (double) pos.getY();
+            double lvt_7_1_ = pos.getY();
             double lvt_9_1_ = (double) pos.getZ() + 0.5D;
 
             world.addParticle(ParticleTypes.PORTAL, lvt_5_1_, lvt_7_1_ + 1.1D, lvt_9_1_, 0.0D, 0.0D, 0.0D);
@@ -84,12 +86,13 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleW
         super.animateTick(state, world, pos, rand);
     }
 
-    public FluidState getFluidState(BlockState state) {
+    public @NotNull FluidState getFluidState(BlockState state) {
+        //noinspection deprecation
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public @NotNull BlockState updateShape(BlockState stateIn, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor worldIn, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
         if (stateIn.getValue(WATERLOGGED)) {
             worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
@@ -103,7 +106,7 @@ public class BlockCrystalFurnace extends BlockIronFurnaceBase implements SimpleW
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos p_153215_, @NotNull BlockState p_153216_) {
         return new BlockCrystalFurnaceTile(p_153215_, p_153216_);
     }
 }
