@@ -1,3 +1,6 @@
+4.1.8
++Minor code fixes
++Added ATM furnaces to creative tab when ATM is loaded
 4.1.6
 +Fixed getBurnTime now uses ForgeHooks.getBurnTime
 +Relocated hasRecipe caches so a single (3 in total), cache is used for all furnaces existing in the world, also switched from LRU cache to a full hashmap (shouldnt impact negatively performance but should save RAM)
