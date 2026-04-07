@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,8 +27,9 @@ public class BlockItemHeater extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, Level worldIn, @NotNull List<Component> tooltip, @NotNull TooltipFlag flagIn) {
         if (stack.hasTag()) {
+            assert stack.getTag() != null;
             tooltip.add(Component.literal(StringHelper.displayEnergy(stack.getTag().getInt("Energy"), 1000000).get(0)).withStyle(ChatFormatting.GOLD));
         }
         if (BlockIronFurnaceScreenBase.isShiftKeyDown()) {
@@ -47,14 +49,15 @@ public class BlockItemHeater extends BlockItem {
     public int getBarWidth(ItemStack stack) {
         if (stack.hasTag())
         {
+            assert stack.getTag() != null;
             int energy = stack.getTag().getInt("Energy");
-            return (int) ((int)13 * ((double) energy / (double) 1000000));
+            return (int) (13 * ((double) energy / (double) 1000000));
         }
         return 0;
     }
 
     @Override
-    public int getBarColor(ItemStack p_150901_) {
+    public int getBarColor(@NotNull ItemStack p_150901_) {
         return 0xFF800600;
     }
 }

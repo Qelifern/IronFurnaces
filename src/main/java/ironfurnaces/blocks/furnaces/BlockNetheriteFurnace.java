@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -37,7 +38,7 @@ public class BlockNetheriteFurnace extends BlockIronFurnaceBase {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource rand) {
+    public void animateTick(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull RandomSource rand) {
         if (state.getValue(BlockStateProperties.LIT)) {
             if (world.getBlockEntity(pos) == null)
             {
